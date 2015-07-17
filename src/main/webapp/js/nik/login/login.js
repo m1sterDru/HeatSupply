@@ -1,6 +1,7 @@
 var heatsupply = angular.module('heatsupply', [
 	'ngRoute',
-	'heatsupplyControllers'
+	'headerControllers',
+	'loginControllers'
 	]);
 
 heatsupply.config(function ($routeProvider){

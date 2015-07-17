@@ -19,7 +19,7 @@ public class LogoutServlet extends HttpServlet {
 		System.out.println("LogoutServlet");
 		HttpSession session = request.getSession(false);
 		if(session != null) session.invalidate();
-		response.sendRedirect("login.html");
+		response.sendRedirect("index.html");
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

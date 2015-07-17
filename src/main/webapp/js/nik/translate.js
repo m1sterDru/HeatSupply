@@ -47,10 +47,8 @@ return {
 		}
 
 		returnInstance.translateValueByKey = function(key){
-			var lang = document.getElementById('lang'),
-					localeName = lang === null ? 'en' : lang.value,
-					locale = 'Language_' + localeName;
-			return messageResource.get(key, locale);
+			var langId = localStorage.getItem('currentLanguage');
+			return messageResource.get(key, 'Language_' + langId);
 		}
 
 		returnInstance.translateAll = function(){

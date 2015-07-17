@@ -11,43 +11,16 @@
 	<script src="./js/bootstrap/BootstrapDialog.js"></script>
 	<link rel="stylesheet" href="./css/bootstrap/BootstrapDialog.css">
 	<script src="./js/messageResource.min.js"></script>
+	<link rel="stylesheet" href="./css/awesome/font-awesome.min.css">
 	<link rel="stylesheet" href="./css/style.css">
 	<link rel="stylesheet" href="./css/nik/login/style.css">
-	<script src="./js/nik/login/heatsupplyControllers.js"></script>
-	<script src="./js/nik/login/heatsupply.js"></script>
+
+	<script src="./js/nik/header/controllers.js"></script>
+	<script src="./js/nik/login/controllers.js"></script>
+	<script src="./js/nik/login/login.js"></script>
 </head>
-<body ng-controller="HeatSupplyCtrl as mctrl">
-	<div class="header">
-		<div class="pull-left">
-			<a href="http://nik.net.ua">
-				<img src="./resources/logo.png" alt="Logo">
-			</a>
-		</div>
-		<div class="pull-right">
-			<span class="dropdown">
-				<button id="curLangButton" type="button" class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false" lang="{{langId}}">
-					<img ng-src="{{langImg}}" width="20">
-					<span>{{langDesc}}</span>
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li id="uk" class="menubutton" ng-click="click($event);">
-						<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/125px-Flag_of_Ukraine.svg.png" width="20">
-						<span>Українська</span>
-					</li>
-					<li id="ru" class="menubutton" ng-click="click($event);">
-						<img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/125px-Flag_of_Russia.svg.png" width="20">
-						<span>Русский</span>
-					</li>
-					<li id="en" class="menubutton" ng-click="click($event);">
-						<img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/125px-Flag_of_the_United_States.svg.png" width="20">
-						<span>English</span>
-					</li>
-				</ul>
-			</span>
-		</div>
-		<div class="right_header"></div>
-	</div>
+<body ng-controller="LoginController">
+	<div ng-include src="'./html/header.html'"></div>
 
 	<div ng-view></div>
 

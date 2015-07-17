@@ -1,27 +1,27 @@
-var heatsupply = angular.module('heatsupply', [
+heatSupply.mainModule = angular.module('heatsupply', [
 	'ngRoute',
+	'headerControllers',
 	'heatsupplyFactory',
 	'heatsupplyControllers'
 	]);
 
-heatsupply.config(function ($routeProvider){
-	$routeProvider.
-		when('/', {
-			templateUrl: 'loginForm.html',
-			controller:'LoginCtrl'
-		}).
-		when('/registration', {
-			templateUrl: 'loginRegistration.html',
-			controller:'RegisterCtrl'
-		}).
-		otherwise({
-			redirectTo: '/'
-		})
-});
+// heatSupply.mainModule.config(function ($routeProvider){
+// 	$routeProvider.
+// 		when('/', {
+// 			templateUrl: 'loginForm.html',
+// 			controller:'LoginCtrl'
+// 		}).
+// 		when('/registration', {
+// 			templateUrl: 'loginRegistration.html',
+// 			controller:'RegisterCtrl'
+// 		}).
+// 		otherwise({
+// 			redirectTo: '/'
+// 		})
+// });
 
-heatsupply.nik = Object.create(null);
-heatsupply.nik.initWebSocket = function(){
-	var url = heatsupply.nik.url.slice(4),
+heatSupply.initWebSocket = function(){
+	var url = heatSupply.url.slice(4),
 			ws = new WebSocket('ws' + url + 'socketServer');
 	ws.onmessage = function (message){
 		var jsonData = JSON.parse(message.data);
@@ -53,10 +53,10 @@ heatsupply.nik.initWebSocket = function(){
 		console.log('session open');
 	}
 
-	heatsupply.nik.webSocket = ws;
+	heatSupply.webSocket = ws;
 }
 
-heatsupply.nik.reconnect = function(){
-	heatsupply.nik.webSocket.close();
-	heatsupply.nik.initWebSocket();
-}
+// heatsupply.nik.reconnect = function(){
+// 	heatsupply.nik.webSocket.close();
+// 	heatsupply.nik.initWebSocket();
+// }

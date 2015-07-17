@@ -1,6 +1,7 @@
-var heatsupplyControllers = angular.module('heatsupplyControllers', []);
+var heatSupply = Object.create(null);
+heatSupply.headerCtrls = angular.module('headerControllers', []);
 
-heatsupplyControllers.psFunctions = {
+heatSupply.headerCtrls.psFunctions = {
 		noCache: 'no-cache',
 		results: Object.create(null),
 		run: function(name, cb){
@@ -21,7 +22,7 @@ heatsupplyControllers.psFunctions = {
 								var allText = rawFile.responseText,
 										func = new Function('', allText);
 								target.results[file] = func;
-								try {cb(func);} catch(e){console.log(e);console.log(file);}
+								try{cb(func);}catch(e){console.log(e);console.log(file);}
 						}
 					});
 					rawFile.send(null);
@@ -30,23 +31,20 @@ heatsupplyControllers.psFunctions = {
 		}
 	};
 
-(function(){
-		heatsupplyControllers.psFunctions.run('./js/nik/translate.js', 
-				function(func){
-						heatsupplyControllers.Translator = func().Translator();
-						heatsupplyControllers.Translator.translateAll();
-				});
-})();
-
-heatsupplyControllers.controller('HeatSupplyCtrl', 
+heatSupply.headerCtrls.controller('HeaderCtrl', 
 	function ($scope){
 		var url = document.URL,
 				langId = localStorage.getItem('currentLanguage');
 
 		langId = langId ? langId : 'uk';
 		url = url.slice(0, url.indexOf('HeatSupply') + 11);
-		heatsupply.nik.url = url;
-		changeLocale(langId);
+		heatSupply.url = url;
+		checkIsLogin();
+		heatSupply.headerCtrls.psFunctions.run('./js/nik/translate.js',
+			function(func){
+				heatSupply.headerCtrls.Translator = func().Translator();
+				changeLocale(langId);
+			});
 
 		$scope.click = function($event){
 			var btn = document.getElementById('curLangButton'),
@@ -65,15 +63,34 @@ heatsupplyControllers.controller('HeatSupplyCtrl',
 			li = Array.prototype.filter.call(lis, function(li){
 				return li.id === langId;
 			})[0];
-			if(!li) return;
-			
+			if(!li) {
+				console.log('null'); 
+				return;
+			}
+
 			img = li.getElementsByTagName('img')[0];
 			span = li.getElementsByTagName('span')[0];
 
 			$scope.langId = langId;
 			$scope.langImg = img.src;
 			$scope.langDesc = span.innerHTML;
-			if(heatsupplyControllers.Translator)
-				heatsupplyControllers.Translator.translateAllByLocaleName(langId);
+			console.log(langId + ' = ' + span.innerHTML)
+			if(heatSupply.headerCtrls.Translator)
+				heatSupply.headerCtrls.Translator.translateAllByLocaleName(langId);
 		}
+
+		function checkIsLogin(){
+			$.getJSON(heatSupply.url + 'StartServlet', function(data){
+				var isLogin = data.isLogin === 'true',
+						aLogin = $('#aLogin');
+
+				if(isLogin){
+					document.getElementById('currentUser').innerHTML = data.user;
+					aLogin[0].href = 'LogoutServlet';
+					aLogin[0].getElementsByTagName('span')[0].id = '${kLogout}';
+					aLogin.removeClass('fa-sign-in');
+					aLogin.addClass('fa-sign-out');
+				}
+			});
+		};
 	});

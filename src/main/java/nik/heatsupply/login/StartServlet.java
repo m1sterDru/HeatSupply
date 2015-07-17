@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-//import javax.servlet.http.HttpSession;
 
 @WebServlet(value="/StartServlet", urlPatterns="/StartServlet")
 public class StartServlet extends HttpServlet {
@@ -26,8 +25,10 @@ public class StartServlet extends HttpServlet {
 		System.out.println("StartServlet");
 		HttpSession session = request.getSession(false);
 		if(session != null) {
-			System.out.println("Not Null");
+			String user = session.getAttribute("user").toString();
+			System.out.println("============ " + user);
 			jsn.add("isLogin", "true");
+			jsn.add("user", user);
 		} else {
 			System.out.println("Null");
 			jsn.add("isLogin", "false");

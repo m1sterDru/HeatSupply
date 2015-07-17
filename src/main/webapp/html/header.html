@@ -1,0 +1,37 @@
+<div class="header" ng-controller="HeaderCtrl">
+	<div class="pull-left">
+		<a href="http://nik.net.ua" style="font-size:16px;">
+			<img src="./resources/logo.png" alt="Logo">
+		</a>
+	</div>
+	<div class="pull-right">
+		<span style="display: inline-flex;">
+		<a id="aLogin" href="login.html" class="fa fa-sign-in" style="font-size:18px;">
+			<span id="${kLogin}" class="withIcon" style="font-size:14px;"></span>
+			<div id="currentUser" class="comment titleCenter"></div>
+		</a>
+		</span>
+		<span class="dropdown">
+			<button id="curLangButton" type="button" class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false" lang="{{langId}}">
+				<img ng-src="{{langImg}}" width="20">
+				<span>{{langDesc}}</span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li id="uk" class="menubutton" ng-click="click($event);">
+					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/125px-Flag_of_Ukraine.svg.png" width="20">
+					<span>Українська</span>
+				</li>
+				<li id="ru" class="menubutton" ng-click="click($event);">
+					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/125px-Flag_of_Russia.svg.png" width="20">
+					<span>Русский</span>
+				</li>
+				<li id="en" class="menubutton" ng-click="click($event);">
+					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/125px-Flag_of_the_United_States.svg.png" width="20">
+					<span>English</span>
+				</li>
+			</ul>
+		</span>
+	</div>
+	<div class="right_header"></div>
+</div>
