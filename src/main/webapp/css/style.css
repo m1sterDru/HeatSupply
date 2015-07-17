@@ -1,0 +1,68 @@
+body {font-family: "Courier New", "Arial"}
+::selection {background-color: transparent;}
+.canSelect::selection {
+	background-color: rgb(123, 180, 199);
+}
+.glyphicon, .fa {color: rgb(25, 50, 117);}
+tr.spaceUnder > td {padding-bottom: 5px;}
+.bold{font-weight: bold;}
+.isHide{display: none;}
+.withIcon{padding-left: 5px;}
+
+.menubutton{
+	background: linear-gradient(#D8D8D8, #d0d0d0);
+	display: inline-block;
+	touch-action: manipulation;
+	border: 1px solid transparent;
+	color: black;
+}
+.menubutton:hover {
+	background: rgba(0,0,0,.1);
+	cursor: pointer;
+}
+
+.header{
+	background-color: silver;
+	height: 75px;
+}
+.right_header {
+	float: right;
+	font: 17px 'pfagorasanspro_medium';
+	border-right: 1px dotted #143273;
+	height: 29px;
+	line-height: 29px;
+	margin: 26px 5px 0 0;
+}
+.header .dropdown-menu{
+	background-color: rgb(214, 214, 214);
+}
+.header .dropdown-menu li{
+	padding-left: 9px;
+	width: 100%;
+}
+#curLangButton{text-align: left; width: 150px;}
+span .caret{float: right; margin-top: 7px;}
+div .pull-right{padding: 24px 10px 0 0;}
+
+.title {
+	font-size: 1.5em;
+	font-weight: bold;
+	padding: 10px;
+}
+.titleCenter{
+	text-align: center
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 30px;
+	background-color: silver;
+}
+.footer p{
+	height: 20px;
+	padding-top: 5px;
+}
+
+.content{padding: 10px;}

@@ -1,0 +1,36 @@
+<div>
+	<p class="title titleCenter"><span id="${kTitleRegister}"></span></p>
+</div>
+<div style="height:50%;" class="content">
+	<p class="title"><span id="${kInputData}"></span></p>
+	<hr>
+	<form action="RegisterServlet" method="post">
+		<table>
+			<tr class="spaceUnder">
+				<td class="bold"><span id="${kRegNumber}"></span></td>
+				<td><input type="text" name="number" placeholder="1234" class="canSelect"></td>
+			</tr>
+			<tr class="spaceUnder">
+				<td class="bold"><span id="${kRegLastSum}"></span></td>
+				<td><input type="text" name="lastSum" placeholder="0.00" class="canSelect"></td>
+			</tr>
+			<tr class="spaceUnder">
+				<td></td>
+				<td>
+					<input type="checkbox" id="noPay" ng-model="noPay" ng-change="change()">
+					<span id="${kNoPays}"></span>
+				</td>
+			</tr>
+			<tr class="spaceUnder {{noPayClass}}">
+				<td class="bold"><span id="${kMeterNumber}"></span></td>
+				<td><input type="text" name="lastSum" placeholder="123456789" class="canSelect"></td>
+			</tr>
+			<tr style="height:25px;"></tr>
+			<tr class="spaceUnder">
+				<td></td>
+				<td><span id="${kNeeds}"></span></td>
+			</tr>
+		</table>
+		<button><span id="${kRegister}"></span></button>
+	</form>
+</div>

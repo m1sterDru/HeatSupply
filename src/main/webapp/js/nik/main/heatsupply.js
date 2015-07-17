@@ -1,0 +1,62 @@
+var heatsupply = angular.module('heatsupply', [
+	'ngRoute',
+	'heatsupplyFactory',
+	'heatsupplyControllers'
+	]);
+
+heatsupply.config(function ($routeProvider){
+	$routeProvider.
+		when('/', {
+			templateUrl: 'loginForm.html',
+			controller:'LoginCtrl'
+		}).
+		when('/registration', {
+			templateUrl: 'loginRegistration.html',
+			controller:'RegisterCtrl'
+		}).
+		otherwise({
+			redirectTo: '/'
+		})
+});
+
+heatsupply.nik = Object.create(null);
+heatsupply.nik.initWebSocket = function(){
+	var url = heatsupply.nik.url.slice(4),
+			ws = new WebSocket('ws' + url + 'socketServer');
+	ws.onmessage = function (message){
+		var jsonData = JSON.parse(message.data);
+		console.log(jsonData)
+		// if(jsonData.type === 'CommandMessage') {
+		// 	if(jsonData.command === 'lang'){
+		// 		var param = jsonData.parameters[0],
+		// 				lang = param.value,
+		// 				btn = document.getElementById('curLangButton'),
+		// 				lis = btn.parentNode.getElementsByTagName('ul')[0]
+		// 									.getElementsByTagName('li');
+
+		// 		if(lang){
+		// 			var li = Array.prototype.filter.call(lis, function(li){
+		// 				return li.id === lang;
+		// 			})[0];
+		// 			li.click();
+		// 		}
+		// 	}
+		// }
+	}
+	ws.onerror = function (e){
+		console.log(e);
+	}
+	ws.onclose = function (){
+		console.log('session close ');
+	}
+	ws.onopen = function(){
+		console.log('session open');
+	}
+
+	heatsupply.nik.webSocket = ws;
+}
+
+heatsupply.nik.reconnect = function(){
+	heatsupply.nik.webSocket.close();
+	heatsupply.nik.initWebSocket();
+}
