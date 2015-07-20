@@ -1,4 +1,4 @@
-body {font-family: "Courier New", "Arial"}
+body {font-family: "Times new Roman", "Arial"}
 ::selection {background-color: transparent;}
 .canSelect::selection {
 	background-color: rgb(123, 180, 199);
@@ -27,12 +27,12 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 	height: 75px;
 }
 .right_header {
-	float: right;
-	font: 17px 'pfagorasanspro_medium';
+	display: inline;
+	font-size: 25px;
+	padding-bottom: 5px;
 	border-right: 1px dotted #143273;
-	height: 29px;
-	line-height: 29px;
-	margin: 26px 5px 0 0;
+	line-height: 0;
+	margin-right: 10px;
 }
 .header .dropdown-menu{
 	background-color: rgb(214, 214, 214);

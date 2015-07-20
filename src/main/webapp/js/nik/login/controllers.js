@@ -7,13 +7,13 @@ heatSupply.loginCtrls.controller('LoginController',
 
 heatSupply.loginCtrls.controller('LoginCtrl', 
 	function ($scope){
-		// heatsupplyControllers.Translator.translateAll();
+		heatSupply.translateAll();
 	});
-
+var t;
 heatSupply.loginCtrls.controller('RegisterCtrl', 
 	function ($scope, $routeParams){
+		heatSupply.translateAll();
 		$scope.nik = Object.create(null);
-		// heatsupplyControllers.Translator.translateAll();
 		$scope.noPayClass = 'isHide';
 		$scope.showNumberComment = 'isHide';
 		$scope.showLastSumComment = 'isHide';
@@ -23,15 +23,15 @@ heatSupply.loginCtrls.controller('RegisterCtrl',
 		};
 
 		$scope.validInput = function($event){
-			var elName = $event.target.name.toLowerCase(),
-					numberShow, lastSumShow;
-			numberShow = elName !== 'number' && 
-									($scope.nik.Number === undefined ||
-									$scope.nik.Number.length == 0);
-			$scope.showNumberComment = numberShow ? '' : 'isHide';
-			lastSumShow = elName !== 'lastsum' &&
-									($scope.nik.LastSum === undefined ||
-									$scope.nik.LastSum.length == 0);
-			$scope.showLastSumComment = lastSumShow ? '' : 'isHide';
+			var ind = $event.target.id.slice($event.target.id.indexOf('_') + 1),
+					count = document.getElementsByTagName('form')[0]
+						.getElementsByTagName('input').length - 1;
+
+			for(var i = 1; i < count; i++){
+				$(document.getElementById('rfC_' + i)).removeClass('isHide');
+				if(document.getElementById('rfI_' + i).value.length > 0 || i>=ind){
+					$(document.getElementById('rfC_' + i)).addClass('isHide');
+				}
+			}
 		}
 	});

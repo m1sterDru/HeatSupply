@@ -31,6 +31,11 @@ heatSupply.headerCtrls.psFunctions = {
 		}
 	};
 
+heatSupply.translateAll = function(){
+	if(heatSupply.headerCtrls.Translator)
+			heatSupply.headerCtrls.Translator.translateAll();
+}
+
 heatSupply.headerCtrls.controller('HeaderCtrl', 
 	function ($scope){
 		var url = document.URL,
@@ -44,6 +49,7 @@ heatSupply.headerCtrls.controller('HeaderCtrl',
 			function(func){
 				heatSupply.headerCtrls.Translator = func().Translator();
 				changeLocale(langId);
+				$scope.$apply();
 			});
 
 		$scope.click = function($event){
@@ -74,9 +80,7 @@ heatSupply.headerCtrls.controller('HeaderCtrl',
 			$scope.langId = langId;
 			$scope.langImg = img.src;
 			$scope.langDesc = span.innerHTML;
-			console.log(langId + ' = ' + span.innerHTML)
-			if(heatSupply.headerCtrls.Translator)
-				heatSupply.headerCtrls.Translator.translateAllByLocaleName(langId);
+			heatSupply.headerCtrls.Translator.translateAllByLocaleName(langId);
 		}
 
 		function checkIsLogin(){
