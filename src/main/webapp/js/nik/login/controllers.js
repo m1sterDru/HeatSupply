@@ -1,18 +1,18 @@
 heatSupply.loginCtrls = angular.module('loginControllers', []);
 
 heatSupply.loginCtrls.controller('LoginController', 
-	function ($scope){
-		
+	function ($scope, translate){
+		$scope.$on('$viewContentLoaded', function(){
+			translate.run(function(t){t.translateAll();});
+		});
 	});
 
-heatSupply.loginCtrls.controller('LoginCtrl', 
-	function ($scope){
-		heatSupply.translateAll();
+heatSupply.loginCtrls.controller('loginFormController', 
+	function ($scope, translate){
 	});
-var t;
-heatSupply.loginCtrls.controller('RegisterCtrl', 
-	function ($scope, $routeParams){
-		heatSupply.translateAll();
+
+heatSupply.loginCtrls.controller('loginRegistrationController', 
+	function ($scope, translate){
 		$scope.nik = Object.create(null);
 		$scope.noPayClass = 'isHide';
 		$scope.showNumberComment = 'isHide';

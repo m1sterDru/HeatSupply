@@ -1,4 +1,4 @@
-<html ng-app="heatsupply">
+<html ng-app="main">
 <head>
 	<meta charset="UTF-8">
 	<title>HeatSupply</title>
@@ -15,12 +15,13 @@
 	<link rel="stylesheet" href="./css/style.css">
 	<link rel="stylesheet" href="./css/nik/main/style.css">
 
+	<script src="./js/nik/header/factory.js"></script>
 	<script src="./js/nik/header/controllers.js"></script>
-	<script src="./js/nik/main/heatsupplyFactory.js"></script>
-	<script src="./js/nik/main/heatsupplyControllers.js"></script>
-	<script src="./js/nik/main/heatsupply.js"></script>
+	<script src="./js/nik/main/factory.js"></script>
+	<script src="./js/nik/main/controllers.js"></script>
+	<script src="./js/nik/main/main.js"></script>
 </head>
-<body ng-controller="HeatSupplyCtrl">
+<body ng-controller="mainController">
 	<div ng-include src="'./html/header.html'" onload="onHeaderLoad();"></div>
 
 	<div ng-view></div>

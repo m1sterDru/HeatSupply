@@ -9,6 +9,8 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 .comment{font-weight: bold; color: red; font-size: 0.7em;}
 .isHide{display: none;}
 .withIcon{padding-left: 5px;}
+.pointer{cursor: pointer;}
+.content{padding: 15px;}
 
 .menubutton{
 	background: linear-gradient(#D8D8D8, #d0d0d0);
@@ -24,12 +26,13 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 
 .header{
 	background-color: silver;
-	height: 75px;
+	height: 40px;
 }
+.header .pull-left img{height: 35px;}
 .right_header {
 	display: inline;
-	font-size: 25px;
-	padding-bottom: 5px;
+	font-size: 20px;
+	padding-bottom: 8px;
 	border-right: 1px dotted #143273;
 	line-height: 0;
 	margin-right: 10px;
@@ -43,7 +46,7 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 }
 #curLangButton{text-align: left; width: 150px;}
 span .caret{float: right; margin-top: 7px;}
-div .pull-right{padding: 24px 10px 0 0;}
+div .pull-right{padding: 4px 10px 0 0;}
 
 .title {
 	font-size: 1.5em;

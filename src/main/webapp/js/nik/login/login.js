@@ -1,22 +1,20 @@
-var heatsupply = angular.module('heatsupply', [
+heatSupply.loginModule = angular.module('loginModule', [
 	'ngRoute',
 	'headerControllers',
 	'loginControllers'
 	]);
 
-heatsupply.config(function ($routeProvider){
+heatSupply.loginModule.config(function ($routeProvider){
 	$routeProvider.
 		when('/', {
 			templateUrl: 'html/login/loginForm.html',
-			controller:'LoginCtrl'
+			controller:'loginFormController'
 		}).
 		when('/registration', {
 			templateUrl: 'html/login/loginRegistration.html',
-			controller:'RegisterCtrl'
+			controller:'loginRegistrationController'
 		}).
 		otherwise({
 			redirectTo: '/'
 		})
 });
-
-heatsupply.nik = Object.create(null);

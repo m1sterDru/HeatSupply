@@ -1,4 +1,4 @@
-angular.module('heatsupplyFactory', [])
+angular.module('mainFactory', [])
 	.factory('priorities', function ($http){
 		function getPriorities(callback){
 			$http({

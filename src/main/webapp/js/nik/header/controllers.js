@@ -1,43 +1,9 @@
 var heatSupply = Object.create(null);
-heatSupply.headerCtrls = angular.module('headerControllers', []);
-
-heatSupply.headerCtrls.psFunctions = {
-		noCache: 'no-cache',
-		results: Object.create(null),
-		run: function(name, cb){
-			if (name in this.results){
-				cb(results[name]);
-			} else {
-				(function(target, file, cb){
-					var sName = file.substring(file.lastIndexOf('/') + 1, 
-																		 file.lastIndexOf('.'));
-					if (!sName) return false;
-					var rawFile = new XMLHttpRequest();
-					rawFile.open("GET", file, true);
-					if(this.noCache)
-						rawFile.setRequestHeader('Cache-Control', this.noCache);
-					rawFile.addEventListener("load", function(){
-						if(rawFile.readyState === 4 && 
-							(rawFile.status === 200 || rawFile.status == 0)){
-								var allText = rawFile.responseText,
-										func = new Function('', allText);
-								target.results[file] = func;
-								try{cb(func);}catch(e){console.log(e);console.log(file);}
-						}
-					});
-					rawFile.send(null);
-				})(this, name, cb);
-			}
-		}
-	};
-
-heatSupply.translateAll = function(){
-	if(heatSupply.headerCtrls.Translator)
-			heatSupply.headerCtrls.Translator.translateAll();
-}
+heatSupply.headerCtrls = angular.module('headerControllers', [
+	'headerFactory']);
 
 heatSupply.headerCtrls.controller('HeaderCtrl', 
-	function ($scope){
+	function ($scope, translate){
 		var url = document.URL,
 				langId = localStorage.getItem('currentLanguage');
 
@@ -45,12 +11,7 @@ heatSupply.headerCtrls.controller('HeaderCtrl',
 		url = url.slice(0, url.indexOf('HeatSupply') + 11);
 		heatSupply.url = url;
 		checkIsLogin();
-		heatSupply.headerCtrls.psFunctions.run('./js/nik/translate.js',
-			function(func){
-				heatSupply.headerCtrls.Translator = func().Translator();
-				changeLocale(langId);
-				$scope.$apply();
-			});
+		changeLocale(langId);
 
 		$scope.click = function($event){
 			var btn = document.getElementById('curLangButton'),
@@ -80,7 +41,7 @@ heatSupply.headerCtrls.controller('HeaderCtrl',
 			$scope.langId = langId;
 			$scope.langImg = img.src;
 			$scope.langDesc = span.innerHTML;
-			heatSupply.headerCtrls.Translator.translateAllByLocaleName(langId);
+			translate.run(function(t){t.translateAllByLocaleName(langId);});
 		}
 
 		function checkIsLogin(){

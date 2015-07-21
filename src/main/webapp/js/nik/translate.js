@@ -18,18 +18,6 @@ return {
 						} else {
 							el.innerHTML = messageResource.get(key, locale);
 						}
-						if (key === 'keyChart'){
-							var chart = $('#tabChart').highcharts();
-							var selRect = $('#selectableRectangle')[0];
-							if(selRect != undefined && selRect.hasAttribute('selectedId')
-									&& selRect.getAttribute('selectedId') != undefined) {
-								var curItem = $('#' + selRect.getAttribute('selectedId'))[0];
-								chart.yAxis[0].setTitle({
-									text: messageResource.get('key_pValue', locale) + ', ' +
-												(curItem !== undefined ? curItem.getAttribute('unit'): '')
-								});
-							}
-						}
 					}
 				}
 			}
@@ -47,8 +35,9 @@ return {
 		}
 
 		returnInstance.translateValueByKey = function(key){
-			var langId = localStorage.getItem('currentLanguage');
-			return messageResource.get(key, 'Language_' + langId);
+			var langId = localStorage.getItem('currentLanguage'), 
+					locale = 'Language_' + langId;
+			return messageResource.get(key, locale);
 		}
 
 		returnInstance.translateAll = function(){

@@ -1,8 +1,8 @@
-heatSupply.mainModule = angular.module('heatsupply', [
+heatSupply.mainModule = angular.module('main', [
 	'ngRoute',
 	'headerControllers',
-	'heatsupplyFactory',
-	'heatsupplyControllers'
+	'mainFactory',
+	'mainControllers'
 	]);
 
 // heatSupply.mainModule.config(function ($routeProvider){
@@ -55,8 +55,3 @@ heatSupply.initWebSocket = function(){
 
 	heatSupply.webSocket = ws;
 }
-
-// heatsupply.nik.reconnect = function(){
-// 	heatsupply.nik.webSocket.close();
-// 	heatsupply.nik.initWebSocket();
-// }
