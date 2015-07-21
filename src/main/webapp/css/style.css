@@ -44,6 +44,18 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 	padding-left: 9px;
 	width: 100%;
 }
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+		width: 100px;
+		margin: auto;
+}
+.carousel-inner{height: 120px;}
+.carousel{background-color: silver;}
+.carousel-caption{top: 70px; color: red;}
+.caption{
+	bottom: 0px;
+}
+
 #curLangButton{text-align: left; width: 150px;}
 span .caret{float: right; margin-top: 7px;}
 div .pull-right{padding: 4px 10px 0 0;}
@@ -61,12 +73,15 @@ div .pull-right{padding: 4px 10px 0 0;}
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	height: 30px;
 	background-color: silver;
 }
 .footer p{
 	height: 20px;
 	padding-top: 5px;
+}
+#carouselTestWrapper{
+	position: absolute;
+	bottom: 50px
 }
 
 .content{padding: 10px;}

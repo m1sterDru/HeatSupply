@@ -9,10 +9,6 @@ heatSupply.indexModule.config(function ($routeProvider){
 			templateUrl: 'html/index/mainForm.html',
 			controller:'mainFormController'
 		}).
-		when('/registration', {
-			templateUrl: 'html/login/loginRegistration.html',
-			controller:'RegisterCtrl'
-		}). 
 		otherwise({
 			redirectTo: '/'
 		})

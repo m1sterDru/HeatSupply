@@ -1,5 +1,5 @@
 <div class="container content">
-	<div>
+	<div id="tabsExample" class="tabs">
 		<ul class="nav nav-tabs">
 			<li id="l_tab1" class="pointer active">
 				<a ng-click="clickTab($event);">Електроенергія</a>
@@ -38,6 +38,52 @@
 			</div>
 			<div class="tab-pane content" id="tab3">messages...</div>
 			<div class="tab-pane content" id="tab4">settings...</div>
+		</div>
+	</div>
+
+	<div id="carouselTestWrapper" class="container">
+		<div id="carouselTest" class="carousel slide" data-ride="carousel" data-interval="false">
+			<ol class="carousel-indicators">
+				<li data-target="#carouselTest" data-slide-to="0" class="active"></li>
+				<li data-target="#carouselTest" data-slide-to="1"></li>
+				<li data-target="#carouselTest" data-slide-to="2"></li>
+			</ol>
+
+			<div class="carousel-inner" role="listbox">
+				<div class="item active">
+					<a href="http://nik.net.ua/">
+						<img src="./resources/logo_nik.png" alt="...">
+					</a>
+					<div class="carousel-caption">
+						First Carousel
+					</div>
+				</div>
+				<div class="item">
+					<a href="http://nik.net.ua/">
+						<img src="./resources/logo_nik.png" alt="...">
+					</a>
+					<div class="carousel-caption">
+						Second Carousel
+					</div>
+				</div>
+				<div class="item">
+					<a href="http://nik.net.ua/">
+						<img src="./resources/logo_nik.png" alt="...">
+					</a>
+					<div class="carousel-caption">
+						Thred Carousel
+					</div>
+				</div>
+			</div>
+
+			<a class="left carousel-control" ng-click="prevCarousel();">
+				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a>
+			<a class="right carousel-control" ng-click="nextCarousel();">
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
 		</div>
 	</div>
 </div>
