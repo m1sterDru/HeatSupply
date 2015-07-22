@@ -8,12 +8,11 @@ heatSupply.loginCtrls.controller('LoginController',
 	});
 
 heatSupply.loginCtrls.controller('loginFormController', 
-	function ($scope, translate){
+	function ($scope){
 	});
 
 heatSupply.loginCtrls.controller('loginRegistrationController', 
-	function ($scope, translate){
-		$scope.nik = Object.create(null);
+	function ($scope){
 		$scope.noPayClass = 'isHide';
 		$scope.showNumberComment = 'isHide';
 		$scope.showLastSumComment = 'isHide';

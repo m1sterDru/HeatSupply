@@ -2,19 +2,24 @@ heatSupply.indexCtrls = angular.module('indexControllers',[]);
 
 heatSupply.indexCtrls.controller('indexController', 
 	function ($scope, translate){
-		translate.run(function(t){t.translateAll();});
+		$scope.$on('$viewContentLoaded', function(){
+			translate.run(function(t){t.translateAll();});
+		});
 	});
 
 heatSupply.indexCtrls.controller('mainFormController', 
-	function ($scope, translate){
-		translate.run(function(t){t.translateAll();});
+	function ($scope, $controller){
+		var headerController = $scope.$new();
+		$controller('headerController',{$scope : headerController});
+		headerController.test123();
+
+		$('#carouselTest').carousel({interval: 3000})
 
 		$scope.clickTab = function($event){
 			var curLi = $event.target.parentNode,
 					ref = curLi.id;
 
-			$('#tabsExample li.active').removeClass('active');
-			$(curLi).addClass('active');
+			$($event.target).tab('show');
 
 			if(ref){
 				ref = ref.slice(ref.indexOf('_') + 1);
@@ -24,31 +29,10 @@ heatSupply.indexCtrls.controller('mainFormController',
 		}
 
 		$scope.prevCarousel = function(){
-			carousel(true);
+			$('#carouselTest').carousel('prev');
 		}
 
 		$scope.nextCarousel = function(){
-			carousel(false);
-		}
-
-		function carousel(isPrev){
-			var actInd = $('#carouselTest ol li.active'),
-					actId = Number(actInd.attr('data-slide-to')),
-					count = $('#carouselTest ol li').length,
-					inner = $('#carouselTest .carousel-inner .item'),
-					actInner = $('#carouselTest .carousel-inner .active'),
-					id;
-
-			if(isPrev)
-				id = actId - 1 < 0 ? count - 1 : actId - 1;
-			else
-				id = actId + 1 == count ? 0 : actId + 1;
-
-			actInd.removeClass('active');
-			$('#carouselTest ol li[data-slide-to="' + id + '"]').
-				addClass('active');
-
-			actInner.removeClass('active');
-			$(inner.get(id)).addClass('active');
+			$('#carouselTest').carousel('next');
 		}
 	});

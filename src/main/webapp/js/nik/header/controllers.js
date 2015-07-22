@@ -2,7 +2,7 @@ var heatSupply = Object.create(null);
 heatSupply.headerCtrls = angular.module('headerControllers', [
 	'headerFactory']);
 
-heatSupply.headerCtrls.controller('HeaderCtrl', 
+heatSupply.headerCtrls.controller('headerController', 
 	function ($scope, translate){
 		var url = document.URL,
 				langId = localStorage.getItem('currentLanguage');
@@ -12,6 +12,10 @@ heatSupply.headerCtrls.controller('HeaderCtrl',
 		heatSupply.url = url;
 		checkIsLogin();
 		changeLocale(langId);
+
+		$scope.test123 = function(){
+			console.log('test123');
+		}
 
 		$scope.click = function($event){
 			var btn = document.getElementById('curLangButton'),
@@ -23,25 +27,28 @@ heatSupply.headerCtrls.controller('HeaderCtrl',
 
 		function changeLocale(langId){
 			var btn = document.getElementById('curLangButton'),
-					lis = btn.parentNode.getElementsByTagName('ul')[0]
-									.getElementsByTagName('li'),
-					img, span;
+					lis, li, img, span;
 
-			li = Array.prototype.filter.call(lis, function(li){
-				return li.id === langId;
-			})[0];
-			if(!li) {
-				console.log('null'); 
-				return;
+			if(btn){
+				lis = btn.parentNode.getElementsByTagName('ul')[0]
+									.getElementsByTagName('li');
+
+				li = Array.prototype.filter.call(lis, function(li){
+					return li.id === langId;
+				})[0];
+				if(!li) {
+					console.log('null'); 
+					return;
+				}
+
+				img = li.getElementsByTagName('img')[0];
+				span = li.getElementsByTagName('span')[0];
+
+				$scope.langId = langId;
+				$scope.langImg = img.src;
+				$scope.langDesc = span.innerHTML;
+				translate.run(function(t){t.translateAllByLocaleName(langId);});
 			}
-
-			img = li.getElementsByTagName('img')[0];
-			span = li.getElementsByTagName('span')[0];
-
-			$scope.langId = langId;
-			$scope.langImg = img.src;
-			$scope.langDesc = span.innerHTML;
-			translate.run(function(t){t.translateAllByLocaleName(langId);});
 		}
 
 		function checkIsLogin(){
