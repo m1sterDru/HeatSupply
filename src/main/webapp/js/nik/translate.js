@@ -30,12 +30,10 @@ return {
 			} else {
 				translateAll();
 			}
-			localStorage.setItem('currentLanguage', 
-				locale.slice(locale.indexOf('_') + 1));
 		}
 
 		returnInstance.translateValueByKey = function(key){
-			var langId = localStorage.getItem('currentLanguage'), 
+			var langId = localStorage.getItem('heatSupply').language, 
 					locale = 'Language_' + langId;
 			return messageResource.get(key, locale);
 		}

@@ -1,0 +1,10 @@
+#tabsExample{
+	background-color: #eee;
+	border-radius: 5px;
+}
+#tabsExample .tab-content{
+	min-height: 200px;
+	border: 2px solid #ddd;
+	border-radius: 0 0 5px 5px;
+}
+#tabsExample > ul > li[class*="active"] > a{background-color: #ddd;}

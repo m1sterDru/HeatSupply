@@ -22,15 +22,12 @@ public class StartServlet extends HttpServlet {
 		response.setHeader("Cache-control", "no-cache, no-store");
 
 		JsonObjectBuilder jsn = Json.createObjectBuilder();
-		System.out.println("StartServlet");
 		HttpSession session = request.getSession(false);
 		if(session != null) {
 			String user = session.getAttribute("user").toString();
-			System.out.println("============ " + user);
 			jsn.add("isLogin", "true");
 			jsn.add("user", user);
 		} else {
-			System.out.println("Null");
 			jsn.add("isLogin", "false");
 		}
 		out.println(jsn.build().toString());

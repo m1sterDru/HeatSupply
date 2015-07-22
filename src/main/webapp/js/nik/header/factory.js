@@ -23,4 +23,26 @@ angular.module('headerFactory', [])
 				});
 			}
 		}
+	})
+	.factory('hsFactory', function(){
+		var main;
+		function HeatSupply(){
+			var hs = Object.create(null),
+					url = document.URL,
+					cache = localStorage.getItem('heatSupply');
+
+			hs.language = cache ? JSON.parse(cache).language : 'uk';
+
+			hs.url = url.slice(0, url.indexOf('HeatSupply') + 11);
+			return hs;
+		}
+
+		function getMainFactory(){
+			if(!main) {
+				main = new HeatSupply();
+				console.log('create main')
+			}
+			return main;
+		}
+		return getMainFactory();
 	});

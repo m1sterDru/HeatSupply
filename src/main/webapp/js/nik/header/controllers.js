@@ -1,17 +1,11 @@
 var heatSupply = Object.create(null);
-heatSupply.headerCtrls = angular.module('headerControllers', [
+heatSupply.headerControllers = angular.module('headerControllers', [
 	'headerFactory']);
 
-heatSupply.headerCtrls.controller('headerController', 
-	function ($scope, translate){
-		var url = document.URL,
-				langId = localStorage.getItem('currentLanguage');
-
-		langId = langId ? langId : 'uk';
-		url = url.slice(0, url.indexOf('HeatSupply') + 11);
-		heatSupply.url = url;
+heatSupply.headerControllers.controller('headerController', 
+	function ($scope, translate, hsFactory){
 		checkIsLogin();
-		changeLocale(langId);
+		changeLocale(hsFactory.language);
 
 		$scope.test123 = function(){
 			console.log('test123');
@@ -47,12 +41,17 @@ heatSupply.headerCtrls.controller('headerController',
 				$scope.langId = langId;
 				$scope.langImg = img.src;
 				$scope.langDesc = span.innerHTML;
-				translate.run(function(t){t.translateAllByLocaleName(langId);});
+
+				hsFactory.language = langId;
+				translate.run(function(t){
+					t.translateAllByLocaleName(langId);
+					localStorage.setItem('heatSupply', JSON.stringify(hsFactory));
+				});
 			}
 		}
 
 		function checkIsLogin(){
-			$.getJSON(heatSupply.url + 'StartServlet', function(data){
+			$.getJSON(hsFactory.url + 'StartServlet', function(data){
 				var isLogin = data.isLogin === 'true',
 						aLogin = $('#aLogin');
 

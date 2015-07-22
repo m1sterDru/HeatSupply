@@ -5,24 +5,19 @@ heatSupply.mainModule = angular.module('main', [
 	'mainControllers'
 	]);
 
-// heatSupply.mainModule.config(function ($routeProvider){
-// 	$routeProvider.
-// 		when('/', {
-// 			templateUrl: 'loginForm.html',
-// 			controller:'LoginCtrl'
-// 		}).
-// 		when('/registration', {
-// 			templateUrl: 'loginRegistration.html',
-// 			controller:'RegisterCtrl'
-// 		}).
-// 		otherwise({
-// 			redirectTo: '/'
-// 		})
-// });
+heatSupply.mainModule.config(function ($routeProvider){
+	$routeProvider.
+		when('/', {
+			templateUrl: 'html/main/mainForm.html',
+			controller:'mainFormController'
+		}).
+		otherwise({
+			redirectTo: '/'
+		})
+});
 
-heatSupply.initWebSocket = function(){
-	var url = heatSupply.url.slice(4),
-			ws = new WebSocket('ws' + url + 'socketServer');
+heatSupply.initWebSocket = function(url){
+	var ws = new WebSocket('ws' + url.slice(4) + 'socketServer');
 	ws.onmessage = function (message){
 		var jsonData = JSON.parse(message.data);
 		console.log(jsonData)
