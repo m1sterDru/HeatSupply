@@ -9,19 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/LogoutServlet")
-public class LogoutServlet extends HttpServlet {
+@WebServlet("/ProfileServlet")
+public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html");
-
-		HttpSession session = request.getSession(false);
-		if(session != null) session.invalidate();
-		response.sendRedirect("index.html");
-	}
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String user = request.getParameter("user");
+		String email = request.getParameter("email");
+
+		System.out.println("ProfileServlet");
+		HttpSession session = request.getSession(false);
+		if(session != null) {
+			System.out.println("New User = " + user + "; new E-mail = " + email);
+			response.sendRedirect("main.html");
+		} else {
+			response.sendRedirect("login.html");
+		}
 	}
 }

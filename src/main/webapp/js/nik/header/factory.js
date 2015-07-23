@@ -24,15 +24,35 @@ angular.module('headerFactory', [])
 			}
 		}
 	})
-	.factory('hsFactory', function(){
+	.factory('hsFactory', function ($http){
 		var main;
+
+		function getUserProfile(callback){
+			$http({
+				method: 'GET',
+				url: '/HeatSupply/StartServlet',
+				cache: true
+			})
+			.success(function(data){
+				callback(data);
+			})
+			.error(function(data, status, headers, config){
+				console.log(status)
+			});
+		};
+
 		function HeatSupply(){
 			var hs = Object.create(null),
 					url = document.URL,
 					cache = localStorage.getItem('heatSupply');
 
 			hs.language = cache ? JSON.parse(cache).language : 'uk';
-
+			getUserProfile(function(data){
+				hs.userId = data.userId;
+				hs.user = data.user;
+				hs.isLogin = data.isLogin;
+			});
+			hs.getUserProfile = getUserProfile;
 			hs.url = url.slice(0, url.indexOf('HeatSupply') + 11);
 			return hs;
 		}
@@ -40,7 +60,6 @@ angular.module('headerFactory', [])
 		function getMainFactory(){
 			if(!main) {
 				main = new HeatSupply();
-				console.log('create main')
 			}
 			return main;
 		}

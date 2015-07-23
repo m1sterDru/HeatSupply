@@ -1,62 +1,7 @@
-<div>
+<div class="container">
 	<p class="title titleCenter"><span id="${kTitleRegister}"></span></p>
 </div>
-<div style="height:50%;" class="content">
+<div class="container content">
 	<p class="title"><span id="${kInputData}"></span></p>
-	<hr>
-	<form action="RegisterServlet" method="post">
-		<table>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${kRegNumber}"></span></td>
-				<td>
-					<input id="rfI_1" type="text" pattern="[0-9]*" name="number" placeholder="1234" class="canSelect" ng-focus="validInput($event);" autocomplete="off" required>
-				</td>
-			</tr>
-			<tr id="rfC_1" class="spaceUnder comment {{showNumberComment}}">
-				<td></td>
-				<td>
-					<span id="${kRegNumberComment}"></span>
-				</td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${kRegLastSum}"></span></td>
-				<td>
-					<input id="rfI_2" type="text" pattern="[0-9.]*" name="lastSum" placeholder="0.00" class="canSelect" ng-focus="validInput($event);" autocomplete="off" required>
-				</td>
-			</tr>
-			<tr id="rfC_2" class="spaceUnder comment {{showLastSumComment}}">
-				<td></td>
-				<td>
-					<span id="${kLastSumComment}"></span>
-				</td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${kEmail}"></span></td>
-				<td>
-					<input id="rfI_3" type="email" name="email" placeholder="address@domain.xyz" class="canSelect" ng-focus="validInput($event);" autocomplete="off" required>
-				</td>
-			</tr>
-			<tr id="rfC_3" class="spaceUnder comment {{showLastSumComment}}">
-				<td></td>
-				<td>
-					<span id="${kLastSumComment}"></span>
-				</td>
-			</tr>
-			<tr class="spaceUnder">
-				<td></td>
-				<td>
-					<input type="checkbox" id="noPay" ng-model="noPay" ng-change="changeNoPay()">
-					<span id="${kNoPays}"></span>
-				</td>
-			</tr>
-			<tr class="spaceUnder {{noPayClass}}">
-				<td class="bold"><span id="${kMeterNumber}"></span></td>
-				<td>
-					<input id="rfI_4" type="text" pattern="[0-9]*" name="lastSum" placeholder="123456789" class="canSelect" ng-focus="validInput($event);" autocomplete="off" ng-required="noPay">
-				</td>
-			</tr>
-			<tr style="height:25px;"></tr>
-		</table>
-		<button type="submit"><span id="${kRegister}"></span></button>
-	</form>
+	<div registration-form class="loginDiv"></div>
 </div>

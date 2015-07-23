@@ -8,7 +8,7 @@
 		margin: auto;
 }
 .carousel-inner{height: 120px;}
-.carousel{background-color: silver;}
+.carousel{background-color: #ddd;}
 .carousel-caption{top: 75px; color: red;}
 .caption{bottom: 0px;}
 .carousel-indicators{top: 80px;}

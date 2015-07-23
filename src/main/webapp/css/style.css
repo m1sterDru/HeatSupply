@@ -1,4 +1,7 @@
-body {font-family: "Times new Roman", "Arial"}
+body {
+	font-family: "Times new Roman", "Arial";
+	background-color:#eee;
+}
 ::selection {background-color: transparent;}
 .canSelect::selection {
 	background-color: rgb(123, 180, 199);
@@ -48,6 +51,8 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 #curLangButton{text-align: left; width: 150px;}
 span .caret{float: right; margin-top: 7px;}
 div .pull-right{padding: 4px 10px 0 0;}
+#aLogin{font-size: 18px;}
+#aLogin > span{font-size: 14px;}
 
 .title {
 	font-size: 1.5em;

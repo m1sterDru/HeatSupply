@@ -21,15 +21,15 @@ public class LoginServlet extends HttpServlet {
 	}
 	 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String uri = request.getRequestURI();
 		String user = request.getParameter("user");
 		String pwd = request.getParameter("pwd");
 
-		if (uri.endsWith("main.html")) System.out.println("AuthenticationFilter");
 		isChecked = user.equals("admin") && pwd.equals("qwe");
+		String userId = isChecked ? "12" : "0";
 		if(isChecked){
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
+			session.setAttribute("userId", userId);
 			session.setMaxInactiveInterval(FIVE_MINUTES);
 			Cookie userName = new Cookie("user", user);
 			userName.setMaxAge(FIVE_MINUTES);

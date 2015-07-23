@@ -5,6 +5,7 @@ import java.text.ParseException;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -44,17 +45,13 @@ public class DataBase {
 //				}
 			ret = jsn.build().toString();
 			break;
-		case "priority":
-			
-			break;
-		case "childsignals":
-			
-			break;
-		case "childsignalpath":
-			
-			break;
-		case "transparant":
-//			Tools
+		case "currentuser":
+			JsonObjectBuilder j = Json.createObjectBuilder();
+			String idUser = params;
+			j.add("user", "admin_" + idUser)
+			 .add("password", "password")
+			 .add("email", "qqq@gmail.com");
+			ret = j.build().toString();
 			break;
 		default: ret = "Get: > Comand <" + comand + "> not found"; break;
 		}

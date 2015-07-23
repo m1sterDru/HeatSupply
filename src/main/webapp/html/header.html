@@ -5,11 +5,13 @@
 		</a>
 	</div>
 	<div class="pull-right">
-		<span id="currentUser" class="fa titleCenter"></span>
-		<div class="right_header"></div>
-		<a id="aLogin" href="login.html#/" class="fa fa-sign-in" style="font-size:18px;">
-			<span id="${kLogin}" class="withIcon" style="font-size:14px;"></span>
-		</a>
+		<span>
+			<a id="currentUser" href="profile.html" class="fa titleCenter"></a>
+			<div class="right_header"></div>
+			<a id="aLogin" href="login.html" class="fa fa-sign-in">
+				<span id="${kLogin}" class="withIcon"></span>
+			</a>
+		</span>
 		<span class="dropdown">
 			<button id="curLangButton" type="button" class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false" lang="{{langId}}">
 				<img ng-src="{{langImg}}" width="20">

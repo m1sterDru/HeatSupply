@@ -4,7 +4,9 @@ heatSupply.headerControllers = angular.module('headerControllers', [
 
 heatSupply.headerControllers.controller('headerController', 
 	function ($scope, translate, hsFactory){
-		checkIsLogin();
+		hsFactory.getUserProfile(function(){
+			checkIsLogin();
+		});
 		changeLocale(hsFactory.language);
 
 		$scope.test123 = function(){
@@ -51,17 +53,15 @@ heatSupply.headerControllers.controller('headerController',
 		}
 
 		function checkIsLogin(){
-			$.getJSON(hsFactory.url + 'StartServlet', function(data){
-				var isLogin = data.isLogin === 'true',
-						aLogin = $('#aLogin');
+			var isLogin = hsFactory.isLogin === 'true',
+					aLogin = $('#aLogin');
 
-				if(isLogin){
-					document.getElementById('currentUser').innerHTML = data.user;
-					aLogin[0].href = 'LogoutServlet';
-					aLogin[0].getElementsByTagName('span')[0].id = '${kLogout}';
-					aLogin.removeClass('fa-sign-in');
-					aLogin.addClass('fa-sign-out');
-				}
-			});
-		};
+			if(isLogin){
+				document.getElementById('currentUser').innerHTML = hsFactory.user;
+				aLogin[0].href = 'LogoutServlet';
+				aLogin[0].getElementsByTagName('span')[0].id = '${kLogout}';
+				aLogin.removeClass('fa-sign-in');
+				aLogin.addClass('fa-sign-out');
+			}
+		}
 	});

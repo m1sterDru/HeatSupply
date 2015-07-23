@@ -25,8 +25,10 @@ public class StartServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if(session != null) {
 			String user = session.getAttribute("user").toString();
-			jsn.add("isLogin", "true");
-			jsn.add("user", user);
+			String userId = session.getAttribute("userId").toString();
+			jsn.add("isLogin", "true")
+			   .add("user", user)
+			   .add("userId", userId);
 		} else {
 			jsn.add("isLogin", "false");
 		}

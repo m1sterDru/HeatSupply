@@ -29,8 +29,7 @@ public class AuthenticationFilter extends AHttpFilter {
 		response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		response.setDateHeader("Expires", 0); // Proxies.
 
-		if (uri.endsWith("main.html")) System.out.println("AuthenticationFilter");
-		if(session == null && uri.endsWith("main.html")) {
+		if(session == null && (uri.endsWith("main.html") || uri.endsWith("profile.html"))) {
 			System.out.println("===============RRRRRRRRRRRRRRRR    " + uri);
 			response.sendRedirect("login.html");
 		} else {
