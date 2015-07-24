@@ -20,7 +20,8 @@ public class AuthenticationFilter extends AHttpFilter {
 		}
 
 		HttpSession session = request.getSession(false);
-		
+		boolean isLogin = session != null ? Boolean.parseBoolean(session.getAttribute("login").toString()) : false;
+
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, x-requested-with, sid, mycustom, smuser");
@@ -29,8 +30,7 @@ public class AuthenticationFilter extends AHttpFilter {
 		response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		response.setDateHeader("Expires", 0); // Proxies.
 
-		if(session == null && (uri.endsWith("main.html") || uri.endsWith("profile.html"))) {
-			System.out.println("===============RRRRRRRRRRRRRRRR    " + uri);
+		if((session == null || !isLogin) && (uri.endsWith("main.html") || uri.endsWith("profile.html"))) {
 			response.sendRedirect("login.html");
 		} else {
 			chain.doFilter(request, response);

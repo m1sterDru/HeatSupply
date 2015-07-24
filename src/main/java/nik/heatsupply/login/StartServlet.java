@@ -23,7 +23,8 @@ public class StartServlet extends HttpServlet {
 
 		JsonObjectBuilder jsn = Json.createObjectBuilder();
 		HttpSession session = request.getSession(false);
-		if(session != null) {
+
+		if(session != null && Boolean.parseBoolean(session.getAttribute("login").toString())) {
 			String user = session.getAttribute("user").toString();
 			String userId = session.getAttribute("userId").toString();
 			jsn.add("isLogin", "true")

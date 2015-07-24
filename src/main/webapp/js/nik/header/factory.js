@@ -31,7 +31,7 @@ angular.module('headerFactory', [])
 			$http({
 				method: 'GET',
 				url: '/HeatSupply/StartServlet',
-				cache: true
+				cache: false
 			})
 			.success(function(data){
 				callback(data);
