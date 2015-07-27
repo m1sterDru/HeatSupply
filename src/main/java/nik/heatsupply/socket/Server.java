@@ -1,9 +1,7 @@
 package nik.heatsupply.socket;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,54 +23,48 @@ import nik.heatsupply.socket.messages.coders.MessageEncoder;
 @ServerEndpoint(value = "/socketServer", configurator = GetHttpSessionConfigurator.class,
 encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class})
 public class Server {
-	private static HttpSession httpSession;
-	private static int userId;
 	private static final Map<Session, String> users = Collections.synchronizedMap(new HashMap<>());
+	private static final Map<String, Session> httpSessions = Collections.synchronizedMap(new HashMap<>());
 
 	public Server() {
 		System.out.println("====================< new Server >====================");
 	}
 
-	public static void sendObject(Session session, Object message){
+	public static void sendObject(Session session, HttpSession httpSession, Object message){
 		try {
-			updateSessionMaxIdle(session);
-			session.getBasicRemote().sendObject(message);
+			if(updateSessionMaxIdle(session, httpSession) && session.isOpen())
+				session.getBasicRemote().sendObject(message);
 		} catch (IOException | EncodeException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void updateSessionMaxIdle(Session session){
+	private static boolean updateSessionMaxIdle(Session session, HttpSession httpSession){
 		long t = System.currentTimeMillis() - httpSession.getLastAccessedTime();
-		if (t < httpSession.getMaxInactiveInterval() * 1000) {
+		if (t < (httpSession.getMaxInactiveInterval() - 1) * 1000) {
 			session.setMaxIdleTimeout(1000 * httpSession.getMaxInactiveInterval() - t);
+			return true;
 		} else {
 			try {
-				if(httpSession != null) {
-					httpSession.invalidate();
-					System.out.println("invalidate ===========");
-				} else {
-					System.out.println("NULL");
-				}
+				if(session.isOpen()) session.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(t + " == " + session.getMaxIdleTimeout() / 1000);
+		return false;
 	}
 
-	private void sender(){
+	private void sender(HttpSession httpSession, Session ss) {
 		for (int i = 0; i < 20; i++) {
+			if(!ss.isOpen()) break;
 			Iterator<Session> iter = users.keySet().iterator();
 			while (iter.hasNext()) {
 				Session s = (Session) iter.next();
 				try {
 					CommandMessage cm = new CommandMessage("user " + i);
 					cm.setParameters("value", "test");
-					sendObject(s, cm);
+					sendObject(s, httpSession, cm);
 				} catch (Exception e) {
-					users.remove(s);
-					System.out.println("remove");
 					break;
 				}
 			}
@@ -85,46 +77,62 @@ public class Server {
 	}
 
 	@OnOpen
-	public void handlerOpen(Session session, EndpointConfig config) throws UnsupportedEncodingException, IOException, EncodeException {
-		httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-		System.out.println(httpSession.getAttribute("user").toString());
+	public void handlerOpen(Session session, EndpointConfig config) {
+		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+
+		Session oldSession = httpSessions.get(httpSession.getId());
+		if (oldSession != null) {
+			users.remove(oldSession);
+			try {
+				oldSession.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			httpSessions.remove(httpSession.getId());
+		}
+
 		session.setMaxIdleTimeout(1000 * httpSession.getMaxInactiveInterval());
-		userId = Integer.parseInt(httpSession.getAttribute("userId").toString());
+		int userId = Integer.parseInt(httpSession.getAttribute("userId").toString());
 		users.put(session, userId + "");
-		System.out.println("Socket connected at " + new Date(System.currentTimeMillis()));
+		httpSessions.put(httpSession.getId(), session);
+		System.out.println("Socket connected - " + session.getId());
 		if(httpSession != null){
 			CommandMessage cm = new CommandMessage("user");
 			cm.setParameters("value", httpSession.getAttribute("user").toString());
-			sendObject(session, cm);
-			sender();
+			sendObject(session, httpSession, cm);
+			new Thread(() -> {
+				sender(httpSession, session);
+			}).start();
 		}
 	}
 
 	@OnMessage
-	public void handlerMessage(final Session session, Message message) throws IOException, EncodeException {
-		updateSessionMaxIdle(session);
+	public void handlerMessage(final Session session, Message message, EndpointConfig config) {
+		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
 		System.out.println(message);
+		updateSessionMaxIdle(session, httpSession);
+		if (message.getType().equals(CommandMessage.class.getName())) {
+			CommandMessage cm = (CommandMessage) message;
+			switch (cm.getCommand().toLowerCase()) {
+			case "close":
+				System.out.println("CLOSE");
+				break;
+	
+			default:
+				break;
+			}
+		}
 	}
 
 	@OnClose
-	public void handlerClose(Session session) {
-		long id = System.currentTimeMillis();
-		System.out.println("Socket disconnected at " + new Date(id));
-	}
-
-	public static void clearUsers() {
-		Iterator<Session> iter = users.keySet().iterator();
-		while (iter.hasNext()) {
-			Session session = (Session) iter.next();
-			users.remove(session);
-		}
+	public void handlerClose(Session session, EndpointConfig config) {
+		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+		users.remove(session);
+		if (httpSession != null) httpSessions.remove(httpSession.getId());
+		System.out.println("Socket disconnected - " + session.getId());
 	}
 
 	public static Map<Session, String> getUsers() {
 		return users;
-	}
-
-	public static int getUserId() {
-		return userId;
 	}
 }

@@ -25,11 +25,11 @@ public class LoginServlet extends HttpServlet {
 		isLock = session.getAttribute("lock") != null ? Boolean.parseBoolean(session.getAttribute("lock").toString()) : false;
 		lastTryLogin = session.getAttribute("lastTryLogin") != null ? 
 				Long.parseLong(session.getAttribute("lastTryLogin").toString()) : System.currentTimeMillis();
-		if(isLock && System.currentTimeMillis() - lastTryLogin < 1 * 60 * 1000) {
+		if(isLock && System.currentTimeMillis() - lastTryLogin < FIVE_MINUTES * 1000) {
 			session.setAttribute("logCounter", 0);
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
-			int time = 60 - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
+			int time = FIVE_MINUTES - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
 			out.println("<h1>Lock</h1><a href='http://nik-askue-10:8080/HeatSupply/login.html'>Try again after " + time + " s</a>");
 			out.close();
 			return;
