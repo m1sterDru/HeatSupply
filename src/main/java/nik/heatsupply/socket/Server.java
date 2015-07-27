@@ -7,9 +7,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.websocket.CloseReason;
 import javax.websocket.EncodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
+import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -23,38 +25,9 @@ import nik.heatsupply.socket.messages.coders.MessageEncoder;
 @ServerEndpoint(value = "/socketServer", configurator = GetHttpSessionConfigurator.class,
 encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class})
 public class Server {
-	private static final Map<Session, String> users = Collections.synchronizedMap(new HashMap<>());
-	private static final Map<String, Session> httpSessions = Collections.synchronizedMap(new HashMap<>());
+	private static final Map<Session, User> users = Collections.synchronizedMap(new HashMap<>());
 
-	public Server() {
-		System.out.println("====================< new Server >====================");
-	}
-
-	public static void sendObject(Session session, HttpSession httpSession, Object message){
-		try {
-			if(updateSessionMaxIdle(session, httpSession) && session.isOpen())
-				session.getBasicRemote().sendObject(message);
-		} catch (IOException | EncodeException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static boolean updateSessionMaxIdle(Session session, HttpSession httpSession){
-		long t = System.currentTimeMillis() - httpSession.getLastAccessedTime();
-		if (t < (httpSession.getMaxInactiveInterval() - 1) * 1000) {
-			session.setMaxIdleTimeout(1000 * httpSession.getMaxInactiveInterval() - t);
-			return true;
-		} else {
-			try {
-				if(session.isOpen()) session.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	private void sender(HttpSession httpSession, Session ss) {
+	private void sender(Session ss) throws InterruptedException {
 		for (int i = 0; i < 20; i++) {
 			if(!ss.isOpen()) break;
 			Iterator<Session> iter = users.keySet().iterator();
@@ -63,45 +36,34 @@ public class Server {
 				try {
 					CommandMessage cm = new CommandMessage("user " + i);
 					cm.setParameters("value", "test");
-					sendObject(s, httpSession, cm);
+					s.getBasicRemote().sendObject(cm);
 				} catch (Exception e) {
 					break;
 				}
 			}
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			Thread.sleep(1000);
 		}
 	}
 
 	@OnOpen
-	public void handlerOpen(Session session, EndpointConfig config) {
+	public void handlerOpen(Session session, EndpointConfig config) throws IOException, EncodeException {
 		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-		Session oldSession = httpSessions.get(httpSession.getId());
-		if(oldSession != null) handlerClose(oldSession, config);
 
 		session.setMaxIdleTimeout(1000 * httpSession.getMaxInactiveInterval());
 		int userId = Integer.parseInt(httpSession.getAttribute("userId").toString());
-		users.put(session, userId + "");
-		httpSessions.put(httpSession.getId(), session);
+		users.put(session, new User(userId, httpSession));
 		System.out.println("Socket connected - " + session.getId());
 		if(httpSession != null){
 			CommandMessage cm = new CommandMessage("user");
 			cm.setParameters("value", httpSession.getAttribute("user").toString());
-			sendObject(session, httpSession, cm);
-			new Thread(() -> {
-				sender(httpSession, session);
-			}).start();
+			session.getBasicRemote().sendObject(cm);
+			new Thread(() -> {try {sender(session);} catch (Exception e) {e.printStackTrace();}}).start();
 		}
+		new AutoCloseSession(session).start();
 	}
 
 	@OnMessage
-	public void handlerMessage(final Session session, Message message, EndpointConfig config) {
-		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-		System.out.println(message);
-		updateSessionMaxIdle(session, httpSession);
+	public void handlerMessage(final Session session, Message message) {
 		if (message.getType().equals(CommandMessage.class.getName())) {
 			CommandMessage cm = (CommandMessage) message;
 			switch (cm.getCommand().toLowerCase()) {
@@ -116,14 +78,44 @@ public class Server {
 	}
 
 	@OnClose
-	public void handlerClose(Session session, EndpointConfig config) {
-		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+	public void handlerClose(Session session, CloseReason closeReason) {
 		users.remove(session);
-		if (httpSession != null) httpSessions.remove(httpSession.getId());
-		System.out.println("Socket disconnected - " + session.getId());
+		System.out.println("Socket disconnected - " + session.getId() + ".\nReason = " + closeReason.getReasonPhrase());
+	}
+	
+	@OnError
+	public void handlerError(Session session, Throwable thr) {
+		System.out.println("Error - " + thr.getMessage());
 	}
 
-	public static Map<Session, String> getUsers() {
+	public static Map<Session, User> getUsers() {
 		return users;
+	}
+	
+	private class AutoCloseSession extends Thread {
+		private HttpSession httpSession;
+		private Session session;
+
+		public AutoCloseSession(Session session) {
+			this.setName("AutoClose_Session");
+			this.session = session;
+			httpSession = users.get(session).getHttpSession();
+		}
+
+		@Override
+		public void run() {	
+			try {
+				boolean isWait = true;
+				while(isWait && httpSession != null && session.isOpen()) {
+					long sessionTime = System.currentTimeMillis() - httpSession.getLastAccessedTime();
+					isWait = sessionTime < (httpSession.getMaxInactiveInterval() - 1) * 1000;
+					Thread.sleep(1000);
+				}
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }

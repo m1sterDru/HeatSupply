@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final int FIVE_MINUTES = 10;
+	private static final int SESSION_TIMIOUT = 60;
 	private static final int MAX_LOGIN_TRY = 3;
 	private boolean isChecked = false;
 	private int logCounter = 0;
@@ -25,12 +25,16 @@ public class LoginServlet extends HttpServlet {
 		isLock = session.getAttribute("lock") != null ? Boolean.parseBoolean(session.getAttribute("lock").toString()) : false;
 		lastTryLogin = session.getAttribute("lastTryLogin") != null ? 
 				Long.parseLong(session.getAttribute("lastTryLogin").toString()) : System.currentTimeMillis();
-		if(isLock && System.currentTimeMillis() - lastTryLogin < FIVE_MINUTES * 1000) {
+		if(isLock && System.currentTimeMillis() - lastTryLogin < SESSION_TIMIOUT * 1000) {
 			session.setAttribute("logCounter", 0);
 			response.setContentType("text/html");
+			
+			String url = request.getRequestURL().toString();
+			url = url.substring(0, url.lastIndexOf("/"));
 			PrintWriter out = response.getWriter();
-			int time = FIVE_MINUTES - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
-			out.println("<h1>Lock</h1><a href='http://nik-askue-10:8080/HeatSupply/login.html'>Try again after " + time + " s</a>");
+			int time = SESSION_TIMIOUT - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
+			out.println("<h1 style='color:red;'>Lock</h1>");
+			out.println("<a href='" + url + "/login.html'>Try again after " + time + " s</a>");
 			out.close();
 			return;
 		} else {
@@ -47,9 +51,9 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("user", user);
 			session.setAttribute("userId", userId);
 			session.setAttribute("login", "true");
-			session.setMaxInactiveInterval(FIVE_MINUTES);
+			session.setMaxInactiveInterval(SESSION_TIMIOUT);
 //			Cookie userName = new Cookie("user", user);
-//			userName.setMaxAge(FIVE_MINUTES);
+//			userName.setMaxAge(SESSION_TIMIOUT);
 //			response.addCookie(userName);
 			response.sendRedirect("main.html");
 		} else {
