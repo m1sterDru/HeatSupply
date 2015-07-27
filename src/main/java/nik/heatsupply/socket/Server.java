@@ -111,7 +111,7 @@ public class Server {
 					isWait = sessionTime < (httpSession.getMaxInactiveInterval() - 1) * 1000;
 					Thread.sleep(1000);
 				}
-				session.close();
+				session.close(new CloseReason(CloseReason.CloseCodes.NO_STATUS_CODE, "HttpSession is closed"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
