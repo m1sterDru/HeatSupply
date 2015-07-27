@@ -47,6 +47,4 @@ heatSupply.initWebSocket = function(url){
 	ws.onopen = function(){
 		console.log('session open');
 	}
-
-	heatSupply.webSocket = ws;
 }

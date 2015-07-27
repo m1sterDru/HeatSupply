@@ -79,17 +79,8 @@ public class Server {
 	@OnOpen
 	public void handlerOpen(Session session, EndpointConfig config) {
 		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-
 		Session oldSession = httpSessions.get(httpSession.getId());
-		if (oldSession != null) {
-			users.remove(oldSession);
-			try {
-				oldSession.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			httpSessions.remove(httpSession.getId());
-		}
+		if(oldSession != null) handlerClose(oldSession, config);
 
 		session.setMaxIdleTimeout(1000 * httpSession.getMaxInactiveInterval());
 		int userId = Integer.parseInt(httpSession.getAttribute("userId").toString());
