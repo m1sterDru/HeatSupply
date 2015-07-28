@@ -80,7 +80,7 @@ public class Server {
 	@OnClose
 	public void handlerClose(Session session, CloseReason closeReason) {
 		users.remove(session);
-		System.out.println("Socket disconnected - " + session.getId() + ".\nReason = " + closeReason.getReasonPhrase());
+		System.out.println("Socket disconnected - " + session.getId() + ".\n\t Reason = " + closeReason.getReasonPhrase());
 	}
 	
 	@OnError
@@ -111,11 +111,11 @@ public class Server {
 					isWait = sessionTime < (httpSession.getMaxInactiveInterval() - 1) * 1000;
 					Thread.sleep(1000);
 				}
-				session.close(new CloseReason(CloseReason.CloseCodes.NO_STATUS_CODE, "HttpSession is closed"));
+				if(session.isOpen())
+					session.close(new CloseReason(CloseReason.CloseCodes.NO_STATUS_CODE, "HttpSession is closed"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 }
