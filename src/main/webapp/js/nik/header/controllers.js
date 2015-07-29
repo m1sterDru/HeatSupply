@@ -83,6 +83,7 @@ heatSupply.headerControllers.controller('headerController',
 
 			if(isLogin){
 				document.getElementById('currentUser').innerHTML = hsFactory.user;
+				$('#currentUserIcon').removeClass('isHide');
 				aLogin[0].href = 'LogoutServlet';
 				aLogin[0].getElementsByTagName('span')[0].id = '${kLogout}';
 				aLogin.removeClass('fa-sign-in');

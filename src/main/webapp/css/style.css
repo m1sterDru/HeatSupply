@@ -11,7 +11,6 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 .bold{font-weight: bold;}
 .comment{font-weight: bold; color: red; font-size: 0.7em;}
 .isHide{display: none;}
-.withIcon{padding-left: 5px;}
 .pointer{cursor: pointer;}
 .content{padding: 5px;}
 
@@ -49,10 +48,9 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 }
 
 #curLangButton{text-align: left; width: 150px;}
+#curLangButton img{margin: -3px 5px 0 0;}
 span .caret{float: right; margin-top: 7px;}
 div .pull-right{padding: 4px 10px 0 0;}
-#aLogin{font-size: 18px;}
-#aLogin > span{font-size: 14px;}
 
 .title {
 	font-size: 1.5em;
