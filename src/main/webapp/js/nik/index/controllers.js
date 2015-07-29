@@ -7,7 +7,7 @@ heatSupply.indexControllers
 				translate.run(function(t){t.translateAll();});
 			});
 		})
-	.controller('mainFormController', 
+	.controller('mainIndexController', 
 		function ($scope, $controller){
 			var headerController = $scope.$new();
 			$controller('headerController',{$scope : headerController});
@@ -35,4 +35,16 @@ heatSupply.indexControllers
 			$scope.nextCarousel = function(){
 				$('#carouselTest').carousel('next');
 			}
-		});
+		})
+	.controller('mainRoomController', function ($scope){
+		$scope.clickTab = function($event){
+			var curLi = $event.target.parentNode, ref = curLi.id;
+
+			$($event.target).tab('show');
+			if(ref){
+				ref = ref.slice(ref.indexOf('_') + 1);
+				$('#tabsExample .tab-pane.active').first().removeClass('active');
+				$('#' + ref).addClass('active');
+			}
+		}
+	});

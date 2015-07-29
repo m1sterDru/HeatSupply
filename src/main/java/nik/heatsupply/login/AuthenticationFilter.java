@@ -25,14 +25,15 @@ public class AuthenticationFilter extends AHttpFilter {
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, x-requested-with, sid, mycustom, smuser");
-		
+
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
 		response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		response.setDateHeader("Expires", 0); // Proxies.
 
-		if((session == null || !isLogin) && (uri.endsWith("main.html") || uri.endsWith("profile.html"))) {
-			response.sendRedirect("login.html");
-		} else {
+		if((session == null || !isLogin) && (uri.endsWith("main.html") || uri.endsWith("profileTemplate.html"))) {
+			response.sendRedirect("#/login");
+		} 
+		else {
 			chain.doFilter(request, response);
 		}
 	}

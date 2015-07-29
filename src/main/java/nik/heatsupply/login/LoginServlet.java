@@ -13,13 +13,14 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final int SESSION_TIMIOUT = 60;
+	private static final int SESSION_TIMIOUT = 30;
 	private static final int MAX_LOGIN_TRY = 3;
 	private boolean isChecked = false;
 	private int logCounter = 0;
 	private long lastTryLogin;
 	private boolean isLock;
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		isLock = session.getAttribute("lock") != null ? Boolean.parseBoolean(session.getAttribute("lock").toString()) : false;
@@ -69,7 +70,7 @@ public class LoginServlet extends HttpServlet {
 			if(logCounter == MAX_LOGIN_TRY){
 				session.setAttribute("lock", "true");
 			}
-			response.sendRedirect("login.html");
+			response.sendRedirect("#/login");
 		}
 		System.out.println(user + " === " + pwd);
 	}

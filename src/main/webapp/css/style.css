@@ -73,3 +73,8 @@ div .pull-right{padding: 4px 10px 0 0;}
 	height: 20px;
 	padding-top: 5px;
 }
+
+.loginDiv input {padding: 0 5px;}
+.loginDiv .bold {padding: 0 5px;}
+.loginDiv hr {margin: 10px 0;}
+a.button {text-decoration: none; color: initial;}

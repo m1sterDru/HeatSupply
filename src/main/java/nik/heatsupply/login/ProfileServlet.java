@@ -23,7 +23,7 @@ public class ProfileServlet extends HttpServlet {
 			System.out.println("New User = " + user + "; new E-mail = " + email);
 			response.sendRedirect("main.html");
 		} else {
-			response.sendRedirect("login.html");
+			response.sendRedirect("index.html");
 		}
 	}
 }

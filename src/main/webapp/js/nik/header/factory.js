@@ -41,6 +41,20 @@ angular.module('headerFactory', [])
 			});
 		};
 
+		function getUserProfileInfo(callback){
+			$http({
+				method: 'GET',
+				url: '/HeatSupply/ProfileInfoServlet',
+				cache: false
+			})
+			.success(function(data){
+				callback(data);
+			})
+			.error(function(data, status, headers, config){
+				console.log(status)
+			});
+		};
+
 		function HeatSupply(){
 			var hs = Object.create(null),
 					url = document.URL,
@@ -53,6 +67,7 @@ angular.module('headerFactory', [])
 				hs.isLogin = data.isLogin;
 			});
 			hs.getUserProfile = getUserProfile;
+			hs.getUserProfileInfo = getUserProfileInfo;
 			hs.url = url.slice(0, url.indexOf('HeatSupply') + 11);
 			return hs;
 		}

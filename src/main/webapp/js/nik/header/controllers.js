@@ -1,6 +1,31 @@
 var heatSupply = Object.create(null);
 heatSupply.headerControllers = angular.module('headerControllers', [
+	'ngRoute',
 	'headerFactory']);
+
+heatSupply.headerControllers.config(function ($routeProvider){
+	$routeProvider.
+		when('/profile', {
+			templateUrl: 'html/templates/profileTemplate.html',
+			controller: 'profileController'
+		}).
+		otherwise({
+			redirectTo: '/'
+		})
+}).
+run(function ($rootScope, $location, hsFactory){
+	$rootScope.$on("$routeChangeStart", function (event, next, current){
+		if($rootScope.loggedInUser == null){
+			if(next.templateUrl === "html/templates/profileTemplate.html"){
+				hsFactory.getUserProfileInfo(function(data){
+					if(data.user !== 'undefined' && data.user.length == 0){
+						location.href = hsFactory.url + 'main.html';
+					}
+				});
+			}
+		}
+	});
+});
 
 heatSupply.headerControllers.controller('headerController', 
 	function ($scope, translate, hsFactory){
@@ -64,4 +89,16 @@ heatSupply.headerControllers.controller('headerController',
 				aLogin.addClass('fa-sign-out');
 			}
 		}
-	});
+	})
+	.controller('profileController', 
+		function ($scope, translate, hsFactory){
+			translate.run(function(t){t.translateAll();});
+
+			hsFactory.getUserProfileInfo(function(data){
+				if(data.user !== 'undefined' && data.user.length > 0){
+					$('input[name="user"').val(
+						data.user.slice(0, data.user.indexOf('_')));
+					$('input[name="email"').val(data.email);
+				}
+			});
+		});
