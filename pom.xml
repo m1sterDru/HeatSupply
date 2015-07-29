@@ -10,10 +10,11 @@
 
 <!--mvn clean package war:inplace-->
 	<properties>
+		<!--glassfish.scope>compile</glassfish.scope-->
 		<scopeTomcat>compile</scopeTomcat>
 		<scopeGlassFish>test</scopeGlassFish>
-		<tomcat-dbcp.scope>${scopeGlassFish}</tomcat-dbcp.scope>
 		<postgresql.scope>provided</postgresql.scope>
+		<tomcat-dbcp.scope>${scopeTomcat}</tomcat-dbcp.scope>
 		<glassfish.scope>provided</glassfish.scope>
 		<tomcatDirectory>C:\apache-tomcat\webapps</tomcatDirectory>
 	</properties>

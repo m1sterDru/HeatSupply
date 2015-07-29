@@ -29,7 +29,6 @@ public class ProfileInfoServlet extends HttpServlet {
 				jsn.add("user", "admin_" + userId)
 				 .add("password", "password")
 				 .add("email", "qqq@gmail.com");
-//				out.println(jsn.build().toString());
 			} else {
 				jsn.add("user", "");
 			}
