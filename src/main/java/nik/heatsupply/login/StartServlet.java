@@ -17,23 +17,25 @@ public class StartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		response.setContentType("text/html");
-		response.setHeader("Cache-control", "no-cache, no-store");
-
-		JsonObjectBuilder jsn = Json.createObjectBuilder();
-		HttpSession session = request.getSession(false);
-
-		if(session != null && Boolean.parseBoolean(session.getAttribute("login").toString())) {
-			String user = session.getAttribute("user").toString();
-			String userId = session.getAttribute("userId").toString();
-			jsn.add("isLogin", "true")
-			   .add("user", user)
-			   .add("userId", userId);
-		} else {
-			jsn.add("isLogin", "false");
+		try(PrintWriter out = response.getWriter();){
+			response.setContentType("text/html");
+			response.setHeader("Cache-control", "no-cache, no-store");
+	
+			JsonObjectBuilder jsn = Json.createObjectBuilder();
+			HttpSession session = request.getSession(false);
+	
+			if(session != null && Boolean.parseBoolean(session.getAttribute("login").toString())) {
+				String user = session.getAttribute("user").toString();
+				String userId = session.getAttribute("userId").toString();
+				jsn.add("isLogin", "true")
+				   .add("user", user)
+				   .add("userId", userId);
+			} else {
+				jsn.add("isLogin", "false");
+			}
+			out.println(jsn.build().toString());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		out.println(jsn.build().toString());
-		out.close();
 	}
 }

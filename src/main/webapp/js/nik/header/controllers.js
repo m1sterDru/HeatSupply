@@ -6,23 +6,18 @@ heatSupply.headerControllers = angular.module('headerControllers', [
 heatSupply.headerControllers.config(function ($routeProvider){
 	$routeProvider.
 		when('/profile', {
-			templateUrl: 'html/templates/profileTemplate.html',
+			templateUrl: function(){
+				return 'html/templates/profileTemplate.html';
+			},
 			controller: 'profileController'
-		}).
-		otherwise({
-			redirectTo: '/'
 		})
-}).
-run(function ($rootScope, $location, hsFactory){
+})
+.run(function ($rootScope, $location, hsFactory){
 	$rootScope.$on("$routeChangeStart", function (event, next, current){
-		if($rootScope.loggedInUser == null){
-			if(next.templateUrl === "html/templates/profileTemplate.html"){
-				hsFactory.getUserProfileInfo(function(data){
-					if(data.user !== 'undefined' && data.user.length == 0){
-						location.href = hsFactory.url + 'main.html';
-					}
-				});
-			}
+		if($location.path() === '/profile'){
+			hsFactory.getUserProfile(function(data){
+				if(data.isLogin === 'false') location.href = hsFactory.url;
+			});
 		}
 	});
 });
@@ -96,10 +91,12 @@ heatSupply.headerControllers.controller('headerController',
 			translate.run(function(t){t.translateAll();});
 
 			hsFactory.getUserProfileInfo(function(data){
-				if(data.user !== 'undefined' && data.user.length > 0){
+				if(data.loginBad == undefined){
 					$('input[name="user"').val(
 						data.user.slice(0, data.user.indexOf('_')));
 					$('input[name="email"').val(data.email);
+				} else {
+					location.href = hsFactory.url + 'main.html';
 				}
 			});
 		});

@@ -2,6 +2,7 @@ package nik.heatsupply.login;
 
 import java.io.IOException;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter("/AuthenticationFilter")
+@WebFilter(filterName = "AuthenticationFilter", dispatcherTypes = {DispatcherType.FORWARD, DispatcherType.REQUEST}, urlPatterns = {"/*"})
 public class AuthenticationFilter extends AHttpFilter {
 	@Override
 	void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -29,9 +30,11 @@ public class AuthenticationFilter extends AHttpFilter {
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
 		response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		response.setDateHeader("Expires", 0); // Proxies.
-
+		
+		response.addHeader("redirect", "false");
 		if((session == null || !isLogin) && (uri.endsWith("main.html") || uri.endsWith("profileTemplate.html"))) {
-			response.sendRedirect("#/login");
+			response.setHeader("redirect", "true");
+			response.sendRedirect("/HeatSupply/#/login");
 		} 
 		else {
 			chain.doFilter(request, response);

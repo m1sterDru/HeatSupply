@@ -30,7 +30,7 @@ public class ProfileInfoServlet extends HttpServlet {
 				 .add("password", "password")
 				 .add("email", "qqq@gmail.com");
 			} else {
-				jsn.add("user", "");
+				jsn.add("loginBad", "");
 			}
 			out.println(jsn.build().toString());
 		} catch (Exception e) {

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final int SESSION_TIMIOUT = 30;
+	private static final int SESSION_TIMIOUT = 60;
 	private static final int MAX_LOGIN_TRY = 3;
 	private boolean isChecked = false;
 	private int logCounter = 0;
@@ -32,11 +32,13 @@ public class LoginServlet extends HttpServlet {
 			
 			String url = request.getRequestURL().toString();
 			url = url.substring(0, url.lastIndexOf("/"));
-			PrintWriter out = response.getWriter();
-			int time = SESSION_TIMIOUT - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
-			out.println("<h1 style='color:red;'>Lock</h1>");
-			out.println("<a href='" + url + "/login.html'>Try again after " + time + " s</a>");
-			out.close();
+			try(PrintWriter out = response.getWriter();){
+				int time = SESSION_TIMIOUT - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
+				out.println("<h1 style='color:red;'>Lock</h1>");
+				out.println("<a href='" + url + "/login.html'>Try again after " + time + " s</a>");
+			} catch(Exception e){
+				e.printStackTrace();
+			}
 			return;
 		} else {
 			session.setAttribute("lock", "false");
@@ -60,6 +62,8 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			session.setAttribute("login", "false");
 			session.setAttribute("lastTryLogin", System.currentTimeMillis());
+			String uri = request.getRequestURI();
+			System.out.println(uri);
 
 			if(session.getAttribute("logCounter") == null || session.isNew()) {
 				logCounter = 0;

@@ -28,7 +28,7 @@ public class Server {
 	private static final Map<Session, User> users = Collections.synchronizedMap(new HashMap<>());
 
 	private void sender(Session ss) throws InterruptedException {
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10; i++) {
 			if(!ss.isOpen()) break;
 			Iterator<Session> iter = users.keySet().iterator();
 			while (iter.hasNext()) {
