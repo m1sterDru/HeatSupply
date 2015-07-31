@@ -1,6 +1,8 @@
 package nik.heatsupply.rest;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 
 import javax.json.Json;
@@ -18,7 +20,7 @@ public class DataBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{comand}")
 	@GET
-	public static String getDataById(@PathParam("comand") String comand, 
+	public String getDataById(@PathParam("comand") String comand, 
 			@QueryParam("params") String params) throws ParseException {
 
 		String ret = "";
@@ -27,10 +29,15 @@ public class DataBase {
 			String path = "webapp";
 			System.out.println(path);
 			JsonArrayBuilder jsn = Json.createArrayBuilder();
-			File folder = new File(path);
-			System.out.println(folder.list());
-			for(String s : folder.list()){
-				System.out.println(s);
+//			File folder = new File(path);
+//			System.out.println(folder.list());
+//			for(String s : folder.list()){
+//				System.out.println(s);
+//			}
+			File folder = getFileFromURL("/lang");
+			File[] listOfFiles = folder.listFiles();
+			for (File file : listOfFiles) {
+				System.out.println(file.getName());
 			}
 //			File[] listOfFiles = folder.listFiles();
 //				for (int i = 0; i < listOfFiles.length; i++) {
@@ -56,5 +63,16 @@ public class DataBase {
 		default: ret = "Get: > Comand <" + comand + "> not found"; break;
 		}
 		return ret;
+	}
+	
+	private File getFileFromURL(String path) {
+		URL url = this.getClass().getClassLoader().getResource(path);
+		File file = null;
+		try {
+			file = new File(url.toURI());
+		} catch (URISyntaxException e) {
+			file = new File(url.getPath());
+		}
+		return file;
 	}
 }

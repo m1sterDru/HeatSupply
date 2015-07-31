@@ -2,7 +2,8 @@ heatSupply.mainControllers = angular.module('mainControllers', [
 	'headerFactory']);
 
 heatSupply.mainControllers
-	.controller('mainController', function ($scope, translate, hsFactory, $location){
+	.controller('mainController', 
+		function ($scope, translate, hsFactory, $location){
 		$scope.$on('$viewContentLoaded', function(){
 			translate.run(function(t){t.translateAll();});
 		});
@@ -39,4 +40,7 @@ heatSupply.mainControllers
 		}
 
 		heatSupply.initWebSocket(hsFactory.url);
+		translate.list(function(data){
+			console.log(data);
+		});
 	});

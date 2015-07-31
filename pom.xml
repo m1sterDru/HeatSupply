@@ -14,7 +14,7 @@
 		<scopeTomcat>compile</scopeTomcat>
 		<scopeGlassFish>test</scopeGlassFish>
 		<postgresql.scope>provided</postgresql.scope>
-		<tomcat-dbcp.scope>${scopeTomcat}</tomcat-dbcp.scope>
+		<tomcat-dbcp.scope>${scopeGlassFish}</tomcat-dbcp.scope>
 		<glassfish.scope>provided</glassfish.scope>
 		<tomcatDirectory>C:\apache-tomcat\webapps</tomcatDirectory>
 	</properties>
@@ -102,6 +102,11 @@
 				<configuration>
 					<warName>${artifactId}</warName>
 					<outputDirectory>${tomcatDirectory}</outputDirectory>
+					<webResources>
+						<resource>
+							<directory>src/main/resources</directory>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 		</plugins>

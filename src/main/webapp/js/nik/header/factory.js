@@ -15,7 +15,22 @@ angular.module('headerFactory', [])
 			});
 		};
 
+		function getListOfFiles(callback){
+			$http({
+				method: 'GET',
+				url: 'HeatSupply/dataServer/db/filesInDir?params=',
+				cache: true
+			})
+			.success(function(data){
+				callback(data);
+			})
+			.error(function(data, status, headers, config){
+				console.log(status)
+			});
+		};
+
 		return {
+			list: getListOfFiles,
 			run: function(callback){
 				getTranslate(function(func){
 					var translator = func().Translator();

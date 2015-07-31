@@ -1,6 +1,9 @@
 package nik.heatsupply.socket;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -106,15 +109,15 @@ public class Server {
 		public void run() {
 			try {
 				boolean isWait = true;
-				while(isWait && httpSession != null && session.isOpen()) {
+				while(isWait && httpSession != null && session.isOpen() && !httpSession.isNew()) {
 					long sessionTime = System.currentTimeMillis() - httpSession.getLastAccessedTime();
 					isWait = sessionTime < (httpSession.getMaxInactiveInterval() - 1) * 1000;
 					Thread.sleep(1000);
 				}
 				if(session.isOpen())
 					session.close(new CloseReason(CloseReason.CloseCodes.NO_STATUS_CODE, "HttpSession is closed"));
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (InterruptedException | IOException e) {
+				throw new Error(e);
 			}
 		}
 	}
