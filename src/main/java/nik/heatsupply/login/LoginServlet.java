@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final int SESSION_TIMIOUT = 60;
+	private static final int SESSION_TIMIOUT = 5 * 60;
 	private static final int MAX_LOGIN_TRY = 3;
 	private boolean isChecked = false;
 	private int logCounter = 0;

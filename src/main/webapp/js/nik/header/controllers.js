@@ -95,8 +95,6 @@ heatSupply.headerControllers.controller('headerController',
 					$('input[name="user"').val(
 						data.user.slice(0, data.user.indexOf('_')));
 					$('input[name="email"').val(data.email);
-				} else {
-					location.href = hsFactory.url + 'main.html';
 				}
 			});
 		});

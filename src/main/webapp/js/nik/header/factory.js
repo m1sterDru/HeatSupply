@@ -48,7 +48,7 @@ angular.module('headerFactory', [])
 				cache: false
 			})
 			.success(function(data){
-				callback(data);
+				if(callback != null) callback(data);
 			})
 			.error(function(data, status, headers, config){
 				console.log(status)

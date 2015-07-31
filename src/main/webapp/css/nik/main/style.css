@@ -6,5 +6,9 @@
 	min-height: 200px;
 	border: 2px solid #ddd;
 	border-radius: 0 0 5px 5px;
+	margin: 0;
 }
 #tabsExample > ul > li[class*="active"] > a{background-color: #ddd;}
+.tab-pane > ul > li.active > a{
+	color: red;
+}

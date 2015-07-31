@@ -1,5 +1,13 @@
 angular.module('mainFactory', [])
-	.factory('priorities', function ($http){
+	.factory('webSocket', function ($http){
+		function initSocket(callback){
+			$http({
+				method: 'GET',
+				url: '/HeatSupply/js/nik/webSocket.js',
+				cache: true
+			})
+			.success(callback);
+		};
 		function getPriorities(callback){
 			$http({
 				method: 'GET',
@@ -23,6 +31,7 @@ angular.module('mainFactory', [])
 			});
 		};
 		return {
+			init: initSocket,
 			list: getPriorities,
 			find: function(id, callback){
 				getPriorities(function(data){

@@ -32,8 +32,9 @@ public class AuthenticationFilter extends AHttpFilter {
 		response.setDateHeader("Expires", 0); // Proxies.
 		
 		response.addHeader("redirect", "false");
-		if((session == null || !isLogin) && (uri.endsWith("main.html") || uri.endsWith("profileTemplate.html"))) {
-			response.setHeader("redirect", "true");
+		if((session == null || !isLogin) && (uri.endsWith("main.html") || 
+			(uri.endsWith(".html") && uri.indexOf("/html/main/") > 0))) {
+
 			response.sendRedirect("/HeatSupply/#/login");
 		} 
 		else {

@@ -17,7 +17,7 @@ public class StartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try(PrintWriter out = response.getWriter();){
+		try(PrintWriter out = response.getWriter();) {
 			response.setContentType("text/html");
 			response.setHeader("Cache-control", "no-cache, no-store");
 	

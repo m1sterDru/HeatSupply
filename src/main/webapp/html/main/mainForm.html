@@ -1,26 +1,105 @@
 <div class="container content">
+	<div id="mainMenu" class="btn-group">
+		<button id="0" type="button" class="btn btn-default" style="height:34px;">
+			<a href="#/qqq" class="fa fa-home"></a>
+		</button>
+
+		<button id="1" type="button" class="btn btn-default">
+			<span id="${khmAbon}"></span>
+		</button>
+
+		<div class="btn-group" role="group">
+			<button id="2" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span id="${khmTovar}"></span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li id="12" ng-click="mTovarClick($event);">
+					<a href=""><span id="${ksTovarZpokaz}"></span></a>
+				</li>
+				<li><a href="#/menu1"><span id="${ksTovarPokaz}"></span></a></li>
+				<li><a href="#/menu2"><span id="${ksTovarSpozh}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksTovarNarah}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksTovarPrilady}"></span></a></li>
+			</ul>
+		</div>
+
+		<div class="btn-group" role="group">
+			<button id="3" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span id="${khmKoshtu}"></span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="#/qqq"><span id="${ksmKoshtuSplat}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksmKoshtuRahunku}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksmKoshtuPlatezhi}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksmKoshtuChart}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksmKoshtuTarif}"></span></a></li>
+			</ul>
+		</div>
+
+		<div class="btn-group" role="group">
+			<button id="4" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span id="${khmDocuvents}"></span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="#/qqq"><span id="${ksDocActZriv}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksDocActPorush}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksDocPilgu}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksDocUgoda}"></span></a></li>
+			</ul>
+		</div>
+
+		<div class="btn-group" role="group">
+			<button id="5" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span id="${khmDesc}"></span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="#/qqq"><span id="${ksAbonFaq}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksAbonDesc}"></span></a></li>
+				<li><a href="#/qqq"><span id="${ksAbonRules}"></span></a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div>
+		<div style="padding:15px;">
+			Another navigation variant (Only TOVAR navigation)
+		</div>
+	</div>
+
 	<div id="tabsExample" class="tabs">
 		<ul class="nav nav-tabs">
 			<li id="l_tab1" class="pointer active">
-				<a ng-click="clickTab($event);">Електроенергія</a>
+				<a ng-click="clickTab($event);" href="#/">
+					<span id="${khmTovar}"></span>
+				</a>
 			</li>
 			<li id="l_tab2" class="pointer">
-				<a ng-click="clickTab($event);">Теплоенергія</a>
+				<a ng-click="clickTab($event);" href="#/">
+					<span id="${khmKoshtu}"></span>
+				</a>
 			</li>
 		</ul>
 
-		<div class="tab-content">
-			<div class="tab-pane content active" id="tab1">
+		<div class="tab-content row">
+			<div class="tab-pane content col-sm-3 active" id="tab1">
 				<ul>
-					<li><a href="">Report 1</a></li>
-					<li><a href="">Report 1</a></li>
+					<li ng-click="setActive($event);">
+						<a href="#/menu1"><span id="${ksTovarPokaz}"></span></a>
+					</li>
+					<li ng-click="setActive($event);">
+						<a href="#/menu2"><span id="${ksTovarSpozh}"></span></a>
+					</li>
 					<li><a href="">Report 1</a></li>
 					<li><a href="">Report 1</a></li>
 					<li><a href="">Report 1</a></li>
 					<li><a href="">Report 1</a></li>
 				</ul>
 			</div>
-			<div class="tab-pane content" id="tab2">
+			<div class="tab-pane content col-sm-3" id="tab2">
 				<ul>
 					<li><a href="">Report 2</a></li>
 					<li><a href="">Report 2</a></li>
@@ -30,8 +109,8 @@
 					<li><a href="">Report 2</a></li>
 				</ul>
 			</div>
-			<div class="tab-pane content" id="tab3">messages...</div>
-			<div class="tab-pane content" id="tab4">settings...</div>
+
+			<div ng-view class="col-sm-9"></div>
 		</div>
 	</div>
 </div>

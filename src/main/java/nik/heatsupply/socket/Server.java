@@ -103,7 +103,7 @@ public class Server {
 		}
 
 		@Override
-		public void run() {	
+		public void run() {
 			try {
 				boolean isWait = true;
 				while(isWait && httpSession != null && session.isOpen()) {

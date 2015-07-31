@@ -17,15 +17,14 @@
 
 	<script src="./js/nik/header/factory.js"></script>
 	<script src="./js/nik/header/controllers.js"></script>
+	<script src="./js/nik/webSocket.js"></script>
 	<script src="./js/nik/main/factory.js"></script>
 	<script src="./js/nik/main/controllers.js"></script>
 	<script src="./js/nik/main/main.js"></script>
 </head>
 <body ng-controller="mainController">
 	<div ng-include src="'./html/header.html'"></div>
-
-	<div ng-view></div>
-
+	<div ng-include src="'./html/main/mainForm.html'"></div>
 	<div class="footer">
 		<p class="titleCenter"><span id="${kCopyRight}"></span></p>
 	</div>

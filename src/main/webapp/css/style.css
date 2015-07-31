@@ -46,6 +46,13 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 	padding-left: 9px;
 	width: 100%;
 }
+.header > .btn-group{padding: 2px 25px;}
+.btn-group button{background: linear-gradient(#D8D8D8, #d0d0d0);}
+.btn-group button{
+	background: transparent;
+	border-color: transparent;
+}
+.btn-group button:hover{border-color: blue;}
 
 #curLangButton{text-align: left; width: 150px;}
 #curLangButton img{margin: -3px 5px 0 0;}
@@ -59,6 +66,11 @@ div .pull-right{padding: 4px 10px 0 0;}
 }
 .titleCenter{
 	text-align: center
+}
+
+#mainMenu{
+	width: 100%;
+	background: linear-gradient(#D8D8D8, #d0d0d0);
 }
 
 .footer {

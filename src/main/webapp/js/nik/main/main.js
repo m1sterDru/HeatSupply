@@ -7,44 +7,27 @@ heatSupply.mainModule = angular.module('main', [
 
 heatSupply.mainModule.config(function ($routeProvider){
 	$routeProvider.
-		when('/', {
-			templateUrl: 'html/main/mainForm.html',
-			controller:'mainFormController'
+		when('/menu1', {
+			templateUrl: 'html/main/menu/12.html'
+		}).
+		when('/menu2', {
+			templateUrl: 'html/main/menu/13.html'
 		}).
 		otherwise({
 			redirectTo: '/'
 		})
+})
+.run(function ($rootScope, $location, hsFactory){
+	$rootScope.$on("$routeChangeStart", function (event, next, current){
+		if($location.path().indexOf('/menu') != -1){
+			hsFactory.getUserProfile(function(data){
+				if(data.isLogin === 'false') {
+					location.href = hsFactory.url;
+				} else {
+					// httpSession don't update last access time from first time
+					hsFactory.getUserProfileInfo(null);
+				}
+			});
+		}
+	});
 });
-
-heatSupply.initWebSocket = function(url){
-	var ws = new WebSocket('ws' + url.slice(4) + 'socketServer');
-	ws.onmessage = function (message){
-		var jsonData = JSON.parse(message.data);
-		console.log(jsonData)
-		// if(jsonData.type === 'CommandMessage') {
-		// 	if(jsonData.command === 'lang'){
-		// 		var param = jsonData.parameters[0],
-		// 				lang = param.value,
-		// 				btn = document.getElementById('curLangButton'),
-		// 				lis = btn.parentNode.getElementsByTagName('ul')[0]
-		// 									.getElementsByTagName('li');
-
-		// 		if(lang){
-		// 			var li = Array.prototype.filter.call(lis, function(li){
-		// 				return li.id === lang;
-		// 			})[0];
-		// 			li.click();
-		// 		}
-		// 	}
-		// }
-	}
-	ws.onerror = function (e){
-		console.log(e);
-	}
-	ws.onclose = function (){
-		console.log('session close ');
-	}
-	ws.onopen = function(){
-		console.log('session open');
-	}
-}
