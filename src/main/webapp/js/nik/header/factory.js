@@ -18,11 +18,17 @@ angular.module('headerFactory', [])
 		function getListOfFiles(callback){
 			$http({
 				method: 'GET',
-				url: 'HeatSupply/dataServer/db/filesInDir?params=',
+				url: '/HeatSupply/dataServer/db/filesInDir',
 				cache: true
 			})
 			.success(function(data){
-				callback(data);
+				var files = [];
+				data.forEach(function(file){
+					file = file.name;
+					file = file.slice(file.indexOf('_') + 1, file.indexOf('.'));
+					files.push(file);
+				});
+				callback(files);
 			})
 			.error(function(data, status, headers, config){
 				console.log(status)
@@ -30,7 +36,7 @@ angular.module('headerFactory', [])
 		};
 
 		return {
-			list: getListOfFiles,
+			langFiles: getListOfFiles,
 			run: function(callback){
 				getTranslate(function(func){
 					var translator = func().Translator();

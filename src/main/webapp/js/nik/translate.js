@@ -22,7 +22,7 @@ return {
 				}
 			}
 
-			if (filesLocale.indexOf(locale) < 0){
+			if(filesLocale.indexOf(locale) < 0){
 				messageResource.load(locale, function(){
 					translateAll();
 				});
@@ -32,16 +32,34 @@ return {
 			}
 		}
 
-		returnInstance.translateValueByKey = function(key){
-			var langId = localStorage.getItem('heatSupply').language, 
-					locale = 'Language_' + langId;
-			return messageResource.get(key, locale);
+		returnInstance.translateValueByKey = function(locale, key, callback){
+			locale = 'Language_' + locale;
+			if(filesLocale.indexOf(locale) < 0){
+				messageResource.load(locale, function(){
+					if(typeof key === 'string')
+						callback(messageResource.get(key, locale));
+					else {
+						key.forEach(function(k){
+							callback(messageResource.get(k, locale));
+						});
+					}
+				});
+				filesLocale += locale + ';';
+			} else {
+				if(typeof key === 'string')
+					callback(messageResource.get(key, locale));
+				else {
+					key.forEach(function(k){
+						callback(messageResource.get(k, locale));
+					});
+				}
+			}
 		}
 
 		returnInstance.translateAll = function(){
 			var btn = document.getElementById('curLangButton');
-			if(!btn) return;
-			var lang = btn.getAttribute('lang');
+			var lang = btn ? btn.getAttribute('lang') : null;
+			if(!lang) return;
 			translateARMByLocale('Language_' + lang);
 		}
 

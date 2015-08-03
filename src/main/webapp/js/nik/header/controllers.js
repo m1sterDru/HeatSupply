@@ -27,7 +27,29 @@ heatSupply.headerControllers.controller('headerController',
 		hsFactory.getUserProfile(function(){
 			checkIsLogin();
 		});
-		changeLocale(hsFactory.language);
+		translate.langFiles(function(files){
+			var locales = [], index = 1;
+			files.forEach(function(file){
+				var locale = Object.create(null);
+				locale.id = file;
+				locales.push(locale);
+				translate.run(function(t){
+					t.translateValueByKey(file, ['kFlagLocale','kLangName'],
+						function(value){
+							if(value.indexOf('http') != -1)
+								locale.img = value;
+							else{
+								locale.langName = value;
+								if((index++) == files.length){
+									$scope.$apply();
+									changeLocale(hsFactory.language);
+								}
+							}
+						});
+				});
+			});
+			$scope.locales = locales;
+		});
 
 		$scope.test123 = function(){
 			console.log('test123');
@@ -63,6 +85,7 @@ heatSupply.headerControllers.controller('headerController',
 				$scope.langId = langId;
 				$scope.langImg = img.src;
 				$scope.langDesc = span.innerHTML;
+				$scope.$apply();
 
 				hsFactory.language = langId;
 				translate.run(function(t){

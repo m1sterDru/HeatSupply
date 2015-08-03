@@ -26,30 +26,12 @@ public class DataBase {
 		String ret = "";
 		switch (comand.toLowerCase()) {
 		case "filesindir":
-			String path = "webapp";
-			System.out.println(path);
 			JsonArrayBuilder jsn = Json.createArrayBuilder();
-//			File folder = new File(path);
-//			System.out.println(folder.list());
-//			for(String s : folder.list()){
-//				System.out.println(s);
-//			}
 			File folder = getFileFromURL("/lang");
 			File[] listOfFiles = folder.listFiles();
 			for (File file : listOfFiles) {
-				System.out.println(file.getName());
+				jsn.add(Json.createObjectBuilder().add("name", file.getName()));
 			}
-//			File[] listOfFiles = folder.listFiles();
-//				for (int i = 0; i < listOfFiles.length; i++) {
-//					if (listOfFiles[i].isFile()) {
-//						System.out.println("File " + listOfFiles[i].getName());
-//						JsonObjectBuilder j = Json.createObjectBuilder();
-//						j.add("name", listOfFiles[i].getName());
-//						jsn.add(j);
-//					} else if (listOfFiles[i].isDirectory()) {
-//						System.out.println("Directory " + listOfFiles[i].getName());
-//					}
-//				}
 			ret = jsn.build().toString();
 			break;
 		case "currentuser":

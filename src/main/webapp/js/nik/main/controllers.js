@@ -5,7 +5,9 @@ heatSupply.mainControllers
 	.controller('mainController', 
 		function ($scope, translate, hsFactory, $location){
 		$scope.$on('$viewContentLoaded', function(){
-			translate.run(function(t){t.translateAll();});
+			translate.run(function(t){
+				t.translateAllByLocaleName(hsFactory.language);
+			});
 		});
 		$location.path('/');
 		$scope.clickTab = function($event){
@@ -40,7 +42,4 @@ heatSupply.mainControllers
 		}
 
 		heatSupply.initWebSocket(hsFactory.url);
-		translate.list(function(data){
-			console.log(data);
-		});
 	});

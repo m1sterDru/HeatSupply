@@ -45,17 +45,9 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li id="uk" class="menubutton" ng-click="click($event);">
-					<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/125px-Flag_of_Ukraine.svg.png" width="20">
-					<span>Українська</span>
-				</li>
-				<li id="ru" class="menubutton" ng-click="click($event);">
-					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/125px-Flag_of_Russia.svg.png" width="20">
-					<span>Русский</span>
-				</li>
-				<li id="en" class="menubutton" ng-click="click($event);">
-					<img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/125px-Flag_of_the_United_States.svg.png" width="20">
-					<span>English</span>
+				<li id="{{locale.id}}" ng-repeat="locale in locales" class="menubutton" ng-click="click($event);">
+					<img ng-src="{{locale.img}}" alt="flag" width="20">
+					<span>{{locale.langName}}</span>
 				</li>
 			</ul>
 		</span>
