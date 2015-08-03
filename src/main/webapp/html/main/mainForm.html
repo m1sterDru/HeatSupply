@@ -17,8 +17,12 @@
 				<li id="12" ng-click="mTovarClick($event);">
 					<a href=""><span id="${ksTovarZpokaz}"></span></a>
 				</li>
-				<li><a href="#/menu1"><span id="${ksTovarPokaz}"></span></a></li>
-				<li><a href="#/menu2"><span id="${ksTovarSpozh}"></span></a></li>
+				<li id="reportEmpty" ng-click="menuClick($event);">
+					<span id="${ksTovarPokaz}" class="spanmenu"></span>
+				</li>
+				<li id="reportTest" ng-click="menuClick($event);">
+					<span id="${ksTovarSpozh}" class="spanmenu"></span>
+				</li>
 				<li><a href="#/qqq"><span id="${ksTovarNarah}"></span></a></li>
 				<li><a href="#/qqq"><span id="${ksTovarPrilady}"></span></a></li>
 			</ul>
@@ -66,56 +70,8 @@
 
 	<div>
 		<div style="padding:15px;">
-			Another navigation variant (Only TOVAR navigation)
+			Toolbar with buttons like Save as xls, pdf, jpg...
 		</div>
-	</div>
-
-	<div id="tabsExample" class="tabs">
-		<ul class="nav nav-tabs">
-			<li id="l_tab1" class="pointer active">
-				<a ng-click="clickTab($event);" href="#/">
-					<span id="${khmTovar}"></span>
-				</a>
-			</li>
-			<li id="l_tab2" class="pointer">
-				<a ng-click="clickTab($event);" href="#/">
-					<span id="${khmKoshtu}"></span>
-				</a>
-			</li>
-		</ul>
-
-		<div class="tab-content row">
-			<div class="tab-pane content col-sm-3 active" id="tab1">
-				<ul>
-					<li ng-click="setActive($event);">
-						<a href="#/menu0"><span id="${ksTovarZpokaz}"></span></a>
-					</li>
-					<li ng-click="setActive($event);">
-						<a href="#/menu1"><span id="${ksTovarPokaz}"></span></a>
-					</li>
-					<li ng-click="setActive($event);">
-						<a href="#/menu2"><span id="${ksTovarSpozh}"></span></a>
-					</li>
-					<li ng-click="setActive($event);">
-						<a href="#/menu2"><span id="${ksTovarNarah}"></span></a>
-					</li>
-					<li ng-click="setActive($event);">
-						<a href="#/menu2"><span id="${ksTovarPrilady}"></span></a>
-					</li>
-				</ul>
-			</div>
-			<div class="tab-pane content col-sm-3" id="tab2">
-				<ul>
-					<li><a href="">Report 2</a></li>
-					<li><a href="">Report 2</a></li>
-					<li><a href="">Report 2</a></li>
-					<li><a href="">Report 2</a></li>
-					<li><a href="">Report 2</a></li>
-					<li><a href="">Report 2</a></li>
-				</ul>
-			</div>
-
-			<div ng-view class="col-sm-9"></div>
-		</div>
+		<div id="reportContent" style="background-color:silver; padding:15px;"></div>
 	</div>
 </div>

@@ -26,6 +26,12 @@ tr.spaceUnder > td {padding-bottom: 5px;}
 	cursor: pointer;
 }
 
+.spanmenu{padding: 0 20px}
+.spanmenu:hover{
+	color: blue;
+	cursor: pointer;
+}
+
 .header{
 	background-color: silver;
 	height: 40px;

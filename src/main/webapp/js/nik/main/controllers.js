@@ -10,6 +10,20 @@ heatSupply.mainControllers
 			});
 		});
 		$location.path('/');
+
+		$scope.menuClick = function($event){
+			var li = $event.target;
+			while(li.tagName !== 'LI') li = li.parentNode;
+			$('#reportContent').css({
+				'max-height': ($(window).height() - 180) + 'px',
+				'overflow': 'auto'
+			});
+			heatSupply.socket.send(JSON.stringify({
+				'type': 'CommandMessage', 'command': 'getReport',
+				'parameters': [{'reportName' : li.id}]
+			}));
+		}
+
 		$scope.clickTab = function($event){
 			var curLi = $event.target, ref;
 
@@ -43,3 +57,13 @@ heatSupply.mainControllers
 
 		heatSupply.initWebSocket(hsFactory.url);
 	});
+	// .controller('menu1Controller', function ($scope){
+	// 	console.log(document.height);
+	// 	$('#reportContent').css({
+	// 		'max-height': ($(window).height() - 240) + 'px',
+	// 		'overflow': 'auto'
+	// 	});
+	// 	heatSupply.socket.send(JSON.stringify({
+	// 			'type' : 'CommandMessage', 'command' : 'getMenu1'
+	// 		}));
+	// });

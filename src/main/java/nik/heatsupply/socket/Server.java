@@ -17,6 +17,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import nik.heatsupply.reports.Report;
 import nik.heatsupply.socket.messages.CommandMessage;
 import nik.heatsupply.socket.messages.Message;
 import nik.heatsupply.socket.messages.coders.MessageDecoder;
@@ -63,14 +64,18 @@ public class Server {
 	}
 
 	@OnMessage
-	public void handlerMessage(final Session session, Message message) {
-		if (message.getType().equals(CommandMessage.class.getName())) {
+	public void handlerMessage(final Session session, Message message) throws IOException, EncodeException {
+		if (message.getType().equals(CommandMessage.class.getSimpleName())) {
 			CommandMessage cm = (CommandMessage) message;
 			switch (cm.getCommand().toLowerCase()) {
-			case "close":
-				System.out.println("CLOSE");
+			case "getreport":
+				String reportName = cm.getParameters().get("reportName");
+				Report r = new Report();
+				String rep = r.create("d:/GIT/NiK/HeatSupply/src/main/resources/reports/", reportName + ".jrxml");
+				CommandMessage retMessage = new CommandMessage("reportHTML");
+				retMessage.setParameters("content", rep);
+				session.getBasicRemote().sendObject(retMessage);
 				break;
-	
 			default:
 				break;
 			}

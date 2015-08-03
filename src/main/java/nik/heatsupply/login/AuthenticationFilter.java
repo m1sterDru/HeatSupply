@@ -15,10 +15,6 @@ public class AuthenticationFilter extends AHttpFilter {
 	@Override
 	void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		String uri = request.getRequestURI();
-		if (uri.contains("/dataServer/")) {
-			chain.doFilter(request, response);
-			return;
-		}
 
 		HttpSession session = request.getSession(false);
 		boolean isLogin = session != null ? Boolean.parseBoolean(session.getAttribute("login").toString()) : false;

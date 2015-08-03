@@ -3,22 +3,19 @@ heatSupply.initWebSocket = function(url){
 	ws.onmessage = function (message){
 		var jsonData = JSON.parse(message.data);
 		console.log(jsonData)
-		// if(jsonData.type === 'CommandMessage') {
-		// 	if(jsonData.command === 'lang'){
-		// 		var param = jsonData.parameters[0],
-		// 				lang = param.value,
-		// 				btn = document.getElementById('curLangButton'),
-		// 				lis = btn.parentNode.getElementsByTagName('ul')[0]
-		// 									.getElementsByTagName('li');
-
-		// 		if(lang){
-		// 			var li = Array.prototype.filter.call(lis, function(li){
-		// 				return li.id === lang;
-		// 			})[0];
-		// 			li.click();
-		// 		}
-		// 	}
-		// }
+		if(jsonData.type === 'CommandMessage') {
+			if(jsonData.command === 'reportHTML'){
+				var param = jsonData.parameters[0],
+						reportContent = $('#reportContent');
+				if(reportContent) {
+					reportContent.html(param.content);
+					console.log($('#reportContent').width())
+					$('#reportContent table:first').css({
+						'zoom': ($('#reportContent').width() - 20)/595
+					});
+				}
+			}
+		}
 	}
 	ws.onerror = function (e){
 		console.log(e);
@@ -29,4 +26,5 @@ heatSupply.initWebSocket = function(url){
 	ws.onopen = function(){
 		console.log('session open');
 	}
+	heatSupply.socket = ws;
 }
