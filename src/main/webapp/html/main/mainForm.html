@@ -14,7 +14,7 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-				<li id="12" ng-click="mTovarClick($event);">
+				<li id="12">
 					<a href=""><span id="${ksTovarZpokaz}"></span></a>
 				</li>
 				<li id="reportEmpty" ng-click="menuClick($event);">
@@ -66,12 +66,14 @@
 				<li><a href="#/qqq"><span id="${ksAbonRules}"></span></a></li>
 			</ul>
 		</div>
+
+		<button type="button" class="btn btn-default" style="height:34px;">
+			<a href="" ng-click="saveAs($event);" id="sXLS" class="fa fa-file-excel-o" style="color:green; font-size:1.4em;"></a>
+		</button>
+		<button type="button" class="btn btn-default" style="height:34px;">
+			<a href="" ng-click="saveAs($event);" id="sPDF" class="fa fa-file-pdf-o" style="color:red; font-size:1.4em;"></a>
+		</button>
 	</div>
 
-	<div>
-		<div style="padding:15px;">
-			Toolbar with buttons like Save as xls, pdf, jpg...
-		</div>
-		<div id="reportContent" style="background-color:silver; padding:15px;"></div>
-	</div>
+	<div id="reportContent" style="background-color:silver; padding:15px;"></div>
 </div>

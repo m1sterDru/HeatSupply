@@ -15,55 +15,28 @@ heatSupply.mainControllers
 			var li = $event.target;
 			while(li.tagName !== 'LI') li = li.parentNode;
 			$('#reportContent').css({
-				'max-height': ($(window).height() - 180) + 'px',
+				'max-height': ($(window).height() - 115) + 'px',
 				'overflow': 'auto'
 			});
+			heatSupply.currentReport = li.id;
 			heatSupply.socket.send(JSON.stringify({
 				'type': 'CommandMessage', 'command': 'getReport',
 				'parameters': [{'reportName' : li.id}]
 			}));
 		}
 
-		$scope.clickTab = function($event){
-			var curLi = $event.target, ref;
-
-			while(curLi.tagName !== 'LI') curLi = curLi.parentNode;
-			ref = curLi.id
-			$($event.target).tab('show');
-			if(ref){
-				ref = ref.slice(ref.indexOf('_') + 1);
-				$('#tabsExample .tab-pane.active').first().removeClass('active');
-				$('#' + ref).addClass('active');
+		$scope.saveAs = function($event){
+			var btn = $event.target;
+			if(btn){
+				heatSupply.currentReportExt = btn.id.slice(1);
+				heatSupply.socket.send(JSON.stringify({
+					'type': 'CommandMessage', 'command': 'saveReport',
+					'parameters': [
+						{'reportName': heatSupply.currentReport},
+						{'ext': btn.id.slice(1)}]
+				}));
 			}
-			$('#tabsExample .tab-pane.active ul li').each(function(){
-				$(this).removeClass('active');
-			});
-		}
-
-		$scope.setActive = function($event){
-			var curLi = $event.target, ref;
-
-			while(curLi.tagName !== 'LI') curLi = curLi.parentNode;
-			$(curLi.parentNode).children('li').each(function(){
-				$(this).removeClass('active');
-			});
-			$(curLi).addClass('active');
-		}
-
-		$scope.mTovarClick = function($event){
-			var id = $event.target.parentNode.parentNode.id;
-			$scope.menu = $event.target.innerHTML;
 		}
 
 		heatSupply.initWebSocket(hsFactory.url);
 	});
-	// .controller('menu1Controller', function ($scope){
-	// 	console.log(document.height);
-	// 	$('#reportContent').css({
-	// 		'max-height': ($(window).height() - 240) + 'px',
-	// 		'overflow': 'auto'
-	// 	});
-	// 	heatSupply.socket.send(JSON.stringify({
-	// 			'type' : 'CommandMessage', 'command' : 'getMenu1'
-	// 		}));
-	// });

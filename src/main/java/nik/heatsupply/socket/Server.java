@@ -1,6 +1,11 @@
 package nik.heatsupply.socket;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,11 +75,34 @@ public class Server {
 			switch (cm.getCommand().toLowerCase()) {
 			case "getreport":
 				String reportName = cm.getParameters().get("reportName");
-				Report r = new Report();
-				String rep = r.create("d:/GIT/NiK/HeatSupply/src/main/resources/reports/", reportName + ".jrxml");
+				Report report = new Report();
+				report.setParameter("CHERRY_IMG", "images/cherry.jpg");
+				String reportContent = 
+						new String(report.create("/reports/", reportName + ".jrxml", "HTML").toByteArray(), StandardCharsets.UTF_8);
 				CommandMessage retMessage = new CommandMessage("reportHTML");
-				retMessage.setParameters("content", rep);
+				retMessage.setParameters("content", reportContent);
 				session.getBasicRemote().sendObject(retMessage);
+				break;
+			case "savereport":
+				reportName = cm.getParameters().get("reportName");
+				String ext = cm.getParameters().get("ext");
+				System.out.println(ext);
+				report = new Report();
+				report.setParameter("CHERRY_IMG", "images/cherry.jpg");
+				ByteArrayOutputStream reportContent4Save = report.create("/reports/", reportName + ".jrxml", ext);
+				File file = new File("d:/" + reportName + "." + ext);
+				try(FileOutputStream fos = new FileOutputStream(file);){
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+					fos.write(reportContent4Save.toByteArray());
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+
+				retMessage = new CommandMessage("report4Save");
+				retMessage.setParameters("name", reportName + "." + ext.toLowerCase());
+				session.getBasicRemote().sendBinary(ByteBuffer.wrap(reportContent4Save.toByteArray()));
 				break;
 			default:
 				break;
