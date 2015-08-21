@@ -125,6 +125,14 @@ public class Server {
 		return users;
 	}
 	
+	public static void clearUsers() {
+		Iterator<Session> iter = users.keySet().iterator();
+		while (iter.hasNext()) {
+			Session session = (Session) iter.next();
+			users.remove(session);
+		}
+	}
+	
 	private class AutoCloseSession extends Thread {
 		private HttpSession httpSession;
 		private Session session;

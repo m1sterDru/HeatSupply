@@ -2,6 +2,7 @@ package nik.heatsupply.login;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
@@ -12,11 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.socket.model.User;
+
 @WebServlet("/ProfileInfoServlet")
 public class ProfileInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		try (PrintWriter out = response.getWriter();) {
 			JsonObjectBuilder jsn = Json.createObjectBuilder();
 			HttpSession session = request.getSession(false);
@@ -26,9 +31,13 @@ public class ProfileInfoServlet extends HttpServlet {
 
 			if(session != null && Boolean.parseBoolean(session.getAttribute("login").toString())) {
 				String userId = session.getAttribute("userId").toString();
-				jsn.add("user", "admin_" + userId)
-				 .add("password", "password")
-				 .add("email", "qqq@gmail.com");
+				User u = ConnectDB.getUser(Integer.parseInt(userId));
+				if(u != null) {
+					jsn.add("login", notNull(u.getLogin()))
+					 .add("name", notNull(u.getName()))
+					 .add("email", notNull(u.getEmail()))
+					 .add("address", notNull(u.getAddress()));
+				}
 			} else {
 				jsn.add("loginBad", "");
 			}
@@ -37,5 +46,8 @@ public class ProfileInfoServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
+	
+	private String notNull(String s) {
+		if(s == null) return ""; else return s;
+	}
 }

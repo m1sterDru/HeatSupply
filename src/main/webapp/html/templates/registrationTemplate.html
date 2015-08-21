@@ -1,41 +1,20 @@
-<form action="RegisterServlet" method="post">
+<!--form action="RegisterServlet" method="post"-->
+<div class="pull-left content rightSpace"><form id="regDiv1" method="post">
 	<table>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${kRegNumber}"></span></td>
 			<td>
-				<input id="rfI_1" type="text" pattern="[0-9]*" name="number" placeholder="1234" class="canSelect" ng-focus="validInput($event);" autocomplete="off" required>
+				<input type="text" pattern="[0-9]*" name="accountNumber" placeholder="1234567890" class="canSelect" autocomplete="off" required>
 			</td>
 		</tr>
-		<tr id="rfC_1" class="spaceUnder comment isHide">
-			<td></td>
-			<td>
-				<span id="${kRegNumberComment}"></span>
-			</td>
-		</tr>
+
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${kRegLastSum}"></span></td>
 			<td>
-				<input id="rfI_2" type="text" pattern="[0-9.]*" name="lastSum" placeholder="0.00" class="canSelect" ng-focus="validInput($event);" autocomplete="off" required>
+				<input type="text" pattern="[0-9.]*" name="lastSum" placeholder="0.00" class="canSelect" autocomplete="off" required>
 			</td>
 		</tr>
-		<tr id="rfC_2" class="spaceUnder comment isHide">
-			<td></td>
-			<td>
-				<span id="${kLastSumComment}"></span>
-			</td>
-		</tr>
-		<tr class="spaceUnder">
-			<td class="bold"><span id="${kEmail}"></span></td>
-			<td>
-				<input id="rfI_3" type="email" name="email" placeholder="address@domain.xyz" class="canSelect" ng-focus="validInput($event);" autocomplete="off" required>
-			</td>
-		</tr>
-		<tr id="rfC_3" class="spaceUnder comment isHide">
-			<td></td>
-			<td>
-				<span id="${kLastSumComment}"></span>
-			</td>
-		</tr>
+
 		<tr class="spaceUnder">
 			<td></td>
 			<td>
@@ -46,10 +25,62 @@
 		<tr class="spaceUnder {{noPayClass}}">
 			<td class="bold"><span id="${kMeterNumber}"></span></td>
 			<td>
-				<input id="rfI_4" type="text" pattern="[0-9]*" name="lastSum" placeholder="123456789" class="canSelect" ng-focus="validInput($event);" autocomplete="off" ng-required="noPay">
+				<input type="text" pattern="[0-9]*" name="meterNumber" placeholder="123456789" class="canSelect" autocomplete="off" ng-required="noPay">
 			</td>
 		</tr>
 		<tr style="height:25px;"></tr>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${kPassword}"></span></td>
+			<td>
+				<input type="password" name="password" class="canSelect" autocomplete="off" required>
+			</td>
+		</tr>
 	</table>
-	<button type="submit"><span id="${kRegister}"></span></button>
-</form>
+	<button id="btnHide1" ng-click="submitRegistration();" class="isHide"></button>
+	</form>
+	<button ng-click="submitRegistration(true);"><span id="${kRegister}"></span></button>
+	<span id="error" class="comment"></span>
+</div>
+
+<div class="content"><form id="regDiv2" method="post">
+	<table>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${keyLogin}"></span></td>
+			<td>
+				<input type="text" name="login" placeholder="login" class="canSelect" autocomplete="off" required>
+			</td>
+		</tr>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${keyName}"></span></td>
+			<td>
+				<input type="text" name="name" placeholder="middle name" class="canSelect" autocomplete="off" required>
+			</td>
+		</tr>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${keyMiddleName}"></span></td>
+			<td>
+				<input type="text" name="middleName" placeholder="surname" class="canSelect" autocomplete="off" required>
+			</td>
+		</tr>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${keySurName}"></span></td>
+			<td>
+				<input type="text" name="surName" placeholder="surname" class="canSelect" autocomplete="off" required>
+			</td>
+		</tr>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${keyPhone}"></span></td>
+			<td>
+				<input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="canSelect" autocomplete="off">
+			</td>
+		</tr>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${kEmail}"></span></td>
+			<td>
+				<input type="email" name="email" placeholder="login@domain.com" class="canSelect" autocomplete="off" required>
+			</td>
+		</tr>
+	</table>
+	<button id="btnHide2" ng-click="submitRegistration();" class="isHide"></button>
+	</form>
+</div>

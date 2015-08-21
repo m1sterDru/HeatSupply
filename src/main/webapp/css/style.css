@@ -8,11 +8,13 @@ body {
 }
 .glyphicon, .fa {color: rgb(25, 50, 117);}
 tr.spaceUnder > td {padding-bottom: 5px;}
+tr.spaceUnder > td {padding-left: 5px;}
 .bold{font-weight: bold;}
-.comment{font-weight: bold; color: red; font-size: 0.7em;}
+.comment{font-weight: bold; color: red; font-size: 0.8em;}
 .isHide{display: none;}
 .pointer{cursor: pointer;}
 .content{padding: 5px;}
+.rightSpace{padding-right: 50px}
 
 .menubutton{
 	background: linear-gradient(#D8D8D8, #d0d0d0);
@@ -94,3 +96,8 @@ div .pull-right{padding: 4px 10px 0 0;}
 .loginDiv .bold {padding: 0 5px;}
 .loginDiv hr {margin: 10px 0;}
 a.button {text-decoration: none; color: initial;}
+
+#profileInfo input{width: 300px; padding-left: 10px;}
+
+#regDiv1 tr > td:first-child {text-align: right;}
+#regDiv2 tr > td:first-child {text-align: right;}

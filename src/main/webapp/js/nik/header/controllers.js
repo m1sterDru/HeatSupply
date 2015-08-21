@@ -85,7 +85,7 @@ heatSupply.headerControllers.controller('headerController',
 				$scope.langId = langId;
 				$scope.langImg = img.src;
 				$scope.langDesc = span.innerHTML;
-				$scope.$apply();
+				// $scope.$apply();
 
 				hsFactory.language = langId;
 				translate.run(function(t){
@@ -115,9 +115,29 @@ heatSupply.headerControllers.controller('headerController',
 
 			hsFactory.getUserProfileInfo(function(data){
 				if(data.loginBad == undefined){
-					$('input[name="user"').val(
-						data.user.slice(0, data.user.indexOf('_')));
+					$('input[name="login"').val(data.login);
+					$('input[name="name"').val(data.name);
 					$('input[name="email"').val(data.email);
+					$('input[name="address"').val(data.address);
 				}
 			});
+
+			$scope.submitProfile = function(){
+				var isValid = true;
+				$('#profileInfo form input').each(function(){
+					if(!this.checkValidity()){
+						$('#btnHide').click();
+						isValid = false;
+					}
+				});
+				if(isValid){
+					console.log('VALID');
+					// hsFactory.updateProfile(function(data){
+					// 	if(data.messageId != 3)
+					// 		$('#error').html(data.message);
+					// 	else
+					// 		window.location.href = hsFactory.url + 'main.html';
+					// });
+				}
+			}
 		});

@@ -10,12 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.socket.model.User;
+
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final int SESSION_TIMIOUT = 5 * 60;
 	private static final int MAX_LOGIN_TRY = 3;
-	private boolean isChecked = false;
+
 	private int logCounter = 0;
 	private long lastTryLogin;
 	private boolean isLock;
@@ -47,14 +50,7 @@ public class LoginServlet extends HttpServlet {
 		String user = request.getParameter("user");
 		String pwd = request.getParameter("pwd");
 
-		isChecked = user.equals("admin") && pwd.equals("qwe");
-		String userId = isChecked ? "12" : "0";
-
-		if(isChecked){
-			session.setAttribute("user", user);
-			session.setAttribute("userId", userId);
-			session.setAttribute("login", "true");
-			session.setMaxInactiveInterval(SESSION_TIMIOUT);
+		if(isChecked(user, pwd, session)){
 //			Cookie userName = new Cookie("user", user);
 //			userName.setMaxAge(SESSION_TIMIOUT);
 //			response.addCookie(userName);
@@ -76,6 +72,18 @@ public class LoginServlet extends HttpServlet {
 			}
 			response.sendRedirect("#/login");
 		}
-		System.out.println(user + " === " + pwd);
+	}
+	
+	private boolean isChecked(String login, String password, HttpSession session) {
+		User u = ConnectDB.getUser(login);
+		if(u == null) return false;
+		if(u.getPassword().equals(password)) {
+			session.setAttribute("user", login);
+			session.setAttribute("userId", u.getId());
+			session.setAttribute("login", "true");
+			session.setMaxInactiveInterval(SESSION_TIMIOUT);
+			return true;
+		}
+		return false;
 	}
 }
