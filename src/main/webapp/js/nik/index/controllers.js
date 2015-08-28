@@ -44,55 +44,100 @@ heatSupply.indexControllers
 		}
 	})
 	.controller('registrationController', function ($scope, $http, hsFactory){
-		$scope.submitRegistration = function (isButton){
+		$scope.noPay = true;
+		$scope.owners = [];
+
+		$scope.submitRegistration = function(isButton){
 			var isValid = true;
 			$('#error').html('');
 			$('#regDiv1 input').each(function(){
 				if(!this.checkValidity()){
 					isValid = false;
 					if(isButton){
-						$('#regDiv1 input:first').focus();
-						$('#error').html('Set correct form data');
+						setTimeout(function(){
+							$('#btnHide1').click()
+							$('#error').html('Set correct form\'s data');
+						},100);
 					}
 					return;
 				}
 			});
+
+			if(isValid){
+				var step = $('.listContent').hasClass('isHide') ? 1 : 2;
+				registration(step, function(data){
+					console.log(data);
+					if(data.messageId == 6){
+						$('#regDiv1').addClass('isHide');
+						$('#regDiv2').removeClass('isHide');
+					} else {
+						if(data.array){
+							var listOwners = [];
+							data.array.forEach(function(meter){
+								var id = meter.slice(0, meter.indexOf('_')),
+										name = meter.slice(meter.indexOf('_') + 1),
+										listObject = Object.create(null);
+								listObject.id = id;
+								listObject.idMeter = name.slice(0, name.indexOf('_'));
+								listObject.name = name.slice(name.indexOf('_') + 1);
+								listOwners.push(listObject);
+							});
+							$scope.owners = listOwners;
+							$('.listContent').removeClass('isHide');
+
+						} else {
+							$('#error').html(data.message);
+						}
+					}
+				});
+			}
+		}
+
+		$scope.submitRegistrationLast = function(isButton){
+			var isValid = true;
+			$('#error').html('');
 			if(isValid){
 				$('#regDiv2 input:first').focus();
 				$('#regDiv2 input').each(function(){
 					if(!this.checkValidity()){
 						isValid = false;
 						if(isButton){
-							$('#regDiv2 input:first').focus();
-							$('#error').html('Set correct form data');
+							setTimeout(function(){
+								$('#btnHide2').click()
+								$('#error').html('Set correct form\'s data');
+							},100);
 						}
 						return;
 					}
 				});
 			}
 			if(isValid){
-				console.log('VALID');
-				registration(function(data){
-					console.log(data);
+				registration(3, function(data){
+					if(data.messageId != 3)
+						$('#error').html(data.message);
+					else
+						window.location.href = hsFactory.url + 'main.html';
 				});
-				// hsFactory.updateProfile(function(data){
-				// 	if(data.messageId != 3)
-				// 		$('#error').html(data.message);
-				// 	else
-				// 		window.location.href = hsFactory.url + 'main.html';
-				// });
 			}
 		}
 
-		function registration(callback){
+		function registration(step, callback){
+			var ownersId = '';
+			$scope.owners.forEach(function(owner){
+				if(owner.selected){
+					ownersId += owner.id + ';';
+				}
+			});
 			$http({
 				method: 'POST',
 				url: '/HeatSupply/RegisterServlet',
 				params: {
-					accountNumber: $('#regDiv1 input[name="accountNumber"').val(),
-					lastSum: $('#regDiv1 input[name="lastSum"').val(),
-					meterNumber: $('#regDiv1 input[name="meterNumber"').val(),
-					password: $('#regDiv1 input[name="password"').val(),
+					step: step,
+					noPay: $scope.noPay,
+					owners: ownersId,
+					owneraccount: $('#regDiv1 input[name="owneraccount"').val(),
+					lastcash: $('#regDiv1 input[name="lastcash"').val(),
+					password: $('#regDiv2 input[name="password"').val(),
 					login: $('#regDiv2 input[name="login"').val(),
 					name: $('#regDiv2 input[name="name"').val(),
 					middleName: $('#regDiv2 input[name="middleName"').val(),
@@ -109,5 +154,5 @@ heatSupply.indexControllers
 			.error(function(data, status, headers, config){
 				console.log(status)
 			});
-		};
+		}
 	});

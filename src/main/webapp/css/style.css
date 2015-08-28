@@ -7,13 +7,39 @@ body {
 	background-color: rgb(123, 180, 199);
 }
 .glyphicon, .fa {color: rgb(25, 50, 117);}
-tr.spaceUnder > td {padding-bottom: 5px;}
+tr.spaceUnder > td {padding: 5px 0;}
 tr.spaceUnder > td {padding-left: 5px;}
 .bold{font-weight: bold;}
 .comment{font-weight: bold; color: red; font-size: 0.8em;}
+.error{color: red;}
 .isHide{display: none;}
 .pointer{cursor: pointer;}
-.content{padding: 5px;}
+.content{
+	padding: 5px;
+	background-color: white;
+}
+.styleContent{
+	border-color: gray;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+	box-shadow: 0 0 25px rgba(0,0,0,0.7);
+}
+.middleContent{
+	max-height: calc(100% - 100px);
+	overflow-y: auto;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	height: calc(100% - 100px);
+}
+.listContent{
+	max-height: 107px;
+	overflow: auto;
+	margin: 20px;
+	border: gray;
+	border-style: double;
+	background-color: white;
+}
 .rightSpace{padding-right: 50px}
 
 .menubutton{
@@ -35,7 +61,7 @@ tr.spaceUnder > td {padding-left: 5px;}
 }
 
 .header{
-	background-color: silver;
+	background-color: #ddd;
 	height: 40px;
 }
 .header .pull-left img{height: 35px;}
@@ -72,9 +98,8 @@ div .pull-right{padding: 4px 10px 0 0;}
 	font-weight: bold;
 	padding: 10px;
 }
-.titleCenter{
-	text-align: center
-}
+.titleCenter{text-align: center;}
+#mainContent{padding: 0 15px;}
 
 #mainMenu{
 	width: 100%;
@@ -82,22 +107,44 @@ div .pull-right{padding: 4px 10px 0 0;}
 }
 
 .footer {
-	position: absolute;
 	bottom: 0;
-	width: 100%;
-	background-color: silver;
+	background-color: #ddd;
 }
 .footer p{
 	height: 20px;
 	padding-top: 5px;
 }
 
+.loginDiv{
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	box-shadow: 0 0 10px rgba(0,0,0,0.3);
+	padding: 10px;
+	min-height: 150px;
+}
+.loginDiv table{width: 100%}
+.loginDiv form > div{width: 60%;float: right!important;}
+.loginDiv form > div > button:first-child{
+	margin-right: 20px;
+	margin-bottom: 7px;
+}
+.loginDiv table td{text-align: right;}
+.loginDiv table tr td:first-child{width: 40%;}
 .loginDiv input {padding: 0 5px;}
 .loginDiv .bold {padding: 0 5px;}
-.loginDiv hr {margin: 10px 0;}
+.loginDiv hr {margin: 10px 0;border-top: 1px solid #337ab7;}
 a.button {text-decoration: none; color: initial;}
 
-#profileInfo input{width: 300px; padding-left: 10px;}
+#profileInfo form input{width: 300px; padding-left: 10px;}
 
-#regDiv1 tr > td:first-child {text-align: right;}
-#regDiv2 tr > td:first-child {text-align: right;}
+#regDiv1{box-shadow: 0 0 10px rgba(0,0,0,0.3);}
+#regDiv1 table{width: 100%}
+#regDiv1 form tr > td:first-child {text-align: right;width:60%;}
+#regDiv1 div:last-child{width: 40%;float: right!important;}
+#regDiv1 div:last-child button{
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+#regDiv1 form input{width: 100px; padding-left: 5px;}
+#regDiv2 form tr > td:first-child {text-align: right;}

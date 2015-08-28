@@ -1,11 +1,10 @@
 <br>
 <div id="profileInfo" class="container content">
+	<div>
+		<span id="${kSettings}"></span>
+	</div>
 	<form method="post">
 		<table>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${keyLogin}"></span></td>
-				<td><input type="text" name="login" class="canSelect" required></td>
-			</tr>
 			<tr class="spaceUnder">
 				<td class="bold"><span id="${keyName}"></span></td>
 				<td><input type="text" name="name" class="canSelect" required></td>
@@ -35,15 +34,38 @@
 			</tr>
 			<tr class="spaceUnder">
 				<td class="bold"><span id="${kPassword1}"></span></td>
-				<td><input type="password" name="pwd1", class="canSelect" required></td>
+				<td><input type="password" name="pwd1", class="canSelect"></td>
 			</tr>
 			<tr class="spaceUnder">
 				<td class="bold"><span id="${kPassword2}"></span></td>
-				<td><input type="password" name="pwd2", class="canSelect" required></td>
+				<td><input type="password" name="pwd2", class="canSelect"></td>
 			</tr>
 		</table>
 		<button id="btnHide" ng-click="submitProfile();" class="isHide"></button>
 	</form>
-	<button ng-click="submitProfile();"><span id="${kApply}"></span></button>
-	<span id="error" class="comment"></span>
+	<div class="listContent isHide">
+		<table>
+			<tbody>
+				<tr ng-repeat="owner in owners | orderBy:'name'" class="spaceUnder">
+					<td class="isHide">{{owner.id}}</td>
+					<td>
+						<input type="checkbox" ng-model="owner.selected" ng-checked="owner.selected">
+						<span style="padding-left:5px;">{{owner.idMeter}}</span><br/>
+					</td>
+					<td>{{owner.name}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="pull-left">
+		<button ng-click="submitProfile(true);">
+			<span id="${kApply}"></span>
+		</button>
+		<span id="error" class="comment"></span>
+	</div>
+	<div class="pull-right">
+		<button ng-click="removeProfile();">
+			<span id="${kRemoveAccount}" class="error"></span>
+		</button>
+	</div>
 </div>

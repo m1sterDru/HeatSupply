@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import nik.heatsupply.common.Encryptor;
 import nik.heatsupply.db.ConnectDB;
-import nik.heatsupply.socket.model.User;
+import nik.heatsupply.socket.model.UserWeb;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -75,9 +76,10 @@ public class LoginServlet extends HttpServlet {
 	}
 	
 	private boolean isChecked(String login, String password, HttpSession session) {
-		User u = ConnectDB.getUser(login);
+		UserWeb u = ConnectDB.getUser(login);
 		if(u == null) return false;
-		if(u.getPassword().equals(password)) {
+		Encryptor encr = new Encryptor();
+		if(encr.decrypt(u.getPassword()).trim().equals(password)) {
 			session.setAttribute("user", login);
 			session.setAttribute("userId", u.getId());
 			session.setAttribute("login", "true");

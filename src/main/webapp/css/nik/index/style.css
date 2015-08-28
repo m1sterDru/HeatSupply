@@ -1,6 +1,7 @@
 #carouselTestWrapper{
 	position: absolute;
-	bottom: 35px
+	bottom: 70px;
+	padding-left: 70px;
 }
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img{
@@ -8,10 +9,11 @@
 		margin: auto;
 }
 .carousel-inner{height: 120px;}
-.carousel{background-color: #ddd;}
-.carousel-caption{top: 75px; color: red;}
+.carousel-caption{top: 75px; color: blue;}
 .caption{bottom: 0px;}
 .carousel-indicators{top: 80px;}
+.carousel-indicators > li,
+.carousel-indicators .active{background-color: blue;}
 
 #tabsExample{
 	background-color: #eee;

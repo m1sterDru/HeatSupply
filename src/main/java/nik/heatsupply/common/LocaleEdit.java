@@ -14,10 +14,10 @@ public class LocaleEdit {
 	private static final String ua = "Language_uk.properties";
 	
 	public static void main(String[] args) {
-		String key = "keyPhone";
-		String valueEN = "Phone";
-		String valueRU = "Телефон";
-		String valueUA = "Телефон";
+		String key = "kSettings";
+		String valueEN = "Settings";
+		String valueRU = "Настройки";
+		String valueUA = "Налаштування";
 		
 		key = "\n" + key;
 		append2File(en, key + "=" + valueEN);

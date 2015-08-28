@@ -40,12 +40,6 @@ heatSupply.indexModule
 				if(currentUser) currentUser.parent().addClass('isHide');
 				translate.run(function(t){t.translateAll();});
 
-				scope.noPayClass = 'isHide';
-
-				scope.changeNoPay = function(){
-					scope.noPayClass = scope.noPay ? '' : 'isHide';
-				};
-
 				scope.validInput = function($event){
 					var ind = $event.target.id.slice($event.target.id.indexOf('_') + 1),
 							count = document.getElementsByTagName('form')[0]
