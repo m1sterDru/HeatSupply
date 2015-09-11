@@ -24,34 +24,31 @@ heatSupply.indexModule.config(function ($routeProvider){
 heatSupply.indexModule
 	.directive('loginForm', function (translate){
 		return {
-			templateUrl:"./html/templates/loginTemplate.html",
+			templateUrl:'./html/directives/loginTemplate.html',
 			link: function(scope, elm, attrs, ctrl){
-				var currentUser = $('#currentUser');
-				if(currentUser) currentUser.parent().addClass('isHide');
-				translate.run(function(t){t.translateAll();});
+				var ngElement = $('div[data-template="langDirective"]'), scope;
+					if(ngElement.length > 0){
+						scope = angular.element(ngElement).scope();
+						scope.login_userSpanClass = 'isHide';
+					}
+
+				translate.run(function(t){
+					t.translateAll();
+				});
 			}
 		}
 	})
 	.directive('registrationForm', function (translate){
 		return {
-			templateUrl:"./html/templates/registrationTemplate.html",
+			templateUrl:'./html/directives/registrationTemplate.html',
 			link: function(scope, elm, attrs, ctrl){
-				var currentUser = $('#currentUser');
-				if(currentUser) currentUser.parent().addClass('isHide');
-				translate.run(function(t){t.translateAll();});
-
-				scope.validInput = function($event){
-					var ind = $event.target.id.slice($event.target.id.indexOf('_') + 1),
-							count = document.getElementsByTagName('form')[0]
-								.getElementsByTagName('input').length - 1;
-
-					for(var i = 1; i < count; i++){
-						$(document.getElementById('rfC_' + i)).removeClass('isHide');
-						if(document.getElementById('rfI_' + i).value.length > 0 || i>=ind){
-							$(document.getElementById('rfC_' + i)).addClass('isHide');
-						}
+				var ngElement = $('div[data-template="langDirective"]'), scope;
+					if(ngElement.length > 0){
+						scope = angular.element(ngElement).scope();
+						scope.login_userSpanClass = 'isHide';
 					}
-				}
+
+				translate.run(function(t){t.translateAll();});
 			}
 		}
 	});

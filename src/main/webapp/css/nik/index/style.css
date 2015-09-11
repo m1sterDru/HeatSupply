@@ -1,7 +1,5 @@
 #carouselTestWrapper{
-	position: absolute;
 	bottom: 70px;
-	padding-left: 70px;
 }
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img{
@@ -16,8 +14,8 @@
 .carousel-indicators .active{background-color: blue;}
 
 #tabsExample{
-	background-color: #eee;
 	border-radius: 5px;
+	height: calc(100% - 120px);
 }
 #tabsExample .tab-content{
 	min-height: 200px;

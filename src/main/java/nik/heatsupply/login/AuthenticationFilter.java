@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import nik.heatsupply.socket.Server;
+
 @WebFilter(filterName = "AuthenticationFilter", dispatcherTypes = {DispatcherType.FORWARD, DispatcherType.REQUEST}, urlPatterns = {"/*"})
 public class AuthenticationFilter extends AHttpFilter {
 	@Override
@@ -17,7 +19,6 @@ public class AuthenticationFilter extends AHttpFilter {
 		String uri = request.getRequestURI();
 
 		HttpSession session = request.getSession(false);
-		boolean isLogin = session != null ? Boolean.parseBoolean(session.getAttribute("login").toString()) : false;
 
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -28,12 +29,11 @@ public class AuthenticationFilter extends AHttpFilter {
 		response.setDateHeader("Expires", 0); // Proxies.
 		
 		response.addHeader("redirect", "false");
-		if((session == null || !isLogin) && (uri.endsWith("main.html") || 
+		if((session == null || !Server.isValid(session)) && (uri.endsWith("main.html") || 
 			(uri.endsWith(".html") && uri.indexOf("/html/main/") > 0))) {
 
 			response.sendRedirect("/HeatSupply/#/login");
-		} 
-		else {
+		} else {
 			chain.doFilter(request, response);
 		}
 	}

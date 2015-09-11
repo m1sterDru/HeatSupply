@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html ng-app="main">
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta charset="UTF-8">
 	<title>HeatSupply</title>
 
@@ -17,6 +19,7 @@
 
 	<script src="./js/nik/header/factory.js"></script>
 	<script src="./js/nik/header/controllers.js"></script>
+	<script src="./js/nik/header/header.js"></script>
 	<script src="./js/nik/webSocket.js"></script>
 	<script src="./js/nik/main/factory.js"></script>
 	<script src="./js/nik/main/controllers.js"></script>
@@ -24,7 +27,7 @@
 </head>
 <body ng-controller="mainController">
 	<div ng-include src="'./html/header.html'"></div>
-	<div ng-include src="'./html/main/mainForm.html'"></div>
+	<div ng-include src="'./html/main/mainForm.html'" class="middleContent"></div>
 	<div class="footer container">
 		<p class="titleCenter"><span id="${kCopyRight}"></span></p>
 	</div>

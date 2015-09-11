@@ -7,10 +7,10 @@ import java.io.IOException;
 
 public class Keys {
 	private static final String PATH = "d:/GIT/NiK/HeatSupply/src/main/resources/lang/";
-	private static final String ru = "Language_ru.properties";
+	private static final String ru = "Language_uk.properties";
 
 	public static void main(String[] args) {
-		String filter = "emov";
+		String filter = "";
 		File file = new File(PATH + ru);
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String line;

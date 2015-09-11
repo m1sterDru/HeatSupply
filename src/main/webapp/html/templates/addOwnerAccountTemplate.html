@@ -1,0 +1,32 @@
+<div id="addAccountTemplate">
+	<div class="content">
+		<span id="${kInputData}" class="title"></span>
+	</div>
+	<div class="content col-sm-4 col-sm-offset-4 styleContent regDiv"><form method="post">
+		<table>
+			<tr class="spaceUnder">
+				<td class="bold"><span id="${keyOwnerNumber}"></span></td>
+				<td>
+					<input type="text" pattern="[0-9]*" name="owneraccount" placeholder="1234567890" class="canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kRegNumberComment}" value="3570">
+				</td>
+			</tr>
+
+			<tr class="spaceUnder">
+				<td class="bold"><span id="${kMeterNumber}"></span></td>
+				<td>
+					<input type="text" pattern="[0-9]*" name="meterNumber" placeholder="123456789" class="canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kMeterNumberComment}" value="0117864">
+				</td>
+			</tr>
+		</table>
+		<button id="btnHide" ng-click="submitAddOwner();" class="isHide"></button>
+		</form>
+		<div>
+			<button ng-click="submitAddOwner(true);" class="fa fa-plus btn btn-primary pull-right">
+				<span id="${kApply}"></span>
+			</button>
+		</div>
+	</div>
+	<div>
+		<div class="content col-sm-4 col-sm-offset-4 comment error"></div>
+	</div>
+</div>

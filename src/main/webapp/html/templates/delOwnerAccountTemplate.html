@@ -1,0 +1,50 @@
+<div id="delAccountTemplate">
+	<div class="content title">
+		<span id="${keySelectOwner4delete}"></span>
+	</div>
+	<br><br><br>
+	<div class="content col-sm-6 col-sm-offset-3 styleContent">
+		<span class="dropdown">
+			<button type="button" class="btn menubutton dropdown-toggle form-control" data-toggle="dropdown" aria-expanded="false" ng-model="account4delete" ng-disabled="isDisabled">
+				<div>
+					<span class="fa fa-bolt pull-left"></span>
+					<span class="pull-left">
+						<div>
+							<span> {{account4delete2.name}}</span>
+						</div>
+						<div class="comment">
+							<span id="${keyOwnerNumber}"></span>: {{account4delete2.ownerAccount}} (
+							<span id="${kMeterNumber}"></span>: {{account4delete2.sn}})
+						</div>
+					</span>
+				</div>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li idMeter="{{owner.idMeter}}" snMeter="{{owner.sn}}" ownerAccount="{{owner.ownerAccount}}" ownerName="{{owner.name}}" ng-repeat="owner in actowners" class="menubutton form-control" ng-click="change4delete($event);">
+					<div>
+						<span class="fa fa-bolt pull-left"></span>
+						<span class="pull-left">
+							<div>
+								<span> {{owner.name}}</span>
+							</div>
+							<div class="comment">
+								<span id="${keyOwnerNumber}"></span>: {{owner.ownerAccount}} (
+								<span id="${kMeterNumber}"></span>: {{owner.sn}})
+							</div>
+						</span>
+						<span class="glyphicon glyphicon-scale pull-right"></span>
+					</div>
+				</li>
+			</ul>
+		</span>
+		<br><br>
+		<div class="pull-right">
+			<button ng-click="deleteOwnerAccount();" class="btn btn-danger" ng-disabled="isDisabled">
+				<span class="fa fa-remove"> </span>
+				<span id="${keyDelete}"></span>
+			</button>
+		</div>
+	</div>
+	<div class="comment error col-sm-4 col-sm-offset-4"></div>
+</div>

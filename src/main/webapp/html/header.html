@@ -1,4 +1,4 @@
-<div class="container header" ng-controller="headerController">
+<!-- <div class="container header" ng-controller="headerController">
 	<div class="pull-left">
 		<a href="/HeatSupply" style="padding-left: 10px;">
 			<img src="images/logo_nik.png" alt="Logo">
@@ -29,6 +29,50 @@
 		</button>
 	</div>
 
+	<div class="collapse navbar-collapse" id="myNavbar">
+		<ul class="nav navbar-nav">
+			<li class="active">
+				<button id="1" type="button" class="btn btn-default">
+					<span id="${khmMain}"></span>
+				</button>
+			</li>
+			<li>
+				<button id="2" type="button" class="btn btn-default">
+					<span id="${khmNews}"></span>
+				</button>
+			</li>
+			<li>
+				<button id="3" type="button" class="btn btn-default">
+					<span id="${khmInfo}"></span>
+				</button>
+			</li>
+			<li>
+				<button id="4" type="button" class="btn btn-default">
+					<span id="${khmAbout}"></span>
+				</button>
+			</li>
+			<li>
+				<button id="5" type="button" class="btn btn-default">
+					<span id="${khmContacts}"></span>
+				</button>
+			</li>
+			<li>
+				<button id="6" type="button" class="btn btn-default">
+					<span id="${khmForum}"></span>
+				</button>
+			</li>
+			<li>
+				<button id="7" type="button" class="btn btn-default">
+					<span id="${khmHelp}"></span>
+				</button>
+			</li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+			<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+		</ul>
+	</div>
+
 	<div class="pull-right">
 		<span>
 			<a id="currentUserIcon" href="main.html" class="fa fa-user isHide"></a>
@@ -52,4 +96,47 @@
 			</ul>
 		</span>
 	</div>
+</div> -->
+<div class="container header" ng-controller="headerController">
+	<nav class="container navbar navbar-default navbar-fixed-top header">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<div lang-directive class="pull-right lang"></div>
+			<div>
+				<a href="/HeatSupply">
+					<img src="images/logo_nik.png" alt="Logo">
+				</a>
+			</div>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<div class="btn-group">
+				<button id="1" type="button" class="btn btn-default">
+					<span id="${khmMain}"></span>
+				</button>
+				<button id="2" type="button" class="btn btn-default">
+					<span id="${khmNews}"></span>
+				</button>
+				<button id="3" type="button" class="btn btn-default">
+					<span id="${khmInfo}"></span>
+				</button>
+				<button id="4" type="button" class="btn btn-default">
+					<span id="${khmAbout}"></span>
+				</button>
+				<button id="5" type="button" class="btn btn-default">
+					<span id="${khmContacts}"></span>
+				</button>
+				<button id="6" type="button" class="btn btn-default">
+					<span id="${khmForum}"></span>
+				</button>
+				<button id="7" type="button" class="btn btn-default">
+					<span id="${khmHelp}"></span>
+				</button>
+			</div>
+			<div lang-directive class="pull-right langInv"></div>
+		</div>
+	</nav>
 </div>

@@ -1,19 +1,49 @@
 body {
 	font-family: "Times new Roman", "Arial";
 	background-color:#eee;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+.lang{display: none; padding-top: 10px !important;}
+.langInv{display: block;}
+@media(max-width: 1205px){
+	.lang{display: block;}
+	.langInv{display: none;}
+	.navbar-header{float: none;}
+	.navbar-toggle{display: block;}
+	.navbar-collapse{border-top: 1px solid transparent;box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);}
+	.navbar-collapse.collapse{display: none!important;}
+	.navbar-nav{float: none!important;margin: 7.5px -15px;}
+	.navbar-nav>li{float: none;}
+	.navbar-nav>li>a{padding-top: 10px;padding-bottom: 10px;}
+	.navbar-text{float: none;margin: 15px 0;}
+	/* since 3.1.0 */
+	.navbar-collapse.collapse.in{display: block!important;}
+	.collapsing{overflow: hidden!important;}
 }
 ::selection {background-color: transparent;}
 .canSelect::selection {
 	background-color: rgb(123, 180, 199);
 }
+button[disabled],
+input[disabled]{color: gray;}
 .glyphicon, .fa {color: rgb(25, 50, 117);}
 tr.spaceUnder > td {padding: 5px 0;}
 tr.spaceUnder > td {padding-left: 5px;}
 .bold{font-weight: bold;}
-.comment{font-weight: bold; color: red; font-size: 0.8em;}
+.comment{
+	font-weight: bold;
+	color: red;
+	font-size: 0.8em;
+	margin-bottom: 10px;
+}
 .error{color: red;}
 .isHide{display: none;}
 .pointer{cursor: pointer;}
+.btn-primary,
+.btn-danger,
+.btn-danger .fa{color: white;}
 .content{
 	padding: 5px;
 	background-color: white;
@@ -32,14 +62,8 @@ tr.spaceUnder > td {padding-left: 5px;}
 	margin-bottom: 15px;
 	height: calc(100% - 100px);
 }
-.listContent{
-	max-height: 107px;
-	overflow: auto;
-	margin: 20px;
-	border: gray;
-	border-style: double;
-	background-color: white;
-}
+.middleContent > div{height: 100%;}
+.listContent .styleContent{overflow: auto;}
 .rightSpace{padding-right: 50px}
 
 .menubutton{
@@ -64,7 +88,13 @@ tr.spaceUnder > td {padding-left: 5px;}
 	background-color: #ddd;
 	height: 40px;
 }
-.header .pull-left img{height: 35px;}
+.navbar-collapse{padding: 8px;}
+.navbar-collapse[aria-expanded='true']{
+	overflow: visible;
+	background-color: #ddd;
+}
+.navbar-header > div:last-child{padding: 5px 10px;}
+.navbar-header img[alt='Logo']{height: 35px;}
 .right_header {
 	display: inline;
 	font-size: 20px;
@@ -91,12 +121,15 @@ tr.spaceUnder > td {padding-left: 5px;}
 #curLangButton{text-align: left; width: 150px;}
 #curLangButton img{margin: -3px 5px 0 0;}
 span .caret{float: right; margin-top: 7px;}
-div .pull-right{padding-top: 4px;}
 
 .title {
 	font-size: 1.5em;
 	font-weight: bold;
 	padding: 10px;
+}
+.subTitle {
+	font-size: 1.2em;
+	font-weight: bold;
 }
 .titleCenter{text-align: center;}
 #mainContent{padding: 0 15px;}
@@ -121,30 +154,165 @@ div .pull-right{padding-top: 4px;}
 	border-color: gray;
 	box-shadow: 0 0 10px rgba(0,0,0,0.3);
 	padding: 10px;
-	min-height: 150px;
+	min-height: 170px;
 }
 .loginDiv table{width: 100%}
-.loginDiv form > div{width: 60%;float: right!important;}
+.loginDiv form > div{
+	width: 75%;
+	float: right!important;
+	padding-left: 5px;
+}
 .loginDiv form > div > button:first-child{
 	margin-right: 20px;
 	margin-bottom: 7px;
 }
 .loginDiv table td{text-align: right;}
-.loginDiv table tr td:first-child{width: 40%;}
-.loginDiv input {padding: 0 5px;}
+.loginDiv table tr td:first-child{width: 25%;}
+.loginDiv input {
+	padding: 0 5px;
+	width: 100%;
+}
 .loginDiv .bold {padding: 0 5px;}
 .loginDiv hr {margin: 10px 0;border-top: 1px solid #337ab7;}
-a.button {text-decoration: none; color: initial;}
+a.button {text-decoration: none; color: inherit;}
 
-#profileInfo form input{width: 300px; padding-left: 10px;}
+#profileInfo table{width: 100%;}
+#profileInfo form{padding: 5px;}
+#profileInfo form input{
+	padding-left: 5px;
+	width: 100%;
+}
+#profileInfo > div:nth-child(2) div:last-child{
+	padding: 5px 0;
+}
+@media (max-width: 768px){
+	#profileInfo > div:last-child{height: auto;}
+}
 
-#regDiv1{box-shadow: 0 0 10px rgba(0,0,0,0.3);}
-#regDiv1 table{width: 100%}
-#regDiv1 form tr > td:first-child {text-align: right;width:60%;}
-#regDiv1 div:last-child{width: 40%;float: right!important;}
-#regDiv1 div:last-child button{
+.leftBorder{
+	border-left: 2px solid #337ab7;
+	height: calc(100% - 70px);
+	margin-top: 5px;
+}
+#profileInfo hr,
+#accountTemplate hr{border-top: 1px solid #337ab7;}
+#accountTemplate hr{margin: 0;}
+#accountTemplate .ownerButton hr{margin: 5px 0;}
+#accountTemplate > div:last-child a{
+	width: 100%;
+}
+#accountTemplate > div:last-child li:first-child a{
+	background-color: #ccc;
+}
+
+#accountTemplate > div:nth-child(3){padding-right: 20px;}
+#accountTemplate > div:nth-child(3) > div:nth-child(1){
+	background-color: silver;
+	border-radius: 20px;
+	margin: 10px 0;
+	padding: 15px;
+}
+#accountTemplate > div:nth-child(3) > div:nth-child(1) .content{
+	background-color: silver;
+}
+#accountTemplate > div:nth-child(3) > div:nth-child(1) .ownerButton{
+	width: 50%;
+}
+
+#accountTemplate > div:last-child ul{
+	padding-left: 10px;
+}
+
+a > .fa{padding-top: 4px;}
+
+#addAccountTemplate > div:nth-child(2){margin-top: 100px;}
+#delAccountTemplate .caret{margin-top: 20px;}
+/*#profileInfo .listContent > div:nth-child(3){margin-left: -10px;}
+#profileInfo .listContent > div:last-child .form-control{
+	padding-left: 10px;
+	margin: 5px 0 10px 0;
+}*/
+
+.regDiv form table,
+.regDiv form table input{width: 100%;}
+
+.regDiv,
+#profileInfo .styleContent,
+#delAccountTemplate .styleContent{box-shadow: 0 0 10px rgba(0,0,0,0.3);}
+.regDiv form tr > td:first-child {text-align: right;width:50%;}
+.regDiv div:last-child{width: 50%;float: right!important;}
+.regDiv div:last-child button{
 	margin-left: 5px;
 	margin-bottom: 5px;
 }
-#regDiv1 form input{width: 100px; padding-left: 5px;}
-#regDiv2 form tr > td:first-child {text-align: right;}
+.regDiv form input{width: 100px; padding-left: 5px;}
+.regDiv button{float: right;}
+
+.ownerButton{
+	border-radius: 10px;
+	margin: 5px 0;
+	padding: 5px;
+	text-align: left;
+	background-color: white;
+	border-color: #337ab7;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 0 0 5px;
+}
+.ownerButton:hover{
+	border-color: blue;
+	cursor: pointer;
+	box-shadow: 0 0 10px;
+}
+.ownerButton:focus{outline-width: 0;}
+.ownerButton .fa-bolt{
+	font-size: 40px;
+	padding: 13px 10px 0 20px;
+	color: orange;
+}
+ul.dropdown-menu{width: 100%; padding: 0;}
+li.form-control, .dropdown-toggle{
+	height: auto;
+	text-align: left;
+}
+li .fa-bolt, .dropdown-toggle .fa-bolt{
+	font-size: 35px;
+	color: orange;
+}
+
+.ownerButton .fa-plus-square{
+	font-size: 40px;
+	padding: 13px;
+	color: green;
+}
+.ownerButton .fa-minus-square{
+	font-size: 40px;
+	padding: 13px;
+	color: red;
+}
+.ownerButton .glyphicon-scale{
+	font-size: 40px;
+	padding: 13px;
+}
+li .glyphicon-scale{
+	font-size: 35px;
+}
+.ownerButton .fa-remove{
+	font-size: 20px;
+	color: red;
+}
+.ownerButton > div{
+	display: inline-block;
+	text-align: left;
+}
+.ownerButton > div:last-child{float: right;}
+
+.notActiveOwner{color: red;}
+.activeOwner{color: green;}
+
+#reportContent{
+	max-height: calc(100% - 40px);
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: calc(100% - 40px);
+}

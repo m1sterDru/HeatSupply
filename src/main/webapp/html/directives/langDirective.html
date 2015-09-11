@@ -1,0 +1,23 @@
+<div data-template="langDirective">
+	<span class="{{login_userSpanClass}}">
+		<a href="main.html" class="fa fa-user {{login_userIconClass}}"></a>
+		<a href="/HeatSupply/#/profile" class="fa titleCenter">{{login_user}}</a>
+		<div class="right_header"></div>
+		<a href="{{login_href}}" class="{{longin_class}}">
+			<span id="{{login_spanID}}" class="loginSpanSelectot"></span>
+		</a>
+	</span>
+	<span class="dropdown">
+		<button data-btn="curLangButton" type="button" class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false" lang="{{langId}}">
+			<img ng-src="{{langImg}}" width="20">
+			<span>{{langDesc}}</span>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li id="{{locale.id}}" ng-repeat="locale in locales" class="menubutton" ng-click="changeLanguage($event);">
+				<img ng-src="{{locale.img}}" alt="flag" width="20">
+				<span>{{locale.langName}}</span>
+			</li>
+		</ul>
+	</span>
+</div>

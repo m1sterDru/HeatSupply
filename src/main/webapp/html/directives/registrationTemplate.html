@@ -1,56 +1,27 @@
-<!--form action="RegisterServlet" method="post"-->
-<div id="regDiv1" class="content col-sm-4 col-sm-offset-4 styleContent"><form method="post">
+<div id="regDiv1" class="content col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 styleContent regDiv"><form method="post">
 	<table>
 		<tr class="spaceUnder">
-			<td class="bold"><span id="${kRegNumber}"></span></td>
+			<td class="bold"><span id="${keyOwnerNumber}"></span></td>
 			<td>
-				<input type="text" pattern="[0-9]*" name="owneraccount" placeholder="1234567890" class="canSelect" autocomplete="off" required>
+				<input type="text" pattern="[0-9]*" name="owneraccount" placeholder="1234567890" class="canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kRegNumberComment}" value="3570">
 			</td>
 		</tr>
 
-		<tr class="spaceUnder isHide">
-			<td class="bold"><span id="${kRegLastSum}"></span></td>
-			<td>
-				<input type="text" pattern="[0-9.]*" name="lastcash" placeholder="0.00" class="canSelect" autocomplete="off" required ng-disabled="noPay">
-			</td>
-		</tr>
-
-		<!--tr class="spaceUnder">
-			<td></td>
-			<td>
-				<input type="checkbox" id="noPay" ng-model="noPay" ng-change="changeNoPay()">
-				<span id="${kNoPays}"></span>
-			</td>
-		</tr-->
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${kMeterNumber}"></span></td>
 			<td>
-				<input type="text" pattern="[0-9]*" name="meterNumber" placeholder="123456789" class="canSelect" autocomplete="off" required>
+				<input type="text" pattern="[0-9]*" name="meterNumber" placeholder="123456789" class="canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kMeterNumberComment}" value="0117864">
 			</td>
 		</tr>
 	</table>
 	<button id="btnHide1" ng-click="submitRegistration();" class="isHide"></button>
 	</form>
-	<div class="listContent isHide">
-		<table>
-			<tbody>
-				<tr ng-repeat="owner in owners | orderBy:'name'" class="spaceUnder">
-					<td class="isHide">{{owner.id}}</td>
-					<td>
-						<input type="checkbox" ng-model="owner.selected">
-						<span style="padding-left:5px;">{{owner.idMeter}}</span><br/>
-					</td>
-					<td>{{owner.name}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
 	<div>
 		<button ng-click="submitRegistration(true);"><span id="${kNext}"></span></button>
 	</div>
 </div>
 
-<div id="regDiv2" class="content col-md-6 col-md-offset-4 isHide"><form method="post">
+<div id="regDiv2" class="content col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1 styleContent isHide  regDiv"><form method="post">
 	<table>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keyLogin}"></span></td>
@@ -94,8 +65,16 @@
 				<input type="password" name="password" class="canSelect" autocomplete="off" required>
 			</td>
 		</tr>
+		<tr class="spaceUnder">
+			<td class="bold"><span id="${kPassword2}"></span></td>
+			<td>
+				<input type="password" name="password2" class="canSelect" autocomplete="off" required>
+			</td>
+		</tr>
 	</table>
 	<button id="btnHide2" ng-click="submitRegistrationLast();" class="isHide"></button>
 	</form>
 	<button ng-click="submitRegistrationLast(true);"><span id="${kRegister}"></span></button>
 </div>
+
+<div class="content col-sm-4 col-sm-offset-4 comment isHide"></div>

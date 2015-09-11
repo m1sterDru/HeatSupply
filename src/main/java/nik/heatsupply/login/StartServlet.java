@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import nik.heatsupply.socket.Server;
+
 @WebServlet("/StartServlet")
 public class StartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("========== StartServlet ============");
 		try(PrintWriter out = response.getWriter();) {
 			response.setContentType("text/html");
 			response.setHeader("Cache-control", "no-cache, no-store");
@@ -24,7 +27,7 @@ public class StartServlet extends HttpServlet {
 			JsonObjectBuilder jsn = Json.createObjectBuilder();
 			HttpSession session = request.getSession(false);
 	
-			if(session != null && Boolean.parseBoolean(session.getAttribute("login").toString())) {
+			if(Server.isValid(session)) {
 				String user = session.getAttribute("user").toString();
 				String userId = session.getAttribute("userId").toString();
 				jsn.add("isLogin", "true")
@@ -35,7 +38,8 @@ public class StartServlet extends HttpServlet {
 			}
 			out.println(jsn.build().toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("Error in StartServlet");
 		}
 	}
 }

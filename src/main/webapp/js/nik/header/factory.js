@@ -8,7 +8,7 @@ angular.module('headerFactory', [])
 			})
 			.success(function(data){
 				var func = new Function('', data);
-				try{callback(func);}catch(e){console.log(e);console.log(file);}
+				try{callback(func);}catch(e){console.log(e);}
 			})
 			.error(function(data, status, headers, config){
 				console.log(status)
@@ -45,34 +45,34 @@ angular.module('headerFactory', [])
 			}
 		}
 	})
-	.factory('hsFactory', function ($http){
+	.factory('hsFactory', function ($http, translate){
 		var main;
 
 		function getUserProfile(callback){
-			$http({
-				method: 'GET',
-				url: '/HeatSupply/StartServlet',
-				cache: false
-			})
-			.success(function(data){
-				callback(data);
-			})
-			.error(function(data, status, headers, config){
-				console.log(status)
-			});
-		};
-
-		function getUserProfileInfo(callback){
-			$http({
-				method: 'GET',
-				url: '/HeatSupply/ProfileInfoServlet',
-				cache: false
-			})
-			.success(function(data){
-				if(callback != null) callback(data);
-			})
-			.error(function(data, status, headers, config){
-				console.log(status)
+			main.isComplete(0, function(){
+				$http({
+					method: 'GET',
+					url: '/HeatSupply/StartServlet',
+					cache: false
+				})
+				.success(function(data){
+					if(data.isLogin === 'true'){
+						if(callback != null){
+							try{
+								callback(data);
+							} catch(e) {
+								console.log(e);
+							}
+						}
+					} else {
+						var url = document.URL;
+						url = url.slice(0, url.indexOf('HeatSupply') + 11);
+						location.href = url;
+					}
+				})
+				.error(function(data, status, headers, config){
+					console.log(status)
+				});
 			});
 		};
 
@@ -81,23 +81,48 @@ angular.module('headerFactory', [])
 					url = document.URL,
 					cache = localStorage.getItem('heatSupply');
 
-			hs.language = cache ? JSON.parse(cache).language : 'uk';
-			getUserProfile(function(data){
-				hs.userId = data.userId;
-				hs.user = data.user;
-				hs.isLogin = data.isLogin;
-			});
-			hs.getUserProfile = getUserProfile;
-			hs.getUserProfileInfo = getUserProfileInfo;
 			hs.url = url.slice(0, url.indexOf('HeatSupply') + 11);
+			hs.language = cache ? JSON.parse(cache).language : 'uk';
+			hs.getUserProfile = getUserProfile;
+
+			translate.run(function(t){
+				hs.translator = t;
+				heatSupply.translator = t;
+				heatSupply.initWebSocket(hs, function(){
+					hs.complete = true;
+				});
+			});
 			return hs;
 		}
 
 		function getMainFactory(){
-			if(!main) {
+			if(!main){
 				main = new HeatSupply();
+				main.isComplete = function(counter, callback){
+					if(main.complete != undefined || counter > 5){
+						if(callback != null){
+							callback();
+						}
+						return;
+					}
+					setTimeout(function(){
+						main.isComplete(++counter, callback);
+					}, 100);
+				}
 			}
 			return main;
 		}
 		return getMainFactory();
+	})
+	.directive('ngEnter', function (){
+		return function (scope, element, attrs){
+			element.bind("keydown keypress", function (event){
+				if(event.which === 13){
+					scope.$apply(function (){
+						scope.$eval(attrs.ngEnter);
+					});
+					event.preventDefault();
+				}
+			});
+		};
 	});

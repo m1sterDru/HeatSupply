@@ -39,6 +39,9 @@ public interface IMapper {
 	@Select("select * from public.meter where owneraccount = #{owneraccount}")
 	List<Meter> getOwnerList(@Param("owneraccount")String owneraccount);
 	
+	@Select("select * from public.meter where id = #{id}")
+	Meter getMeterById(@Param("id")int idMeter);
+	
 	@Insert("insert into users_web " +
 			"(id, login, password, name, middlename, surname, phone, email, languageid) values " +
 			"(#{id}, #{login}, #{password}, #{name}, #{middlename},"

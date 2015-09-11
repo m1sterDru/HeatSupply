@@ -57,8 +57,8 @@ return {
 		}
 
 		returnInstance.translateAll = function(){
-			var btn = document.getElementById('curLangButton');
-			var lang = btn ? btn.getAttribute('lang') : null;
+			var btn = $('button[data-btn="curLangButton"]:first');
+			var lang = btn ? btn.attr('lang') : null;
 			if(!lang) return;
 			translateARMByLocale('Language_' + lang);
 		}

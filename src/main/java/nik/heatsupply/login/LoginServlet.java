@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import nik.heatsupply.common.Encryptor;
 import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.socket.Server;
 import nik.heatsupply.socket.model.UserWeb;
 
 @WebServlet("/LoginServlet")
@@ -57,7 +58,6 @@ public class LoginServlet extends HttpServlet {
 //			response.addCookie(userName);
 			response.sendRedirect("main.html");
 		} else {
-			session.setAttribute("login", "false");
 			session.setAttribute("lastTryLogin", System.currentTimeMillis());
 			String uri = request.getRequestURI();
 			System.out.println(uri);
@@ -82,8 +82,9 @@ public class LoginServlet extends HttpServlet {
 		if(encr.decrypt(u.getPassword()).trim().equals(password)) {
 			session.setAttribute("user", login);
 			session.setAttribute("userId", u.getId());
-			session.setAttribute("login", "true");
 			session.setMaxInactiveInterval(SESSION_TIMIOUT);
+			Server.getSessions().put(session, true);
+			System.out.println(Server.getSessions().size() + " === SESSIONS_SIZE");
 			return true;
 		}
 		return false;

@@ -1,0 +1,83 @@
+<div id="accountTemplate" class="content">
+	<div class="title">
+		<span id="${keySelectAccount}"></span>
+	</div>
+	<hr>
+	<div class="col-sm-8 content">
+		<div>
+			<div>
+				<a href="" class="fa {{additionalIcon}} subTitle" ng-click="additional();">
+					<span id="${keyAdditional}"></span>
+				</a>
+			</div>
+			<div class="content {{additionalClass}}">
+				<div>
+					<div class="ownerButton" ng-click="removeProfile();">
+						<span class="fa fa-remove"></span>
+						<div>
+							<div class="subTitle">
+								<span id="${keyProfDelPersAccount}"></span>
+							</div>
+						</div>
+						<div></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<table style="width:100%;">
+				<tr ng-repeat="own in actowners | orderBy:['name']" class="spaceUnder">
+					<td>
+						<div class="ownerButton" ng-click="addOrRemoveOwner(true, true);">
+							<span class="fa fa-bolt pull-left"></span>
+							<div>
+								<div class="subTitle">
+									<span id="${keyOwnerNumber}"></span>: {{own.ownerAccount}}
+								</div>
+								<hr>
+								<div>
+									<b><span id="${kMeterNumber}"></span>:</b> {{own.sn}}
+								</div>
+								<div><b><span id="${keyName}"></span>:</b> {{own.name}}</div>
+							</div>
+							<div class="glyphicon glyphicon-scale"></div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="col-sm-4 leftBorder">
+		<div class="content subTitle {{visibleClass}}">
+			<span class="fa fa-user"> </span>
+			<span id="${keyAccount}"></span>
+			<span>: "{{login}}"</span>
+		</div>
+		<div class="content {{visibleClass}}">
+			<ul>
+				<li>
+					<a href="#/profile" class="btn btn-default">
+						<span class="fa fa-wrench pull-left"></span>
+						<span id="${kSettings}"></span>
+					</a>
+
+					<span>Зміна пароля, логіна, адреси електронної пошти, видалення облікового запису, інші налаштування</span>
+				</li>
+				<li>
+					<a href="#/addOwner" class="btn btn-primary">
+						<span class="fa fa-plus pull-left"></span>
+						<span id="${keyAddOwnerAccount}"></span>
+					</a>
+					<span>Для контролю за кількома особовими рахунками за допомогою одного облікового запису</span>
+				</li>
+				<li>
+					<a href="#/delOwner" class="btn btn-danger">
+						<span class="fa fa-minus pull-left"></span>
+						<span id="${keyProfDelAccount}"></span>
+					</a>
+					<span>Щоб видалити особовий рахунок натисніть дану кнопку</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -1,71 +1,93 @@
-<br>
-<div id="profileInfo" class="container content">
-	<div>
-		<span id="${kSettings}"></span>
+<div id="profileInfo" class="content">
+	<div class="title">
+		<div class="col-sm-5 content">
+			<span id="${kSettings}"></span>
+		</div>
+		<div class="col-md-4 col-sm-5 hidden-xs pull-right content">
+			<span id="${keyAdditionalSettings}"></span>
+		</div>
 	</div>
-	<form method="post">
-		<table>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${keyName}"></span></td>
-				<td><input type="text" name="name" class="canSelect" required></td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${keyMiddleName}"></span></td>
-				<td><input type="text" name="middleName" class="canSelect" required></td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${keySurName}"></span></td>
-				<td><input type="text" name="surName" class="canSelect" required></td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${kEmail}"></span></td>
-				<td><input type="email" name="email", class="canSelect" required></td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${keyPhone}"></span></td>
-				<td><input type="text" name="phone", class="canSelect"></td>
-			</tr>
-			<tr class="spaceUnder"><td></td></tr>
-			<tr class="spaceUnder"><td></td></tr>
-			<tr class="spaceUnder"><td></td></tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${kPassword}"></span></td>
-				<td><input type="password" name="pwd", class="canSelect" required></td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${kPassword1}"></span></td>
-				<td><input type="password" name="pwd1", class="canSelect"></td>
-			</tr>
-			<tr class="spaceUnder">
-				<td class="bold"><span id="${kPassword2}"></span></td>
-				<td><input type="password" name="pwd2", class="canSelect"></td>
-			</tr>
-		</table>
-		<button id="btnHide" ng-click="submitProfile();" class="isHide"></button>
-	</form>
-	<div class="listContent isHide">
-		<table>
-			<tbody>
-				<tr ng-repeat="owner in owners | orderBy:'name'" class="spaceUnder">
-					<td class="isHide">{{owner.id}}</td>
-					<td>
-						<input type="checkbox" ng-model="owner.selected" ng-checked="owner.selected">
-						<span style="padding-left:5px;">{{owner.idMeter}}</span><br/>
-					</td>
-					<td>{{owner.name}}</td>
+	<div class="col-md-5 col-sm-6">
+		<form method="post" class="styleContent" ng-style="formStyle">
+			<table>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${keyName}"></span> *</td>
+					<td><input type="text" name="name" class="canSelect" required ng-disabled="isDisabled"></td>
 				</tr>
-			</tbody>
-		</table>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${keyMiddleName}"></span> *</td>
+					<td><input type="text" name="middleName" class="canSelect" required ng-disabled="isDisabled"></td>
+				</tr>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${keySurName}"></span> *</td>
+					<td><input type="text" name="surName" class="canSelect" required ng-disabled="isDisabled"></td>
+				</tr>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${kEmail}"></span> *</td>
+					<td><input type="email" name="email", class="canSelect" required ng-disabled="isDisabled"></td>
+				</tr>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${keyPhone}"></span></td>
+					<td><input type="text" name="phone", class="canSelect" ng-disabled="isDisabled"></td>
+				</tr>
+				<tr class="spaceUnder"><td></td></tr>
+				<tr class="spaceUnder"><td></td></tr>
+				<tr class="spaceUnder"><td></td></tr>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${kPassword}"></span> *</td>
+					<td><input type="password" name="pwd", class="canSelect" required ng-disabled="isDisabled"></td>
+				</tr>
+				<tr class="spaceUnder"><td colspan="2"><hr></td></tr>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${kPassword1}"></span></td>
+					<td><input type="password" name="pwd1", class="canSelect" ng-disabled="isDisabled"></td>
+				</tr>
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${kPassword2}"></span></td>
+					<td><input type="password" name="pwd2", class="canSelect" ng-disabled="isDisabled"></td>
+				</tr>
+			</table>
+			<button id="btnHide" ng-click="submitProfile();" class="isHide"></button>
+		</form>
+		<span class="col-sm-12 comment"></span>
+		<div class="col-sm-12">
+			<button ng-click="submitProfile(true);" ng-disabled="isDisabled" class="fa fa-check btn btn-primary">
+				<span id="${kApply}"></span>
+			</button>
+			<button ng-click="removeProfile();" class="fa fa-trash btn btn-danger pull-right" ng-disabled="isDisabled">
+				<span id="${kRemoveAccount}"></span>
+			</button>
+		</div>
 	</div>
-	<div class="pull-left">
-		<button ng-click="submitProfile(true);">
-			<span id="${kApply}"></span>
-		</button>
-		<span id="error" class="comment"></span>
-	</div>
-	<div class="pull-right">
-		<button ng-click="removeProfile();">
-			<span id="${kRemoveAccount}" class="error"></span>
-		</button>
+
+	<div class="listContent col-md-4 col-sm-5 pull-right leftBorder">
+		<div>
+			<div>
+				<span class="fa fa-info-circle title"></span>
+				<a href="#/account">
+					<span class="fa subTitle" id="${keyProfNewAccount}"></span>
+				</a>
+			</div>
+			<div class="content">
+				<p>
+					Ви можете додати особовий рахунок або об'єднати поточний обліковий запис з вже зареєстрованим раніше, якщо Ви бажаєте 
+					<b><a href="#/account"> контролювати кілька особових рахунків.</a></b>
+				</p>
+			</div>
+		</div>
+		<div>
+			<div>
+				<span class="fa fa-info-circle title"></span>
+				<a href="">
+					<span class="fa subTitle" id="${keyProfDelAccount}"></span>
+				</a>
+			</div>
+			<div class="content">
+				<p>
+					Якщо Ви більше не хочете користуватися даним сервісом - Ви можете 
+					<b><a href=""> видалити обліковий запис.</a></b>
+				</p>
+			</div>
+		</div>
 	</div>
 </div>

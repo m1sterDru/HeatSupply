@@ -10,13 +10,41 @@ heatSupply.headerControllers.config(function ($routeProvider){
 				return 'html/templates/profileTemplate.html';
 			},
 			controller: 'profileController'
+		}).
+		when('/account', {
+			templateUrl: function(){
+				return 'html/templates/accountTemplate.html';
+			},
+			controller: 'accountController'
+		}).
+		when('/addOwner', {
+			templateUrl: function(){
+				return 'html/templates/addOwnerAccountTemplate.html';
+			},
+			controller: 'ownerAccountController'
+		}).
+		when('/delOwner', {
+			templateUrl: function(){
+				return 'html/templates/delOwnerAccountTemplate.html';
+			},
+			controller: 'ownerAccountController'
 		})
 })
 .run(function ($rootScope, $location, hsFactory){
 	$rootScope.$on("$routeChangeStart", function (event, next, current){
-		if($location.path() === '/profile'){
-			hsFactory.getUserProfile(function(data){
-				if(data.isLogin === 'false') location.href = hsFactory.url;
+		var isValid = false;
+
+		switch($location.path()){
+			case '':
+			case '/':
+			case '/login':
+			case '/registration': isValid = true; break;
+			default: isValid = false;
+		}
+
+		if(!isValid){
+			hsFactory.getUserProfile(function(){
+				hsFactory.translator.translateAll();
 			});
 		}
 	});
@@ -24,47 +52,38 @@ heatSupply.headerControllers.config(function ($routeProvider){
 
 heatSupply.headerControllers.controller('headerController', 
 	function ($scope, translate, hsFactory){
-		hsFactory.getUserProfile(function(){
-			checkIsLogin();
-		});
+		$scope.login_href = '#login';
+		$scope.login_spanID = '${kLogin}';
+		$scope.longin_class = 'fa fa-sign-in';
+		$scope.login_userIconClass = 'isHide';
+
+		// if(location.href.indexOf('login') > 0)
+		// 	$scope.login_userSpanClass = 'isHide';
+
 		translate.langFiles(function(files){
 			var locales = [], index = 1;
 			files.forEach(function(file){
 				var locale = Object.create(null);
 				locale.id = file;
 				locales.push(locale);
-				translate.run(function(t){
-					t.translateValueByKey(file, ['kFlagLocale','kLangName'],
-						function(value){
-							if(value.indexOf('http') != -1)
-								locale.img = value;
-							else{
-								locale.langName = value;
-								if((index++) == files.length){
-									$scope.$apply();
-									changeLocale(hsFactory.language);
-								}
+				hsFactory.translator.translateValueByKey(file, 
+					['kFlagLocale','kLangName'],function(value){
+						if(value.indexOf('http') != -1)
+							locale.img = value;
+						else{
+							locale.langName = value;
+							if((index++) == files.length){
+								$scope.$apply();
+								$scope.changeLocale(hsFactory.language);
 							}
-						});
-				});
+						}
+					});
 			});
 			$scope.locales = locales;
 		});
 
-		$scope.test123 = function(){
-			console.log('test123');
-		}
-
-		$scope.click = function($event){
-			var btn = document.getElementById('curLangButton'),
-					el = $event.target;
-
-			if(el.tagName.toLowerCase() !== 'li') el = el.parentNode;
-			changeLocale(el.id);
-		}
-
-		function changeLocale(langId){
-			var btn = document.getElementById('curLangButton'),
+		$scope.changeLocale = function (langId){
+			var btn = $('button[data-btn="curLangButton"]:first')[0],
 					lis, li, img, span;
 
 			if(btn){
@@ -74,7 +93,7 @@ heatSupply.headerControllers.controller('headerController',
 				li = Array.prototype.filter.call(lis, function(li){
 					return li.id === langId;
 				})[0];
-				if(!li) {
+				if(!li){
 					console.log('null'); 
 					return;
 				}
@@ -85,7 +104,6 @@ heatSupply.headerControllers.controller('headerController',
 				$scope.langId = langId;
 				$scope.langImg = img.src;
 				$scope.langDesc = span.innerHTML;
-				// $scope.$apply();
 
 				hsFactory.language = langId;
 				translate.run(function(t){
@@ -94,50 +112,23 @@ heatSupply.headerControllers.controller('headerController',
 				});
 			}
 		}
-
-		function checkIsLogin(){
-			var isLogin = hsFactory.isLogin === 'true',
-					aLogin = $('#aLogin');
-
-			if(isLogin){
-				document.getElementById('currentUser').innerHTML = hsFactory.user;
-				$('#currentUserIcon').removeClass('isHide');
-				aLogin[0].href = 'LogoutServlet';
-				aLogin[0].getElementsByTagName('span')[0].id = '${kLogout}';
-				aLogin.removeClass('fa-sign-in');
-				aLogin.addClass('fa-sign-out');
-			}
-		}
 	})
 	.controller('profileController', 
-		function ($scope, translate, hsFactory, $http){
-			translate.run(function(t){t.translateAll();});
+		function ($scope, hsFactory, $http){
+			var error = $('.comment:first'),
+					error2 = $('.comment:last'),
+					userId;
 
-			hsFactory.getUserProfileInfo(function(data){
-				if(data.loginBad == undefined){
-					$('input[name="name"').val(data.name);
-					$('input[name="middleName"').val(data.middleName);
-					$('input[name="surName"').val(data.surName);
-					$('input[name="email"').val(data.email);
-					$('input[name="phone"').val(data.phone);
-					if(data.owners){
-						var listOwners = [];
-						$('.listContent').removeClass('isHide');
-						data.owners.forEach(function(meter){
-								var id = meter.slice(0, meter.indexOf('_')),
-										name = meter.slice(meter.indexOf('_') + 1),
-										listObject = Object.create(null);
-								listObject.id = Number(id);
-								listObject.idMeter = name.slice(0, name.indexOf('_'));
-								listObject.name = name.slice(name.indexOf('_') + 1);
-								if(data.actowners.indexOf(listObject.id) > -1){
-									listObject.selected = true;
-								}
-								listOwners.push(listObject);
-							});
-							$scope.owners = listOwners;
-					}
-				}
+			hsFactory.getUserProfile(function(data){
+				var message = Object.create(null);
+
+				message.type = 'CommandMessage';
+				message.command = 'profileInfo';
+				message.parameters = [{'userId': data.userId}];
+				heatSupply.socket.send(JSON.stringify(message));
+				$scope.isDisabled = true;
+				$scope.formStyle = {opacity: 0.5};
+				userId = data.userId;
 			});
 
 			$scope.submitProfile = function(isButton){
@@ -145,30 +136,26 @@ heatSupply.headerControllers.controller('headerController',
 				$('#profileInfo form input').each(function(){
 					if(!this.checkValidity()){
 						isValid = false;
+						error.html('Set correct form\'s data');
 						if(isButton){
 							setTimeout(function(){
-								$('#btnHide').click()
-								$('#error').html('Set correct form\'s data');
+								$('#btnHide').click();
 							},100);
 						}
 						return;
 					}
 				});
 				if(isValid){
-					var countOwners = $scope.owners.filter(function(owner){
-						return owner.selected;
-					}).length,
-					pwd1 = $('#profileInfo input[name="pwd1"').val(),
-					pwd2 = $('#profileInfo input[name="pwd2"').val();
+					var isUpdate = true,
+							pwd1 = $('#profileInfo input[name="pwd1"]').val(),
+							pwd2 = $('#profileInfo input[name="pwd2"]').val();
 
-					if(countOwners == 0){
-						$('#error').html('Not selected owners ...');
-					} else if(pwd1 != pwd2){
-						$('#error').html('New passwords are different!');
+					if(pwd1 != pwd2){
+						error.html('New passwords are different ...');
 					} else {
 						updateProfile(function(data){
-							if(data.messageId != 3)
-								$('#error').html(data.message);
+							if(data.messageId != 0)
+								error.html(data.message);
 							else
 								window.location.href = hsFactory.url + 'main.html';
 						});
@@ -177,37 +164,34 @@ heatSupply.headerControllers.controller('headerController',
 			}
 
 			$scope.removeProfile = function(){
-				var deleteProfile = true;
-				updateProfile(function(data){
-					if(data.messageId != 4)
-						$('#error').html(data.message);
-					else
-						window.location.href = hsFactory.url + 'index.html';
-				}, deleteProfile);
-			}
+				hsFactory.translator.translateValueByKey(hsFactory.language, 'keySure',
+				function(value){
+					if(confirm(value)){
+						hsFactory.getUserProfile(function(data){
+							var message = Object.create(null);
 
-			function updateProfile(callback, remove){
-				var ownersId = '',
-						deleteProfile = remove == undefined ? false : remove;
-				$scope.owners.forEach(function(owner){
-					if(owner.selected){
-						ownersId += owner.id + ';';
+							message.type = 'CommandMessage';
+							message.command = 'removeProfile';
+							message.parameters = [{'userId': data.userId}];
+							heatSupply.socket.send(JSON.stringify(message));
+						});
 					}
 				});
+			}
+
+			function updateProfile(callback){
 				$http({
 					method: 'POST',
 					url: '/HeatSupply/ProfileServlet',
 					params: {
-						remove: deleteProfile,
-						idUser: hsFactory.userId,
-						owners: ownersId,
-						name: $('#profileInfo input[name="name"').val(),
-						middleName: $('#profileInfo input[name="middleName"').val(),
-						surName: $('#profileInfo input[name="surName"').val(),
-						email: $('#profileInfo input[name="email"').val(),
-						phone: $('#profileInfo input[name="phone"').val(),
-						password: $('#profileInfo input[name="pwd"').val(),
-						password1: $('#profileInfo input[name="pwd1"').val(),
+						idUser: userId,
+						name: $('#profileInfo input[name="name"]').val(),
+						middleName: $('#profileInfo input[name="middleName"]').val(),
+						surName: $('#profileInfo input[name="surName"]').val(),
+						email: $('#profileInfo input[name="email"]').val(),
+						phone: $('#profileInfo input[name="phone"]').val(),
+						password: $('#profileInfo input[name="pwd"]').val(),
+						password1: $('#profileInfo input[name="pwd1"]').val(),
 						languageId: hsFactory.language
 					},
 					cache: false
@@ -219,4 +203,129 @@ heatSupply.headerControllers.controller('headerController',
 					console.log(status)
 				});
 			}
+		})
+	.controller('accountController', function ($scope, hsFactory, $http){
+		$scope.visibleClass = 'isHide';
+		$scope.additionalClass = 'isHide';
+		$scope.additionalIcon = 'fa-plus-square';
+
+		hsFactory.getUserProfile(function(data){
+			var message = Object.create(null);
+
+			message.type = 'CommandMessage';
+			message.command = 'ownerList';
+			message.parameters = [
+				{'userId': data.userId},
+				{'elementId': 'accountTemplate'}
+			];
+			heatSupply.socket.send(JSON.stringify(message));
+			$scope.login = data.user;
 		});
+
+		$scope.additional = function(){
+			$scope.additionalClass = $scope.additionalClass === '' ?
+				'isHide' : '';
+			$scope.additionalIcon = $scope.additionalClass === '' ?
+				'fa-minus-square' : 'fa-plus-square';
+		}
+	})
+	.controller('ownerAccountController', function ($scope, hsFactory, $http){
+		var error = $('.error');
+
+		if($('#delAccountTemplate').length){
+			$scope.isDisabled = true;
+			hsFactory.getUserProfile(function(data){
+				var message = Object.create(null);
+
+				message.type = 'CommandMessage';
+				message.command = 'ownerList';
+				message.parameters = [
+					{'userId': data.userId},
+					{'elementId': 'delAccountTemplate'}
+				];
+				heatSupply.socket.send(JSON.stringify(message));
+				$scope.login = data.user;
+			});
+		}
+
+		function disable(isOn){
+			var ico = $('.btn-danger span:first-child');
+			$('#delAccountTemplate select').disabled = isOn;
+			$('#delAccountTemplate button').disabled = isOn;
+			$('#delAccountTemplate').css('opacity', isOn ? '0.5' : '1');
+			if(isOn){
+				ico.removeClass('fa-remove');
+				ico.addClass('fa-refresh fa-spin');
+			} else {
+				ico.removeClass('fa-refresh fa-spin');
+				ico.addClass('fa-remove');
+			}
+		}
+
+		$scope.change4delete = function($event){
+			var li = $event.target;
+			while(li.tagName != 'LI') li = li.parentNode;
+			$scope.account4delete2.name = li.getAttribute('ownerName');
+			$scope.account4delete = li.getAttribute('idMeter') + '_' +
+				li.getAttribute('ownerAccount');
+			$scope.account4delete2.sn = li.getAttribute('snMeter');
+			$scope.account4delete2.ownerAccount = li.getAttribute('ownerAccount');
+		}
+
+		$scope.deleteOwnerAccount = function(){
+			hsFactory.translator.translateValueByKey(hsFactory.language, 'keySure',
+				function(value){
+					if(confirm(value)){
+						disable(true);
+						hsFactory.getUserProfile(function(data){
+							var owneraccount = $scope.account4delete
+										.slice($scope.account4delete.indexOf('_') + 1),
+									idMeter = $scope.account4delete
+										.slice(0, $scope.account4delete.indexOf('_')),
+									message = Object.create(null);
+
+							message.type = 'CommandMessage';
+							message.command = 'deleteOwner';
+							message.parameters = [
+								{'userId': data.userId},
+								{'idMeter': idMeter}
+							];
+							heatSupply.socket.send(JSON.stringify(message));
+							disable(false);
+						});
+					}
+				});
+		}
+
+		$scope.submitAddOwner = function(isButton){
+			hsFactory.getUserProfile(function(data){
+				var isValid = true;
+				error.html('');
+				$('.regDiv input').each(function(){
+					if(!this.checkValidity()){
+						isValid = false;
+						$('.comment').html('Set correct form\'s data');
+						if(isButton){
+							setTimeout(function(){
+								$('#btnHide').click();
+							},100);
+						}
+						return;
+					}
+				});
+
+				if(isValid){
+					var message = Object.create(null);
+
+					message.type = 'CommandMessage';
+					message.command = 'addOwner';
+					message.parameters = [
+						{'account': $('.regDiv input[name="owneraccount"').val()},
+						{'number': $('.regDiv input[name="meterNumber"').val()},
+						{'userId': data.userId}
+					];
+					heatSupply.socket.send(JSON.stringify(message));
+				}
+			});
+		}
+	});
