@@ -7,6 +7,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -22,6 +26,7 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 
 public class Report {
+	private static final Logger LOG = LoggerFactory.getLogger(Report.class);
 	private HashMap<String, Object> params = new HashMap<String, Object>();
 	
 	public static void main(String[] args) {
@@ -72,7 +77,7 @@ public class Report {
 
 			return bos;
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 		return null;
 	}
@@ -93,7 +98,7 @@ public class Report {
 			exporter.exportReport();
 			ret = new String(bos.toByteArray());
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 		return ret;
 	}

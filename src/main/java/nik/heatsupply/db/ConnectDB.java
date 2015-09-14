@@ -6,6 +6,10 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.common.Encryptor;
 import nik.heatsupply.db.jdbc.BatisJDBC;
 import nik.heatsupply.db.jdbc.IBatisJDBC;
@@ -17,13 +21,14 @@ import nik.heatsupply.socket.model.UserWeb;
 
 @SuppressWarnings("unchecked")
 public class ConnectDB {
+	private static final Logger LOG = LoggerFactory.getLogger(ConnectDB.class);
 	private static final String DATASOURCE_NAME = "heatSupplyDS";
 	private static DataSource dsLocal;
 	private static PostgresDB postgressDB;
 	private static Context context = null;
 	
 	public ConnectDB() {
-		System.out.println("create ConnectDB " + this.toString());
+		LOG.info("Create ConnectDB " + this.toString());
 	}
 	
 	public static boolean updateUser(int idUser, String password, String name, String middlename,
@@ -114,7 +119,7 @@ public class ConnectDB {
 			try {
 				dsLocal = (DataSource) context.lookup("java:comp/env/" + DATASOURCE_NAME);
 			} catch (Exception e1) {
-				System.out.println(e1.getMessage());
+				LOG.error(ExceptionUtils.getStackTrace(e1));
 			}
 		}
 		return dsLocal;
@@ -124,7 +129,7 @@ public class ConnectDB {
 		if (postgressDB == null) {
 			synchronized (ConnectDB.class) {
 				postgressDB = new PostgresDB();
-				System.out.println("New connection");
+				LOG.info("New connection");
 			}
 		}
 		return postgressDB;

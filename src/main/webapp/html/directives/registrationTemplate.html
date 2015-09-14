@@ -3,21 +3,23 @@
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keyOwnerNumber}"></span></td>
 			<td>
-				<input type="text" pattern="[0-9]*" name="owneraccount" placeholder="1234567890" class="canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kRegNumberComment}" value="3570">
+				<input type="text" pattern="[0-9]*" name="owneraccount" placeholder="1234567890" class="form-control canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kRegNumberComment}" value="3570">
 			</td>
 		</tr>
 
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${kMeterNumber}"></span></td>
 			<td>
-				<input type="text" pattern="[0-9]*" name="meterNumber" placeholder="123456789" class="canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kMeterNumberComment}" value="0117864">
+				<input type="text" pattern="[0-9]*" name="meterNumber" placeholder="123456789" class="form-control canSelect" autocomplete="off" ng-focus="regFocus($event);" required comment="${kMeterNumberComment}" value="0117864">
 			</td>
 		</tr>
 	</table>
 	<button id="btnHide1" ng-click="submitRegistration();" class="isHide"></button>
 	</form>
 	<div>
-		<button ng-click="submitRegistration(true);"><span id="${kNext}"></span></button>
+		<button ng-click="submitRegistration(true);" class="btn btn-primary">
+			<span id="${kNext}"></span>
+		</button>
 	</div>
 </div>
 
@@ -26,55 +28,57 @@
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keyLogin}"></span></td>
 			<td>
-				<input type="text" name="login" placeholder="login" class="canSelect" autocomplete="off" required>
+				<input type="text" name="login" placeholder="login" class="form-control canSelect" autocomplete="off" required>
 			</td>
 		</tr>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keyName}"></span></td>
 			<td>
-				<input type="text" name="name" placeholder="middle name" class="canSelect" autocomplete="off" required>
+				<input type="text" name="name" placeholder="middle name" class="form-control canSelect" autocomplete="off" required>
 			</td>
 		</tr>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keyMiddleName}"></span></td>
 			<td>
-				<input type="text" name="middleName" placeholder="surname" class="canSelect" autocomplete="off" required>
+				<input type="text" name="middleName" placeholder="surname" class="form-control canSelect" autocomplete="off" required>
 			</td>
 		</tr>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keySurName}"></span></td>
 			<td>
-				<input type="text" name="surName" placeholder="surname" class="canSelect" autocomplete="off" required>
+				<input type="text" name="surName" placeholder="surname" class="form-control canSelect" autocomplete="off" required>
 			</td>
 		</tr>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keyPhone}"></span></td>
 			<td>
-				<input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="canSelect" autocomplete="off">
+				<input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="form-control canSelect" autocomplete="off">
 			</td>
 		</tr>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${kEmail}"></span></td>
 			<td>
-				<input type="email" name="email" placeholder="login@domain.com" class="canSelect" autocomplete="off" required>
+				<input type="email" name="email" placeholder="login@domain.com" class="form-control canSelect" autocomplete="off" required>
 			</td>
 		</tr>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${kPassword}"></span></td>
 			<td>
-				<input type="password" name="password" class="canSelect" autocomplete="off" required>
+				<input type="password" name="password" class="form-control canSelect" autocomplete="off" required>
 			</td>
 		</tr>
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${kPassword2}"></span></td>
 			<td>
-				<input type="password" name="password2" class="canSelect" autocomplete="off" required>
+				<input type="password" name="password2" class="form-control canSelect" autocomplete="off" required>
 			</td>
 		</tr>
 	</table>
 	<button id="btnHide2" ng-click="submitRegistrationLast();" class="isHide"></button>
 	</form>
-	<button ng-click="submitRegistrationLast(true);"><span id="${kRegister}"></span></button>
+	<button ng-click="submitRegistrationLast(true);" class="btn btn-primary">
+		<span id="${kRegister}"></span>
+	</button>
 </div>
 
 <div class="content col-sm-4 col-sm-offset-4 comment isHide"></div>

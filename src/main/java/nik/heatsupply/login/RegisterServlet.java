@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.socket.messages.ProfileMessages.AddOwner;
 import nik.heatsupply.socket.messages.ProfileMessages.IAddOwner;
@@ -20,6 +24,7 @@ import nik.heatsupply.socket.model.Meter;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
+	private static final Logger LOG = LoggerFactory.getLogger(RegisterServlet.class);
 	private static final long serialVersionUID = 1L;
 	private static final int FIRST_REG_STEP = 1;
 	private static final int SECOND_REG_STEP = 2;
@@ -70,7 +75,7 @@ public class RegisterServlet extends HttpServlet {
 						}
 					}).run();
 				} else {
-					System.out.println("No realized yet.");
+					LOG.info("No realized yet.");
 					sendMessage(response, NOT_REALIZED);
 				}
 			} else if(Integer.parseInt(step) == SECOND_REG_STEP) {
@@ -90,7 +95,7 @@ public class RegisterServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(e));
 			response.sendRedirect("#/");
 		}
 	}
@@ -117,7 +122,7 @@ public class RegisterServlet extends HttpServlet {
 
 			out.println(jsn.build().toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 }

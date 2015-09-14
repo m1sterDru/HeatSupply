@@ -3,7 +3,6 @@ package nik.heatsupply.login;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
@@ -14,12 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.common.Encryptor;
 import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.socket.model.UserWeb;
 
 @WebServlet("/ProfileServlet")
 public class ProfileServlet extends HttpServlet {
+	private static final Logger LOG = LoggerFactory.getLogger(ProfileServlet.class);
 	private static final long serialVersionUID = 1L;
 	private final int SUCCESS = 0;
 	private final int TRY_AGAIN = 1;
@@ -35,11 +39,11 @@ public class ProfileServlet extends HttpServlet {
 			return;
 		}
 		
-		Iterator<String> iter = request.getParameterMap().keySet().iterator();
-		while (iter.hasNext()) {
-			String key = (String) iter.next();
-			System.out.println(key + " = " + request.getParameter(key));
-		}
+//		Iterator<String> iter = request.getParameterMap().keySet().iterator();
+//		while (iter.hasNext()) {
+//			String key = (String) iter.next();
+//			System.out.println(key + " = " + request.getParameter(key));
+//		}
 
 		String idUserS = request.getParameter("idUser");
 		String password = request.getParameter("password");
@@ -89,7 +93,7 @@ public class ProfileServlet extends HttpServlet {
 
 			out.println(jsn.build().toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 }

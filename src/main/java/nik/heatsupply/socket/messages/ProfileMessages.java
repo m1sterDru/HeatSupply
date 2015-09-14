@@ -8,12 +8,17 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.socket.model.Meter;
 import nik.heatsupply.socket.model.MeterUser;
 import nik.heatsupply.socket.model.UserWeb;
 
 public class ProfileMessages {
+	private static final Logger LOG = LoggerFactory.getLogger(ProfileMessages.class);
 	protected static final int SUCCESS = 0;
 	protected static final int OWNER_NOT_EXIST = 1;
 	protected static final int METER_NOT_EXIST = 2;
@@ -28,19 +33,18 @@ public class ProfileMessages {
 			ConnectDB.removeUserMeter(idUser, idMeter);
 
 			retMessage.setParameters("success", "true");
-		} catch (Exception e){
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 		try {
 			session.getBasicRemote().sendObject(retMessage);
 		} catch (IOException | EncodeException e) {
-			e.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
 	public static void removeProfile(CommandMessage cm, Session session, HttpSession httpSession) {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-		System.out.println("removeProfile");
 		if(ConnectDB.deleteUser(idUser)) {
 			sendMessage(session, SUCCESS, "removeProfile");
 			httpSession.invalidate();
@@ -51,7 +55,6 @@ public class ProfileMessages {
 	
 	public static void updateProfile(CommandMessage cm, Session session, HttpSession httpSession) {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-		System.out.println("updateProfile");
 		if(ConnectDB.deleteUser(idUser)) {
 			sendMessage(session, SUCCESS, "updateProfile");
 			httpSession.invalidate();
@@ -74,7 +77,7 @@ public class ProfileMessages {
 			try {
 				session.getBasicRemote().sendObject(message);
 			} catch (IOException | EncodeException e) {
-				e.printStackTrace();
+				LOG.error(ExceptionUtils.getStackTrace(e));
 			}
 		}
 	}
@@ -93,13 +96,13 @@ public class ProfileMessages {
 					message.setParameters(m.getIdmeter() + "", notNull(met.getSerialnumber()) + ";" + 
 							met.getOwneraccount() + ";" + met.getOwnername().replace(";", ""));
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error(ExceptionUtils.getStackTrace(e));
 				}
 			});
 			try {
 				session.getBasicRemote().sendObject(message);
 			} catch (IOException | EncodeException e) {
-				e.printStackTrace();
+				LOG.error(ExceptionUtils.getStackTrace(e));
 			}
 		}
 	}
@@ -151,7 +154,7 @@ public class ProfileMessages {
 		try {
 			session.getBasicRemote().sendObject(retMessage);
 		} catch (IOException | EncodeException e) {
-			e.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 	

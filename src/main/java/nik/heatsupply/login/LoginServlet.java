@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.common.Encryptor;
 import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.socket.Server;
@@ -17,6 +21,7 @@ import nik.heatsupply.socket.model.UserWeb;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
+	private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 	private static final long serialVersionUID = 1L;
 	private static final int SESSION_TIMIOUT = 5 * 60;
 	private static final int MAX_LOGIN_TRY = 3;
@@ -41,8 +46,8 @@ public class LoginServlet extends HttpServlet {
 				int time = SESSION_TIMIOUT - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
 				out.println("<h1 style='color:red;'>Lock</h1>");
 				out.println("<a href='" + url + "/login.html'>Try again after " + time + " s</a>");
-			} catch(Exception e){
-				e.printStackTrace();
+			} catch(Exception e) {
+				LOG.error(ExceptionUtils.getStackTrace(e));
 			}
 			return;
 		} else {
@@ -59,8 +64,6 @@ public class LoginServlet extends HttpServlet {
 			response.sendRedirect("main.html");
 		} else {
 			session.setAttribute("lastTryLogin", System.currentTimeMillis());
-			String uri = request.getRequestURI();
-			System.out.println(uri);
 
 			if(session.getAttribute("logCounter") == null || session.isNew()) {
 				logCounter = 0;
@@ -84,7 +87,6 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("userId", u.getId());
 			session.setMaxInactiveInterval(SESSION_TIMIOUT);
 			Server.getSessions().put(session, true);
-			System.out.println(Server.getSessions().size() + " === SESSIONS_SIZE");
 			return true;
 		}
 		return false;

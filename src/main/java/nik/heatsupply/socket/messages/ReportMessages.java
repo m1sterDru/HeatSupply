@@ -8,9 +8,14 @@ import java.nio.charset.StandardCharsets;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.reports.Report;
 
 public class ReportMessages {
+	private static final Logger LOG = LoggerFactory.getLogger(ReportMessages.class);
 	public static final String HTML_FORMAT = "html";
 	public static final String NOT_HTML_FORMAT = "";
 
@@ -28,7 +33,7 @@ public class ReportMessages {
 			try {
 				session.getBasicRemote().sendObject(retMessage);
 			} catch (IOException | EncodeException e) {
-				e.printStackTrace();
+				LOG.error(ExceptionUtils.getStackTrace(e));
 			}
 		} else {
 			String ext = cm.getParameters().get("ext");
@@ -39,7 +44,7 @@ public class ReportMessages {
 			try {
 				session.getBasicRemote().sendBinary(ByteBuffer.wrap(reportContent4Save.toByteArray()));
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.error(ExceptionUtils.getStackTrace(e));
 			}
 		}
 	}

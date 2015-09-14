@@ -16,6 +16,9 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.socket.messages.CommandMessage;
 import nik.heatsupply.socket.messages.Message;
 import nik.heatsupply.socket.messages.ProfileMessages;
@@ -26,6 +29,7 @@ import nik.heatsupply.socket.messages.coders.MessageEncoder;
 @ServerEndpoint(value = "/socketServer", configurator = GetHttpSessionConfigurator.class,
 encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class})
 public class Server {
+	private static final Logger LOG = LoggerFactory.getLogger(Server.class);
 	private static final Map<HttpSession, Boolean> sessions = Collections.synchronizedMap(new HashMap<>());
 	private static EndpointConfig endpointConfig;
 
@@ -34,12 +38,12 @@ public class Server {
 		endpointConfig = config;
 		HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
 		if(!isValid(httpSession)) {
-			System.out.println("Not valid session. ==> Close");
+			LOG.info("Not valid session. ==> Close");
 			session.close();
 			return;
 		} else {
 			session.setMaxIdleTimeout(1000 * httpSession.getMaxInactiveInterval());
-			System.out.println("Socket connected - " + session.getId());
+			LOG.info("Socket connected - " + session.getId());
 			
 			new AutoCloseSession(session, httpSession).start();
 		}
@@ -49,7 +53,7 @@ public class Server {
 	public void handlerMessage(final Session session, Message message) throws IOException, EncodeException {
 		HttpSession httpSession = (HttpSession) endpointConfig.getUserProperties().get(HttpSession.class.getName());
 		if(!isValid(httpSession)) {
-			System.out.println("Not valid session");
+			LOG.info("Not valid session");
 			return;
 		}
 		if (message.getType().equals(CommandMessage.class.getSimpleName())) {
@@ -91,14 +95,14 @@ public class Server {
 
 	@OnClose
 	public void handlerClose(Session session, CloseReason closeReason) {
-		System.out.println("Socket disconnected - " + session.getId() + ".\n\t Reason = " + closeReason.getReasonPhrase());
+		LOG.info("Socket disconnected - " + session.getId() + ".\n\t Reason = " + closeReason.getReasonPhrase());
 //		HttpSession httpSession = (HttpSession) endpointConfig.getUserProperties().get(HttpSession.class.getName());
 //		sessions.remove(httpSession);
 	}
 	
 	@OnError
 	public void handlerError(Session session, Throwable thr) {
-		System.out.println("Error - " + thr.getMessage());
+		LOG.error("Error - " + thr.getMessage());
 		thr.getStackTrace();
 	}
 
@@ -120,13 +124,13 @@ public class Server {
 			this.httpSession = httpSession;
 			sessions.keySet().forEach(s -> {
 				try {
-					System.out.println(s);
-					System.out.println(s.getMaxInactiveInterval());
-					System.out.println(System.currentTimeMillis() - s.getLastAccessedTime());
-					System.out.println(s.getMaxInactiveInterval() - (System.currentTimeMillis() - s.getLastAccessedTime())/1000);
+					if(s.getMaxInactiveInterval() - (System.currentTimeMillis() - s.getLastAccessedTime())/1000 < 3) {
+						sessions.remove(s);
+						LOG.info("Session removed - " + s.getId());
+					}
 				} catch (Exception e) {
-					e.printStackTrace();
 					sessions.remove(s);
+					LOG.info("Session removed - " + s.getId());
 				}
 			});
 		}
@@ -143,10 +147,10 @@ public class Server {
 				if(session.isOpen()) {
 					session.close(new CloseReason(CloseReason.CloseCodes.NO_STATUS_CODE, "HttpSession is closed"));
 					sessions.remove(httpSession);
-					System.out.println(sessions.size() + " REMOVE_SIZE");
+					LOG.info("Sessions count = " + sessions.size());
 				}
 			} catch (InterruptedException | IOException e) {
-				throw new Error(e);
+				LOG.error(e.getMessage());
 			}
 		}
 	}

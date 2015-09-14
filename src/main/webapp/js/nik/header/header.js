@@ -2,7 +2,13 @@ heatSupply.headerControllers
 	.directive('langDirective', function (){
 		return {
 			templateUrl: './html/directives/langDirective.html',
-			controller: 'translateController'
+			controller: 'translateController',
+			link: function(scope, elm, attrs, ctrl){
+				if(location.href.indexOf('/main.') < 0){
+					var room = elm.find('span').find('a').eq(1);
+					room.append('<span id="${keyRoom}"></span>');
+				}
+			}
 		}
 	});
 

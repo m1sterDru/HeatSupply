@@ -88,9 +88,11 @@ angular.module('headerFactory', [])
 			translate.run(function(t){
 				hs.translator = t;
 				heatSupply.translator = t;
-				heatSupply.initWebSocket(hs, function(){
-					hs.complete = true;
-				});
+				if(location.href.indexOf('/main.') > 0){
+					heatSupply.initWebSocket(hs, function(){
+						hs.complete = true;
+					});
+				}
 			});
 			return hs;
 		}

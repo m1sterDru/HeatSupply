@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.mapping.Environment;
@@ -15,11 +16,14 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.db.jdbc.mappers.IMapper;
 
 public class PostgresDB {
+	private static final Logger LOG = LoggerFactory.getLogger(PostgresDB.class);
 	private SqlSessionFactory sqlSessionFactory;
 	private String connStr;
 	
@@ -38,7 +42,9 @@ public class PostgresDB {
 			} else {
 				connStr = connStr.replace("/", "_");
 			}
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+			LOG.error(ExceptionUtils.getStackTrace(e));
+		}
 	}
 	
 	private void setMappers(DataSource dataSource) {

@@ -100,35 +100,35 @@ heatSupply.initWebSocket = function(hs, callback){
 					if(ngElement.length > 0){
 						scope = angular.element(ngElement).scope();
 						waitScope('#' + elementId, scope, 0, function(scope){
+							if(scope.actowners == undefined) scope.actowners = [];
+							params.forEach(function(o){
+								var idMeter = Object.keys(o)[0],
+										arr = o[idMeter].split(';'),
+										owner = Object.create(null);
 
+								owner.idMeter = idMeter;
+								owner.sn = arr[0];
+								owner.ownerAccount = arr[1];
+								owner.name = arr[2];
+								if(owner.name.length > 40)
+									owner.name = owner.name.slice(0, 40) + ' ...';
+
+								scope.actowners.push(owner);
+							});
+							scope.visibleClass = '';
+							scope.isDisabled = false;
+							if(elementId === 'delAccountTemplate'){
+								scope.account4delete = scope.actowners[0].idMeter + '_' +
+										scope.actowners[0].ownerAccount;
+								scope.account4delete2 = Object.create(null);
+								scope.account4delete2.name = scope.actowners[0].name;
+								scope.account4delete2.sn = scope.actowners[0].sn;
+								scope.account4delete2.ownerAccount = 
+										scope.actowners[0].ownerAccount;
+							}
+							scope.$apply();
+							heatSupply.translator.translateAll();
 						});
-
-						if(scope.actowners == undefined) scope.actowners = [];
-						params.forEach(function(o){
-							var idMeter = Object.keys(o)[0],
-									arr = o[idMeter].split(';'),
-									owner = Object.create(null);
-
-							owner.idMeter = idMeter;
-							owner.sn = arr[0];
-							owner.ownerAccount = arr[1];
-							owner.name = arr[2];
-
-							scope.actowners.push(owner);
-						});
-						scope.visibleClass = '';
-						scope.isDisabled = false;
-						if(elementId === 'delAccountTemplate'){
-							scope.account4delete = scope.actowners[0].idMeter + '_' +
-									scope.actowners[0].ownerAccount;
-							scope.account4delete2 = Object.create(null);
-							scope.account4delete2.name = scope.actowners[0].name;
-							scope.account4delete2.sn = scope.actowners[0].sn;
-							scope.account4delete2.ownerAccount = 
-									scope.actowners[0].ownerAccount;
-						}
-						scope.$apply();
-						heatSupply.translator.translateAll();
 					}
 					break;
 				case 'removeProfile':

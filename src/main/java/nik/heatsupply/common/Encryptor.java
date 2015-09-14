@@ -7,8 +7,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Encryptor {
+	private static final Logger LOG = LoggerFactory.getLogger(Encryptor.class);
 	private final static byte[] key = new byte[32];;
 	private final static byte[] iv = new byte[16];;
 
@@ -18,7 +22,7 @@ public class Encryptor {
 			field.setAccessible(true);
 			field.set(null, false); 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(ex));
 		}
 
 		iv[0] = 29;
@@ -82,7 +86,7 @@ public class Encryptor {
 			byte[] encrypted = cipher.doFinal(value.getBytes());
 			return Base64.encodeBase64String(encrypted);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(ex));
 		}
 		return null;
 	}
@@ -97,7 +101,7 @@ public class Encryptor {
 			byte[] encrypted = cipher.doFinal(value.getBytes("UTF-8"));
 			return Base64.encodeBase64String(encrypted);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(ex));
 		}
 		return null;
 	}
@@ -112,7 +116,7 @@ public class Encryptor {
 			byte[] encrypted = cipher.doFinal(value.getBytes("UTF-8"));
 			return Base64.encodeBase64String(encrypted);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(ex));
 		}
 		return null;
 	}
@@ -128,7 +132,7 @@ public class Encryptor {
 
 			return new String(original);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(ex));
 		}
 		return null;
 	}
@@ -144,7 +148,7 @@ public class Encryptor {
 
 			return new String(original);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(ex));
 		}
 		return null;
 	}
@@ -160,7 +164,7 @@ public class Encryptor {
 
 			return new String(original);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error(ExceptionUtils.getStackTrace(ex));
 		}
 		return null;
 	}

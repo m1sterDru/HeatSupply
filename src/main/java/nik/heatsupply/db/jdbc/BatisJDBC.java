@@ -1,10 +1,14 @@
 package nik.heatsupply.db.jdbc;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import nik.heatsupply.db.ConnectDB;
 
 public class BatisJDBC {
+	private static final Logger LOG = LoggerFactory.getLogger(BatisJDBC.class);
 	private static final int MAX_REPET = 5;
 	private IBatisJDBC iBatis;
 	private IBatisJDBC[] iCollection;
@@ -33,7 +37,7 @@ public class BatisJDBC {
 					try {
 						return iBatis.getResult(session);
 					} catch (Exception e) {
-						System.out.println("Error!!! (In BatisJDBC.class)");
+						LOG.error(ExceptionUtils.getStackTrace(e));
 						ConnectDB.setPostgressDB(null);
 						if(count == MAX_REPET - 1) e.printStackTrace();
 					} finally {
@@ -43,7 +47,7 @@ public class BatisJDBC {
 					Thread.sleep(1000);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error(ExceptionUtils.getStackTrace(e));
 			}
 			count++;
 		}
@@ -62,7 +66,7 @@ public class BatisJDBC {
 					Thread.sleep(1000);
 				}
 			} catch (Exception e) {
-				if(count == MAX_REPET - 1) e.printStackTrace();
+				if(count == MAX_REPET - 1) LOG.error(ExceptionUtils.getStackTrace(e));
 				ConnectDB.setPostgressDB(null);
 			} finally {
 				if (session != null) session.close();
@@ -89,7 +93,7 @@ public class BatisJDBC {
 				}
 			} catch (Exception e) {
 				if(session != null) session.rollback();
-				if(count == MAX_REPET - 1) e.printStackTrace();
+				if(count == MAX_REPET - 1) LOG.error(ExceptionUtils.getStackTrace(e));
 				ConnectDB.setPostgressDB(null);
 			} finally {
 				if (session != null) session.close();

@@ -5,7 +5,5 @@ import javax.ws.rs.core.Application;
 
 @ApplicationPath("dataServer")
 public class ServerApplication extends Application {
-	public ServerApplication() {
-		
-	}
+	public ServerApplication() {}
 }

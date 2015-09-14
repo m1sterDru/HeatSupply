@@ -26,11 +26,10 @@ heatSupply.indexModule
 		return {
 			templateUrl:'./html/directives/loginTemplate.html',
 			link: function(scope, elm, attrs, ctrl){
-				var ngElement = $('div[data-template="langDirective"]'), scope;
-					if(ngElement.length > 0){
-						scope = angular.element(ngElement).scope();
-						scope.login_userSpanClass = 'isHide';
-					}
+				var ngElement = $('div[data-template="langDirective"]'), span;
+
+				span = ngElement.children('span').eq(0);
+				span.addClass('isHide');
 
 				translate.run(function(t){
 					t.translateAll();
@@ -42,12 +41,6 @@ heatSupply.indexModule
 		return {
 			templateUrl:'./html/directives/registrationTemplate.html',
 			link: function(scope, elm, attrs, ctrl){
-				var ngElement = $('div[data-template="langDirective"]'), scope;
-					if(ngElement.length > 0){
-						scope = angular.element(ngElement).scope();
-						scope.login_userSpanClass = 'isHide';
-					}
-
 				translate.run(function(t){t.translateAll();});
 			}
 		}

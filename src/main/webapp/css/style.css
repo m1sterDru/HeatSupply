@@ -4,6 +4,12 @@ body {
 	position: absolute;
 	width: 100%;
 	height: 100%;
+	min-width: 450px;
+}
+.panel{margin-bottom: 0}
+.panel-heading{
+	padding: 0 10px;
+	background: linear-gradient(#D8D8D8, #d0d0d0);
 }
 .lang{display: none; padding-top: 10px !important;}
 .langInv{display: block;}
@@ -56,11 +62,12 @@ tr.spaceUnder > td {padding-left: 5px;}
 	box-shadow: 0 0 25px rgba(0,0,0,0.7);
 }
 .middleContent{
-	max-height: calc(100% - 100px);
+	max-height: calc(100% - 120px);
+	height: calc(100% - 120px);
 	overflow-y: auto;
-	margin-top: 15px;
+	margin-top: 25px;
 	margin-bottom: 15px;
-	height: calc(100% - 100px);
+	padding: 0;
 }
 .middleContent > div{height: 100%;}
 .listContent .styleContent{overflow: auto;}
@@ -134,11 +141,6 @@ span .caret{float: right; margin-top: 7px;}
 .titleCenter{text-align: center;}
 #mainContent{padding: 0 15px;}
 
-#mainMenu{
-	width: 100%;
-	background: linear-gradient(#D8D8D8, #d0d0d0);
-}
-
 .footer {
 	bottom: 0;
 	background-color: #ddd;
@@ -154,7 +156,7 @@ span .caret{float: right; margin-top: 7px;}
 	border-color: gray;
 	box-shadow: 0 0 10px rgba(0,0,0,0.3);
 	padding: 10px;
-	min-height: 170px;
+	min-height: 190px;
 }
 .loginDiv table{width: 100%}
 .loginDiv form > div{
@@ -270,7 +272,8 @@ a > .fa{padding-top: 4px;}
 	padding: 13px 10px 0 20px;
 	color: orange;
 }
-ul.dropdown-menu{width: 100%; padding: 0;}
+ul.dropdown-menu{padding: 0;}
+#delAccountTemplate ul.dropdown-menu{width: 100%;}
 li.form-control, .dropdown-toggle{
 	height: auto;
 	text-align: left;

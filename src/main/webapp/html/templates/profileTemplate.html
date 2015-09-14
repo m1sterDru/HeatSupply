@@ -7,44 +7,44 @@
 			<span id="${keyAdditionalSettings}"></span>
 		</div>
 	</div>
-	<div class="col-md-5 col-sm-6">
+	<div class="col-md-5 col-sm-7">
 		<form method="post" class="styleContent" ng-style="formStyle">
 			<table>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${keyName}"></span> *</td>
-					<td><input type="text" name="name" class="canSelect" required ng-disabled="isDisabled"></td>
+					<td><input type="text" name="name" class="form-control canSelect" required ng-disabled="isDisabled"></td>
 				</tr>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${keyMiddleName}"></span> *</td>
-					<td><input type="text" name="middleName" class="canSelect" required ng-disabled="isDisabled"></td>
+					<td><input type="text" name="middleName" class="form-control canSelect" required ng-disabled="isDisabled"></td>
 				</tr>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${keySurName}"></span> *</td>
-					<td><input type="text" name="surName" class="canSelect" required ng-disabled="isDisabled"></td>
+					<td><input type="text" name="surName" class="form-control canSelect" required ng-disabled="isDisabled"></td>
 				</tr>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${kEmail}"></span> *</td>
-					<td><input type="email" name="email", class="canSelect" required ng-disabled="isDisabled"></td>
+					<td><input type="email" name="email", class="form-control canSelect" required ng-disabled="isDisabled"></td>
 				</tr>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${keyPhone}"></span></td>
-					<td><input type="text" name="phone", class="canSelect" ng-disabled="isDisabled"></td>
+					<td><input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="form-control canSelect" ng-disabled="isDisabled"></td>
 				</tr>
 				<tr class="spaceUnder"><td></td></tr>
 				<tr class="spaceUnder"><td></td></tr>
 				<tr class="spaceUnder"><td></td></tr>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${kPassword}"></span> *</td>
-					<td><input type="password" name="pwd", class="canSelect" required ng-disabled="isDisabled"></td>
+					<td><input type="password" name="pwd", class="form-control canSelect" required ng-disabled="isDisabled"></td>
 				</tr>
 				<tr class="spaceUnder"><td colspan="2"><hr></td></tr>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${kPassword1}"></span></td>
-					<td><input type="password" name="pwd1", class="canSelect" ng-disabled="isDisabled"></td>
+					<td><input type="password" name="pwd1", class="form-control canSelect" ng-disabled="isDisabled"></td>
 				</tr>
 				<tr class="spaceUnder">
 					<td class="bold"><span id="${kPassword2}"></span></td>
-					<td><input type="password" name="pwd2", class="canSelect" ng-disabled="isDisabled"></td>
+					<td><input type="password" name="pwd2", class="form-control canSelect" ng-disabled="isDisabled"></td>
 				</tr>
 			</table>
 			<button id="btnHide" ng-click="submitProfile();" class="isHide"></button>

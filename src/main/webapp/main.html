@@ -25,9 +25,13 @@
 	<script src="./js/nik/main/controllers.js"></script>
 	<script src="./js/nik/main/main.js"></script>
 </head>
-<body ng-controller="mainController">
+<body>
 	<div ng-include src="'./html/header.html'"></div>
-	<div ng-include src="'./html/main/mainForm.html'" class="middleContent"></div>
+	
+	<!-- <div ng-include src="'./html/main/mainForm.html'" class="container middleContent styleContent"></div> -->
+
+	<div id="mainContent" ng-view class="container content middleContent styleContent"></div>
+
 	<div class="footer container">
 		<p class="titleCenter"><span id="${kCopyRight}"></span></p>
 	</div>
