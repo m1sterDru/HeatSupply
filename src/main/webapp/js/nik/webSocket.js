@@ -1,5 +1,6 @@
 heatSupply.initWebSocket = function(hs, callback){
 	var ws = new WebSocket('ws' + hs.url.slice(4) + 'socketServer');
+
 	ws.onmessage = function (message){
 		if(message.data instanceof Blob){
 			saveTextAsFile(message.data,
@@ -12,8 +13,8 @@ heatSupply.initWebSocket = function(hs, callback){
 			var params = jsonData.parameters;
 
 			function waitScope(selector, scope, counter, callback){
-				if(scope != undefined || counter > 5){
-					if(callback != null && scope != undefined){
+				if(typeof scope !== 'undefined' || counter > 5){
+					if(callback != null && typeof scope !== 'undefined'){
 						callback(scope);
 					}
 					return;
@@ -51,14 +52,22 @@ heatSupply.initWebSocket = function(hs, callback){
 					break;
 				case 'reportHTML':
 					var param = params[0],
-						reportContent = $('#reportContent');
+						reportContent = $('.panel-body');
 					if(reportContent){
 						reportContent.html(param.content);
 						if(window.navigator.appVersion.indexOf('Chrome') > 0){
-							$('#reportContent table:first').css({
-								'zoom': ($('#reportContent').width() - 20)/595
+							$('.panel-body table:first').css({
+								'zoom': ($('.panel-body').width() - 30)/595
 							});
 						}
+						waitScope('div[data-template="langDirective"]',scope, 0,
+							function(scope){
+								if(scope.login_userLink.indexOf('profile.') < 0)
+									scope.login_userLink = '#/profile.';
+								else
+									scope.login_userLink = '#/profile';
+								scope.$apply();
+							});
 					}
 					break;
 				case 'deleteOwner':
@@ -76,15 +85,15 @@ heatSupply.initWebSocket = function(hs, callback){
 					}
 					break;
 				case 'profileInfo':
-					var ngElement = $('#mainContent'), scope;
+					var ngElement = $('#profileInfo'), scope;
 					if(ngElement.length > 0){
 						scope = angular.element(ngElement).scope();
 						params.forEach(function(o){
 							var key = Object.keys(o)[0];
-							$('input[name="' + key + '"').val(o[key]);
+							$('input[name="' + key + '"]').val(o[key]);
 						});
 
-						waitScope('#mainContent', scope, 0, function(scope){
+						waitScope('#profileInfo', scope, 0, function(scope){
 							scope.isDisabled = false;
 							scope.formStyle = {opacity: 1};
 							scope.$apply();
@@ -138,6 +147,7 @@ heatSupply.initWebSocket = function(hs, callback){
 		}
 	}
 	ws.onerror = function (e){
+		console.log('qqq q')
 		console.log(e);
 	}
 	ws.onclose = function(){

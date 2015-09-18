@@ -8,10 +8,13 @@ heatSupply.mainModule = angular.module('main', [
 heatSupply.mainModule.config(function ($routeProvider){
 	$routeProvider.
 		when('/', {
-			templateUrl: 'html/main/mainForm.html',
-			controller:'mainController'
+			templateUrl: 'html/main/mainForm.html'
 		}).
 		when('/profile', {
+			templateUrl: 'html/templates/profileTemplate.html',
+			controller:'profileController'
+		}).
+		when('/profile.', {
 			templateUrl: 'html/templates/profileTemplate.html',
 			controller:'profileController'
 		}).
@@ -33,6 +36,9 @@ heatSupply.mainModule.config(function ($routeProvider){
 			},
 			controller: 'ownerAccountController'
 		})
+		.otherwise({
+			redirectTo: '/'
+		});
 }).run(function ($rootScope, $location, hsFactory){
 	$rootScope.$on("$routeChangeStart", function (event, next, current){
 		var isValid = false;
@@ -51,4 +57,53 @@ heatSupply.mainModule.config(function ($routeProvider){
 			});
 		}
 	});
-});;
+});
+
+heatSupply.mainModule
+	.directive('menuDirective', function (translate){
+		return {
+			templateUrl:'./html/directives/menuDirective.html',
+			link: function(scope, elm, attrs, ctrl){
+				$(elm).find('#menuNavbar .btn-group:first button')
+					.each(function(ind, btn){
+						var ul = $(btn).parent().children('ul');
+						if(ul.length > 0){
+							ul.hover(
+								function(){
+									$(this).parent().children('button')
+										.attr('aria-expanded',true);
+								},
+								function(){
+									$(this).parent().removeClass('open selectedMenu');
+									$(this).parent().children('button')
+										.attr('aria-expanded',false);
+								});
+
+							$(btn).hover(
+								function(){
+									$(this).parent().addClass('open selectedMenu');
+								},
+								function(){
+									var aBtn = $(this);
+									setTimeout(function(){
+										if(aBtn.attr('aria-expanded') !== 'true')
+											aBtn.parent().removeClass('open selectedMenu');
+									}, 100);
+								});
+						}
+					});
+				translate.run(function(t){
+					t.translateAll();
+				});
+			},
+			controller: 'menuController'
+		}
+	})
+	.directive('registrationForm', function (translate){
+		return {
+			templateUrl:'./html/directives/registrationTemplate.html',
+			link: function(scope, elm, attrs, ctrl){
+				translate.run(function(t){t.translateAll();});
+			}
+		}
+	});

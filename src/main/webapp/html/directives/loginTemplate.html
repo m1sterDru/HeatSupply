@@ -1,4 +1,4 @@
-<form action="LoginServlet" method="post">
+<form method="post">
 	<table >
 		<tr class="spaceUnder">
 			<td class="bold"><span id="${keyLogin}"></span></td>
@@ -13,17 +13,20 @@
 			</td>
 		</tr>
 	</table>
-	<hr>
-	<div>
-		<button type="submit" class="btn btn-primary">
-			<span id="${kLogin}"></span>
-		</button>
-		<a href="#registration" class="button pull-right">
-			<button class="btn btn-success">
-				<span id="${kRegister}"></span>
-			</button>
-		</a>
-		<br>
-		<a href=""><span id="${kRecover}"></span></a>
-	</div>
+	<button id="btnHide" ng-click="sendLogin();" class="isHide"></button>
 </form>
+<hr>
+<div>
+	<button class="btn btn-primary" ng-click="sendLogin();">
+		<span id="${kLogin}"></span>
+	</button>
+	<a href="#registration" class="button pull-right">
+		<button class="btn btn-success">
+			<span id="${kRegister}"></span>
+		</button>
+	</a>
+	<br>
+	<a href=""><span id="${kRecover}"></span></a>
+</div>
+<!-- <br><br><br><hr style="margin: 0;border-top: 1px solid white;">
+<span class="alert alert-danger comment isHide"></span> -->

@@ -2,41 +2,13 @@ heatSupply.mainControllers = angular.module('mainControllers', [
 	'ngRoute',
 	'headerFactory']);
 
-heatSupply.mainControllers.config(function ($routeProvider){
-	$routeProvider.
-		when('/profile', {
-			templateUrl: function(){
-				return 'html/templates/profileTemplate.html';
-			},
-			controller: 'profileController'
-		}).
-		when('/account', {
-			templateUrl: function(){
-				return 'html/templates/accountTemplate.html';
-			},
-			controller: 'accountController'
-		}).
-		when('/addOwner', {
-			templateUrl: function(){
-				return 'html/templates/addOwnerAccountTemplate.html';
-			},
-			controller: 'ownerAccountController'
-		}).
-		when('/delOwner', {
-			templateUrl: function(){
-				return 'html/templates/delOwnerAccountTemplate.html';
-			},
-			controller: 'ownerAccountController'
-		})
-});
-
 heatSupply.mainControllers
-	.controller('mainController', 
+	.controller('menuController', 
 		function ($scope, hsFactory, $location){
 		$scope.$on('$viewContentLoaded', function(){
 			hsFactory.translator.translateAll();
 		});
-		$location.path('/');
+		// $location.path('/');
 
 		$scope.menuClick = function($event){
 			var li = $event.target;
@@ -60,13 +32,9 @@ heatSupply.mainControllers
 				}));
 			}
 		}
-
-		// heatSupply.initWebSocket(hsFactory.url);
 	})
 	.controller('profileController', function ($scope, hsFactory, $http){
-		var error = $('.comment:first'),
-				error2 = $('.comment:last'),
-				userId;
+		var userId;
 
 		hsFactory.getUserProfile(function(data){
 			var message = Object.create(null);
@@ -82,17 +50,24 @@ heatSupply.mainControllers
 		});
 
 		$scope.submitProfile = function(isButton){
-			var isValid = true;
+			var error = $('.comment:first'), isValid = true;
+
+			error.parent().addClass('isHide');
 			$('#profileInfo form input').each(function(){
 				if(!this.checkValidity()){
 					isValid = false;
-					error.html('Set correct form\'s data');
+					// updateError('keyWrongPassword', error);
+					if($(this)[0].name === 'email'){
+						updateError('keyWrongEmail', error);
+					} else if($(this)[0].name === 'pwd'){
+						updateError('keyWrongPassword', error);
+					}
 					if(isButton){
 						setTimeout(function(){
 							$('#btnHide').click();
 						},100);
 					}
-					return;
+					return false;
 				}
 			});
 			if(isValid){
@@ -101,31 +76,56 @@ heatSupply.mainControllers
 						pwd2 = $('#profileInfo input[name="pwd2"]').val();
 
 				if(pwd1 != pwd2){
-					error.html('New passwords are different ...');
+					updateError('keyNewPasswordsWrong', error);
 				} else {
-					updateProfile(function(data){
-						if(data.messageId != 0)
-							error.html(data.message);
-						else
-							window.location.href = hsFactory.url + 'main.html';
-					});
+					if(pwd1.length > 0 && pwd1.length < 6){
+						updateError('keyNewPasswordNotValid', error);
+					} else {
+						updateProfile(function(data){
+							if(data.messageId != 0)
+								updateError(data.message, error);
+							else
+								window.location.href = hsFactory.url + 'main.html';
+						});
+					}
 				}
 			}
+		}
+
+		function updateError(key, error){
+			hsFactory.translator.translateValueByKey(
+				hsFactory.language, key, function(value){
+					error.html(value);
+					error[0].id = '${' + key + '}';
+					error.parent().removeClass('isHide');
+				});
 		}
 
 		$scope.removeProfile = function(){
 			hsFactory.translator.translateValueByKey(hsFactory.language, 'keySure',
 			function(value){
-				if(confirm(value)){
-					hsFactory.getUserProfile(function(data){
-						var message = Object.create(null);
+				BootstrapDialog.confirm({
+					title: 'WARNING',
+					message: value,
+					type: BootstrapDialog.TYPE_DANGER,
+					closable: false,
+					draggable: false,
+					btnCancelLabel: 'Cancel',
+					btnOKLabel: 'OK',
+					btnOKClass: 'btn-danger',
+					callback: function(result){
+						if(result) {
+							hsFactory.getUserProfile(function (data){
+								var message = Object.create(null);
 
-						message.type = 'CommandMessage';
-						message.command = 'removeProfile';
-						message.parameters = [{'userId': data.userId}];
-						heatSupply.socket.send(JSON.stringify(message));
-					});
-				}
+								message.type = 'CommandMessage';
+								message.command = 'removeProfile';
+								message.parameters = [{'userId': data.userId}];
+								heatSupply.socket.send(JSON.stringify(message));
+							});
+						}
+					}
+				});
 			});
 		}
 
@@ -135,9 +135,6 @@ heatSupply.mainControllers
 				url: '/HeatSupply/ProfileServlet',
 				params: {
 					idUser: userId,
-					name: $('#profileInfo input[name="name"]').val(),
-					middleName: $('#profileInfo input[name="middleName"]').val(),
-					surName: $('#profileInfo input[name="surName"]').val(),
 					email: $('#profileInfo input[name="email"]').val(),
 					phone: $('#profileInfo input[name="phone"]').val(),
 					password: $('#profileInfo input[name="pwd"]').val(),

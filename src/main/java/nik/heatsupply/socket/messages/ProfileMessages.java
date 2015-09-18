@@ -68,9 +68,9 @@ public class ProfileMessages {
 		UserWeb u = ConnectDB.getUser(idUser);
 		if(u != null) {
 			CommandMessage message = new CommandMessage("profileInfo");
-			message.setParameters("name", notNull(u.getName()));
-			message.setParameters("middleName", notNull(u.getMiddlename()));
-			message.setParameters("surName", notNull(u.getSurname()));
+//			message.setParameters("name", notNull(u.getName()));
+//			message.setParameters("middleName", notNull(u.getMiddlename()));
+//			message.setParameters("surName", notNull(u.getSurname()));
 			message.setParameters("email", notNull(u.getEmail()));
 			message.setParameters("phone", notNull(u.getPhone()));
 			

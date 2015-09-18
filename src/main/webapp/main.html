@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html ng-app="main">
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>HeatSupply</title>
 
 	<script src="./js/angular.min.js"></script>
@@ -27,10 +28,13 @@
 </head>
 <body>
 	<div ng-include src="'./html/header.html'"></div>
-	
-	<!-- <div ng-include src="'./html/main/mainForm.html'" class="container middleContent styleContent"></div> -->
 
-	<div id="mainContent" ng-view class="container content middleContent styleContent"></div>
+	<!-- <div id="mainContent" ng-view class="container content middleContent styleContent"></div> -->
+	<div id="mainContent" class="panel container content middleContent styleContent">
+		<div menu-directive class="panel-heading"></div>
+
+		<div ng-view class="panel-body"></div>
+	</div>
 
 	<div class="footer container">
 		<p class="titleCenter"><span id="${kCopyRight}"></span></p>

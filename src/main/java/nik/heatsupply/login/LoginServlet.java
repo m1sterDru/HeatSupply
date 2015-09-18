@@ -23,8 +23,8 @@ import nik.heatsupply.socket.model.UserWeb;
 public class LoginServlet extends HttpServlet {
 	private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 	private static final long serialVersionUID = 1L;
-	private static final int SESSION_TIMIOUT = 5 * 60;
-	private static final int MAX_LOGIN_TRY = 3;
+	private static final int SESSION_TIMIOUT = 15 * 60;
+	private static final int MAX_LOGIN_TRY = 30;
 
 	private int logCounter = 0;
 	private long lastTryLogin;
@@ -44,8 +44,9 @@ public class LoginServlet extends HttpServlet {
 			url = url.substring(0, url.lastIndexOf("/"));
 			try(PrintWriter out = response.getWriter();){
 				int time = SESSION_TIMIOUT - (int) ((System.currentTimeMillis() - lastTryLogin) / 1000);
-				out.println("<h1 style='color:red;'>Lock</h1>");
-				out.println("<a href='" + url + "/login.html'>Try again after " + time + " s</a>");
+//				out.println("<h1 style='color:red;'>Lock</h1>");
+//				out.println("<a href='" + url + "/login.html'>Try again after " + time + " s</a>");
+				ServletMessage.send(response, ServletMessage.LOGIN_SESSION_TIMEOUT, time + "");
 			} catch(Exception e) {
 				LOG.error(ExceptionUtils.getStackTrace(e));
 			}
@@ -61,7 +62,8 @@ public class LoginServlet extends HttpServlet {
 //			Cookie userName = new Cookie("user", user);
 //			userName.setMaxAge(SESSION_TIMIOUT);
 //			response.addCookie(userName);
-			response.sendRedirect("main.html");
+//			response.sendRedirect("main.html");
+			ServletMessage.send(response, ServletMessage.SUCCESS);
 		} else {
 			session.setAttribute("lastTryLogin", System.currentTimeMillis());
 
@@ -74,7 +76,8 @@ public class LoginServlet extends HttpServlet {
 			if(logCounter == MAX_LOGIN_TRY){
 				session.setAttribute("lock", "true");
 			}
-			response.sendRedirect("#/login");
+			ServletMessage.send(response, ServletMessage.LOGIN_BAD);
+//			response.sendRedirect("#/login");
 		}
 	}
 	

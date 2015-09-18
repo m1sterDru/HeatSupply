@@ -34,7 +34,8 @@ heatSupply.indexModule
 				translate.run(function(t){
 					t.translateAll();
 				});
-			}
+			},
+			controller: 'loginController'
 		}
 	})
 	.directive('registrationForm', function (translate){

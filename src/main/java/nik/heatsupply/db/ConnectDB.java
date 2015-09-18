@@ -31,14 +31,13 @@ public class ConnectDB {
 		LOG.info("Create ConnectDB " + this.toString());
 	}
 	
-	public static boolean updateUser(int idUser, String password, String name, String middlename,
-			String surname, String phone, String email, int languageid) {
+	public static boolean updateUser(int idUser, String password, String phone, String email, int languageid) {
 		Encryptor encr = new Encryptor();
 		while(password.length() < 12) password += " ";
 		String passwordE = encr.encrypt(password);
 
 		IBatisJDBC updateUser =  s -> s.getMapper(IMapper.class)
-				.updateUser(idUser, passwordE, name, middlename, surname, phone, email, languageid);
+				.updateUser(idUser, passwordE, phone, email, languageid);
 		
 		return new BatisJDBC(updateUser).run();
 	}

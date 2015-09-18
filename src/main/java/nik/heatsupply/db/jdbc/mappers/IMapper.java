@@ -14,11 +14,9 @@ import nik.heatsupply.socket.model.UserWeb;
 
 public interface IMapper {
 	@Update("update users_web set " +
-			"password = #{password}, name = #{name}, middlename = #{middlename}, surname = #{surname}," +
-			"email = #{email}, phone = #{phone}, languageid = #{languageid} " +
+			"password = #{password}, email = #{email}, phone = #{phone}, languageid = #{languageid} " +
 			"where id = #{id}")
-	Integer updateUser(@Param("id") int idUser, @Param("password")String password, 
-			@Param("name")String name, @Param("middlename")String middlename, @Param("surname")String surname,
+	Integer updateUser(@Param("id") int idUser, @Param("password")String password,
 			@Param("phone")String phone, @Param("email")String email, @Param("languageid")int languageid);
 	
 	@Delete("delete from meter_user where iduser = #{iduser} and idmeter = #{idmeter}")

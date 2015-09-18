@@ -45,18 +45,32 @@ heatSupply.headerControllers.controller('headerController',
 				var locale = Object.create(null);
 				locale.id = file;
 				locales.push(locale);
-				hsFactory.translator.translateValueByKey(file, 
-					['kFlagLocale','kLangName'],function(value){
-						if(value.indexOf('http') != -1)
-							locale.img = value;
-						else{
-							locale.langName = value;
-							if((index++) == files.length){
-								$scope.$apply();
-								$scope.changeLocale(hsFactory.language);
+				translate.run(function(t){
+					t.translateValueByKey(file, ['kFlagLocale','kLangName'],
+						function(value){
+							if(value.indexOf('http') != -1)
+								locale.img = value;
+							else{
+								locale.langName = value;
+								if((index++) == files.length){
+									$scope.$apply();
+									$scope.changeLocale(hsFactory.language);
+								}
 							}
-						}
-					});
+						});
+				});
+				// hsFactory.translator.translateValueByKey(file, 
+				// 	['kFlagLocale','kLangName'],function(value){
+				// 		if(value.indexOf('http') != -1)
+				// 			locale.img = value;
+				// 		else{
+				// 			locale.langName = value;
+				// 			if((index++) == files.length){
+				// 				$scope.$apply();
+				// 				$scope.changeLocale(hsFactory.language);
+				// 			}
+				// 		}
+				// 	});
 			});
 			$scope.locales = locales;
 		});

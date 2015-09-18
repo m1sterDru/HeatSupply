@@ -10,6 +10,17 @@ heatSupply.headerControllers
 				}
 			}
 		}
+	})
+	.directive('errorDirective', function (){
+		return {
+			templateUrl: './html/directives/errorDirective.html',
+			link: function(scope, elm, attrs, ctrl){
+				var aClose = elm.find('a')[0];
+				aClose.addEventListener("click", function(){
+					elm.find('div').eq(0).addClass('isHide');
+				});
+			}
+		}
 	});
 
 heatSupply.headerControllers.controller('translateController', 

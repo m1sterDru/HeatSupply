@@ -1,77 +1,83 @@
-<div id="profileInfo" class="content">
+<div id="profileInfo">
 	<div class="title">
-		<div class="col-sm-5 content">
-			<span id="${kSettings}"></span>
-		</div>
-		<div class="col-md-4 col-sm-5 hidden-xs pull-right content">
-			<span id="${keyAdditionalSettings}"></span>
-		</div>
+		<span id="${kSettings}"></span>
 	</div>
-	<div class="col-md-5 col-sm-7">
-		<form method="post" class="styleContent" ng-style="formStyle">
-			<table>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${keyName}"></span> *</td>
-					<td><input type="text" name="name" class="form-control canSelect" required ng-disabled="isDisabled"></td>
-				</tr>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${keyMiddleName}"></span> *</td>
-					<td><input type="text" name="middleName" class="form-control canSelect" required ng-disabled="isDisabled"></td>
-				</tr>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${keySurName}"></span> *</td>
-					<td><input type="text" name="surName" class="form-control canSelect" required ng-disabled="isDisabled"></td>
-				</tr>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${kEmail}"></span> *</td>
-					<td><input type="email" name="email", class="form-control canSelect" required ng-disabled="isDisabled"></td>
-				</tr>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${keyPhone}"></span></td>
-					<td><input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="form-control canSelect" ng-disabled="isDisabled"></td>
-				</tr>
-				<tr class="spaceUnder"><td></td></tr>
-				<tr class="spaceUnder"><td></td></tr>
-				<tr class="spaceUnder"><td></td></tr>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${kPassword}"></span> *</td>
-					<td><input type="password" name="pwd", class="form-control canSelect" required ng-disabled="isDisabled"></td>
-				</tr>
-				<tr class="spaceUnder"><td colspan="2"><hr></td></tr>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${kPassword1}"></span></td>
-					<td><input type="password" name="pwd1", class="form-control canSelect" ng-disabled="isDisabled"></td>
-				</tr>
-				<tr class="spaceUnder">
-					<td class="bold"><span id="${kPassword2}"></span></td>
-					<td><input type="password" name="pwd2", class="form-control canSelect" ng-disabled="isDisabled"></td>
-				</tr>
-			</table>
+	<div style="padding: 0 15px;">
+		<div error-directive></div>
+		<hr class="horizHR">
+	</div>
+	<div class="col-md-8 col-sm-7">
+		<form method="post" ng-style="formStyle">
+			<div class="row subDiv">
+				<h4 class="tHeader">
+					<b><span id="${keyChangeEmailPhone}"></span></b>
+				</h4>
+				<div class="col-md-8 col-md-offset-2">
+					<table>
+						<tr class="spaceUnder">
+							<td class="bold"><span id="${kEmail}"></span> *</td>
+							<td><input type="email" name="email", class="form-control canSelect" required ng-disabled="isDisabled"></td>
+						</tr>
+						<tr class="spaceUnder">
+							<td class="bold"><span id="${keyPhone}"></span></td>
+							<td><input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="form-control canSelect" ng-disabled="isDisabled"></td>
+					</table>
+				</div>
+			</div>
+			<div class="row subDiv">
+				<h4 class="tHeader"><b><span id="${keyChangePassword}"></span></b></h4>
+				<div class="col-md-8 col-md-offset-2">
+					<table>
+						<tr class="spaceUnder">
+							<td class="bold"><span id="${kPassword1}"></span></td>
+							<td><input type="password" name="pwd1", class="form-control canSelect" ng-disabled="isDisabled"></td>
+						</tr>
+						<tr class="spaceUnder">
+							<td class="bold"><span id="${kPassword2}"></span></td>
+							<td><input type="password" name="pwd2", class="form-control canSelect" ng-disabled="isDisabled"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<hr>
+			<div class="row subDiv">
+				<div class="col-md-8 col-md-offset-2">
+					<table>
+						<tr class="spaceUnder">
+							<td class="bold"><span id="${keyCurrentPassword}"></span> *</td>
+							<td><input type="password" name="pwd", class="form-control canSelect" required ng-disabled="isDisabled"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
 			<button id="btnHide" ng-click="submitProfile();" class="isHide"></button>
 		</form>
-		<span class="col-sm-12 comment"></span>
+
 		<div class="col-sm-12">
-			<button ng-click="submitProfile(true);" ng-disabled="isDisabled" class="fa fa-check btn btn-primary">
-				<span id="${kApply}"></span>
+			<button ng-click="submitProfile(true);" ng-disabled="isDisabled" class="fa fa-check btn btn-primary pull-right">
+				<span id="${keyChange}"></span>
 			</button>
-			<button ng-click="removeProfile();" class="fa fa-trash btn btn-danger pull-right" ng-disabled="isDisabled">
+			<!-- <button ng-click="removeProfile();" class="fa fa-trash btn btn-danger pull-right" ng-disabled="isDisabled">
 				<span id="${kRemoveAccount}"></span>
-			</button>
+			</button> -->
 		</div>
 	</div>
 
 	<div class="listContent col-md-4 col-sm-5 pull-right leftBorder">
 		<div>
 			<div>
+				<!-- <span class="imageStyle"></span> -->
 				<span class="fa fa-info-circle title"></span>
 				<a href="#/account">
-					<span class="fa subTitle" id="${keyProfNewAccount}"></span>
+					<span class="subTitle" id="${keyProfNewAccount}"></span>
 				</a>
 			</div>
 			<div class="content">
 				<p>
-					Ви можете додати особовий рахунок або об'єднати поточний обліковий запис з вже зареєстрованим раніше, якщо Ви бажаєте 
-					<b><a href="#/account"> контролювати кілька особових рахунків.</a></b>
+					<!-- Ви можете додати особовий рахунок або об'єднати поточний обліковий запис з вже зареєстрованим раніше, якщо Ви бажаєте 
+					<a href="#/account"> контролювати кілька особових рахунків.</a> -->
+					<span id="${keyProfNewAccountText}"></span>
 				</p>
 			</div>
 		</div>
@@ -79,13 +85,29 @@
 			<div>
 				<span class="fa fa-info-circle title"></span>
 				<a href="">
-					<span class="fa subTitle" id="${keyProfDelAccount}"></span>
+					<span class="subTitle" id="${keyProfDelAccount}"></span>
 				</a>
 			</div>
 			<div class="content">
 				<p>
-					Якщо Ви більше не хочете користуватися даним сервісом - Ви можете 
-					<b><a href=""> видалити обліковий запис.</a></b>
+					<!-- Якщо Ви більше не хочете користуватися даним сервісом - Ви можете 
+					<a href=""> видалити обліковий запис.</a> -->
+					<span id="${keyProfDelAccountText}"></span>
+				</p>
+			</div>
+		</div>
+		<div>
+			<div>
+				<span class="fa fa-info-circle title"></span>
+				<a href="">
+					<span class="subTitle" id="${keyProfDelOwner}"></span>
+				</a>
+			</div>
+			<div class="content">
+				<p>
+					<!-- Якщо Ви хочете видалити один або кілька особових рахунків з облікового запису - натисніть посилання "Додатково" над
+					<a href=""> списком особових рахунків, </a> з'являться додаткові елементи управління у т.ч. кнопка "Видалити" -->
+					<span id="${keyProfDelOwnerText}"></span>
 				</p>
 			</div>
 		</div>
