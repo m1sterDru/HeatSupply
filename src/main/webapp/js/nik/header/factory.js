@@ -65,9 +65,9 @@ angular.module('headerFactory', [])
 							}
 						}
 					} else {
-						var url = document.URL;
-						url = url.slice(0, url.indexOf('HeatSupply') + 11);
-						location.href = url;
+						// var url = document.URL;
+						// url = url.slice(0, url.indexOf('HeatSupply') + 11);
+						// location.href = url;
 					}
 				})
 				.error(function(data, status, headers, config){

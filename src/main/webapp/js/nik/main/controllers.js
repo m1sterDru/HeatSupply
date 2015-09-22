@@ -10,6 +10,21 @@ heatSupply.mainControllers
 		});
 		// $location.path('/');
 
+		$scope.login_userLink = '#/profile';
+
+		hsFactory.getUserProfile(function(data){
+			var message = Object.create(null);
+
+			$scope.login = data.user;
+			message.type = 'CommandMessage';
+			message.command = 'ownerList';
+			message.parameters = [
+				{'userId': data.userId},
+				{'selector': "div[data-template='profileDirective']"}
+			];
+			heatSupply.socket.send(JSON.stringify(message));
+		});
+
 		$scope.menuClick = function($event){
 			var li = $event.target;
 			while(li.tagName !== 'LI') li = li.parentNode;
@@ -151,48 +166,35 @@ heatSupply.mainControllers
 			});
 		}
 	})
-	.controller('accountController', function ($scope, hsFactory, $http){
-		$scope.visibleClass = 'isHide';
-		$scope.additionalClass = 'isHide';
-		$scope.additionalIcon = 'fa-plus-square';
-
-		hsFactory.getUserProfile(function(data){
-			var message = Object.create(null);
-
-			message.type = 'CommandMessage';
-			message.command = 'ownerList';
-			message.parameters = [
-				{'userId': data.userId},
-				{'elementId': 'accountTemplate'}
-			];
-			heatSupply.socket.send(JSON.stringify(message));
-			$scope.login = data.user;
-		});
-
-		$scope.additional = function(){
-			$scope.additionalClass = $scope.additionalClass === '' ?
-				'isHide' : '';
-			$scope.additionalIcon = $scope.additionalClass === '' ?
-				'fa-minus-square' : 'fa-plus-square';
-		}
+	.controller('accountController', function ($scope,hsFactory){
+		setTimeout(function(){
+			hsFactory.translator.translateAll();
+		}, 1000);
 	})
-	.controller('ownerAccountController', function ($scope, hsFactory, $http){
-		var error = $('.error');
+	.controller('ownerAccountController', function ($scope, hsFactory){
+		var error = $('div[error-directive] .comment');
 
-		if($('#delAccountTemplate').length){
+		if(!$('#delAccountTemplate').length){
 			$scope.isDisabled = true;
-			hsFactory.getUserProfile(function(data){
-				var message = Object.create(null);
+			$scope.afterProducer = 'isHide';
+			$('form').parent().parent().css('opacity','0.5');
+		}
 
-				message.type = 'CommandMessage';
-				message.command = 'ownerList';
-				message.parameters = [
-					{'userId': data.userId},
-					{'elementId': 'delAccountTemplate'}
-				];
-				heatSupply.socket.send(JSON.stringify(message));
-				$scope.login = data.user;
-			});
+		$scope.selectProvider = function(type){
+			$scope.producerType = type;
+			$scope.isDisabled = type == 0 ? true : false;
+			$('form').parent().parent().css(
+				'opacity', type == 0 ? '0.5' : '1'
+			);
+			$scope.afterProducer = type == 0 ? 'isHide' : '';
+			$scope.beforProducer = type == 0 ? '' : 'isHide';
+			if(type != 0){
+				$scope.provider1 = type == 1 ? '' : 'isHide';
+				$scope.provider2 = type == 2 ? '' : 'isHide';
+			} else {
+				$scope.provider1 = '';
+				$scope.provider2 = '';
+			}
 		}
 
 		function disable(isOn){
@@ -212,11 +214,10 @@ heatSupply.mainControllers
 		$scope.change4delete = function($event){
 			var li = $event.target;
 			while(li.tagName != 'LI') li = li.parentNode;
-			$scope.account4delete2.name = li.getAttribute('ownerName');
-			$scope.account4delete = li.getAttribute('idMeter') + '_' +
-				li.getAttribute('ownerAccount');
-			$scope.account4delete2.sn = li.getAttribute('snMeter');
-			$scope.account4delete2.ownerAccount = li.getAttribute('ownerAccount');
+			$scope.account4delete.name = li.getAttribute('ownerName');
+			$scope.account4delete.idMeter = li.getAttribute('idMeter');
+			$scope.account4delete.sn = li.getAttribute('snMeter');
+			$scope.account4delete.ownerAccount = li.getAttribute('ownerAccount');
 		}
 
 		$scope.deleteOwnerAccount = function(){
@@ -225,10 +226,8 @@ heatSupply.mainControllers
 					if(confirm(value)){
 						disable(true);
 						hsFactory.getUserProfile(function(data){
-							var owneraccount = $scope.account4delete
-										.slice($scope.account4delete.indexOf('_') + 1),
-									idMeter = $scope.account4delete
-										.slice(0, $scope.account4delete.indexOf('_')),
+							var owneraccount = $scope.account4delete.ownerAccount,
+									idMeter = $scope.account4delete.idMeter,
 									message = Object.create(null);
 
 							message.type = 'CommandMessage';
@@ -263,13 +262,14 @@ heatSupply.mainControllers
 
 				if(isValid){
 					var message = Object.create(null);
-
+console.log($scope.producerType)
 					message.type = 'CommandMessage';
 					message.command = 'addOwner';
 					message.parameters = [
 						{'account': $('.regDiv input[name="owneraccount"').val()},
 						{'number': $('.regDiv input[name="meterNumber"').val()},
-						{'userId': data.userId}
+						{'userId': data.userId},
+						{'typeAccount': $scope.producerType + ''}
 					];
 					heatSupply.socket.send(JSON.stringify(message));
 				}

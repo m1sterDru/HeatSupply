@@ -33,6 +33,7 @@ public class ProfileMessages {
 			ConnectDB.removeUserMeter(idUser, idMeter);
 
 			retMessage.setParameters("success", "true");
+			retMessage.setParameters("idUser", idUser + "");
 		} catch (Exception e) {
 			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
@@ -84,11 +85,11 @@ public class ProfileMessages {
 	
 	public static void getOwnerList(CommandMessage cm, Session session) {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-		String elementId = cm.getParameters().get("elementId");
+		String selector = cm.getParameters().get("selector");
 		UserWeb u = ConnectDB.getUser(idUser);
 		if(u != null) {
 			CommandMessage message = new CommandMessage("ownerList");
-			message.setParameters("elementId", elementId);
+			message.setParameters("selector", selector);
 			List<MeterUser> actOwners = ConnectDB.getMetersList(u.getId());
 			actOwners.forEach(m -> {
 				try {
@@ -115,13 +116,15 @@ public class ProfileMessages {
 		String owneraccount = cm.getParameters().get("account");
 		String meterNumber = cm.getParameters().get("number");
 		String userId = cm.getParameters().get("userId");
+		String type_accountS = cm.getParameters().get("typeAccount");
+		int type_account = type_accountS == null ? 0 : Integer.parseInt(type_accountS);
 
 		new AddOwner(owneraccount, meterNumber, new IAddOwner() {
 			@Override
 			public void onSuccess(Meter meter) {
 				int idUser = Integer.parseInt(userId);
-				if(ConnectDB.addMeterUser(idUser, meter.getId(), 0, 0, owneraccount)) {
-					sendMessage(session, SUCCESS, "addOwner");
+				if(ConnectDB.addMeterUser(idUser, meter.getId(), 0, type_account, owneraccount)) {
+					sendMessage(session, SUCCESS, "addOwner", "idUser_" + userId);
 				} else {
 					sendMessage(session, TRY_AGAIN, "addOwner");
 				}
@@ -140,17 +143,22 @@ public class ProfileMessages {
 	}
 	
 	private static void sendMessage(Session session, int messageID, String command) {
+		sendMessage(session, messageID, command, null);
+	}
+
+	private static void sendMessage(Session session, int messageID, String command, String par) {
 		String text = "";
 		String success = "false";
 		switch(messageID) {
-			case OWNER_NOT_EXIST: text = "Owner number is wrong! (TEST: 3570/0117928)"; break;
-			case METER_NOT_EXIST: text = "Meter number is wrong"; break;
+			case OWNER_NOT_EXIST: text = "keyOwnerAccountError"; break;
+			case METER_NOT_EXIST: text = "keyMeterNotExist"; break;
 			case TRY_AGAIN: text = "Something wrong. Try again."; break;
 			case SUCCESS: success = "true"; break;
 		}
 		CommandMessage retMessage = new CommandMessage(command);
 		retMessage.setParameters("success", success);
 		retMessage.setParameters("message", text);
+		if(par != null) retMessage.setParameters(par.substring(0, par.indexOf("_")), par.substring(par.indexOf("_") + 1));
 		try {
 			session.getBasicRemote().sendObject(retMessage);
 		} catch (IOException | EncodeException e) {

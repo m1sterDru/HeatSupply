@@ -16,6 +16,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,8 +103,8 @@ public class Server {
 	
 	@OnError
 	public void handlerError(Session session, Throwable thr) {
-		LOG.error("Error - " + thr.getMessage());
-		thr.getStackTrace();
+		LOG.error("Error - " + ExceptionUtils.getFullStackTrace(thr));
+//		thr.printStackTrace();
 	}
 
 	public static Map<HttpSession, Boolean> getSessions() {

@@ -26,17 +26,13 @@ heatSupply.headerControllers.config(function ($routeProvider){
 });
 
 heatSupply.headerControllers.controller('headerController', 
-	function ($scope, $sce, translate, hsFactory){
+	function ($scope, translate, hsFactory){
 		var hideSpan = location.href.indexOf('login') > 0 ||
 									 location.href.indexOf('registration') > 0;
-		$scope.login_href = '#login';
-		$scope.login_spanID = '${kLogin}';
-		$scope.longin_class = location.href.indexOf('/main.') > 0 ?
-			'fa fa-sign-in' : 'isHide';
-		$scope.login_userIconClass = '';
-		$scope.login_userLink = location.href.indexOf('/main.') > 0 ?
-			'#/profile' : 'main.html';
 
+		$scope.longin_visClass = 'isHide';
+		$scope.login_userSpanClass = location.href.indexOf('/main.') > 0 ?
+			'isHide' : '';
 		if(hideSpan) $scope.login_userSpanClass = 'isHide';
 
 		translate.langFiles(function(files){
@@ -59,18 +55,6 @@ heatSupply.headerControllers.controller('headerController',
 							}
 						});
 				});
-				// hsFactory.translator.translateValueByKey(file, 
-				// 	['kFlagLocale','kLangName'],function(value){
-				// 		if(value.indexOf('http') != -1)
-				// 			locale.img = value;
-				// 		else{
-				// 			locale.langName = value;
-				// 			if((index++) == files.length){
-				// 				$scope.$apply();
-				// 				$scope.changeLocale(hsFactory.language);
-				// 			}
-				// 		}
-				// 	});
 			});
 			$scope.locales = locales;
 		});

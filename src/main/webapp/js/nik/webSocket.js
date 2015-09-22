@@ -1,7 +1,24 @@
 heatSupply.initWebSocket = function(hs, callback){
 	var ws = new WebSocket('ws' + hs.url.slice(4) + 'socketServer');
 
+	function updateError(key, error){
+		hs.translator.translateValueByKey(
+			hs.language, key, function(value){
+				error.html(value);
+				error[0].id = '${' + key + '}';
+				error.parent().removeClass('isHide');
+			});
+	}
+
+	function updateError2(text, error){
+		error.html(text);
+		// error[0].id = '${' + key + '}';
+		error.parent().removeClass('isHide');
+	}
+
 	ws.onmessage = function (message){
+		var error = $('div[error-directive] .comment');
+
 		if(message.data instanceof Blob){
 			saveTextAsFile(message.data,
 				heatSupply.currentReport, heatSupply.currentReportExt);
@@ -27,14 +44,27 @@ heatSupply.initWebSocket = function(hs, callback){
 				}, 200);
 			}
 
+			function updateOwners(idUser){
+				var message = Object.create(null);
+
+				message.type = 'CommandMessage';
+				message.command = 'ownerList';
+				message.parameters = [
+					{'userId': idUser},
+					{'selector': "div[data-template='profileDirective']"}
+				];
+				heatSupply.socket.send(JSON.stringify(message));
+				location.href = hs.url + 'main.html#/account';
+			}
+
 			switch(jsonData.command){
 				case 'user':
-					var ngElement = $('div[data-template="langDirective"]'), scope;
+					var ngElement = $('div[menu-directive]'), scope;
 					if(ngElement.length > 0){
 						scope = angular.element(ngElement).scope();
 					}
 
-					waitScope('div[data-template="langDirective"]',scope, 0,
+					waitScope('div[menu-directive]',scope, 0,
 						function(scope){
 							scope.login_user = params[0].value;
 							scope.login_userIconClass = '';
@@ -43,10 +73,9 @@ heatSupply.initWebSocket = function(hs, callback){
 								hs.language, 'kLogout', function(value){
 									scope.login_spanID = '${kLogout}';
 									$('.loginSpanSelectot').html(value);
-									scope.login_userSpanClass = '';
+									scope.login_href = 'LogoutServlet';
 								});
 							scope.longin_class = 'fa fa-sign-out';
-							scope.login_userSpanClass = '';
 							scope.$apply();
 						});
 					break;
@@ -71,17 +100,41 @@ heatSupply.initWebSocket = function(hs, callback){
 					}
 					break;
 				case 'deleteOwner':
-					if(params[0].success === 'true'){
-						location.href = hs.url + '#/account';
+					var idUser, success, message;
+
+					for(key in params){
+						if(params[key].idUser != undefined)
+							idUser = params[key].idUser;
+						else if(params[key].success != undefined)
+							success = params[key].success;
+						else if(params[key].message != undefined)
+							message = params[key].message;
+					}
+
+					if(success === 'true'){
+						updateOwners(idUser);
 					} else {
 						$('.error').html('Error. Try again.');
 					}
 					break;
 				case 'addOwner':
-					if(params[0].success === 'true'){
-						location.href = hs.url + '#/account';
+					var idUser, success, message;
+
+					for(key in params){
+						if(params[key].idUser != undefined)
+							idUser = params[key].idUser;
+						else if(params[key].success != undefined)
+							success = params[key].success;
+						else if(params[key].message != undefined)
+							message = params[key].message;
+					}
+
+					if(success === 'true'){
+						updateOwners(idUser);
 					} else {
-						$('.error').html(params[1].message);
+						updateError(message, error);
+						// updateError2(params[1].message, error);
+						// error.html(params[1].message);
 					}
 					break;
 				case 'profileInfo':
@@ -101,15 +154,21 @@ heatSupply.initWebSocket = function(hs, callback){
 					}
 					break;
 				case 'ownerList':
-					var elementId = params[0].elementId,
-							ngElement = $('#' + elementId),
-							scope;
+					var selector, ngElement, scope;
 
-					params = params.slice(1);
+					for(par in params){
+						if(params[par].selector != undefined){
+							selector = params[par].selector;
+							ngElement = $(selector);
+							params.splice(par,1);
+						}
+					}
+
 					if(ngElement.length > 0){
 						scope = angular.element(ngElement).scope();
-						waitScope('#' + elementId, scope, 0, function(scope){
-							if(scope.actowners == undefined) scope.actowners = [];
+						waitScope(selector, scope, 0, function(scope){
+							scope.actowners = [];
+							scope.longin_visClass = '';
 							params.forEach(function(o){
 								var idMeter = Object.keys(o)[0],
 										arr = o[idMeter].split(';'),
@@ -126,15 +185,15 @@ heatSupply.initWebSocket = function(hs, callback){
 							});
 							scope.visibleClass = '';
 							scope.isDisabled = false;
-							if(elementId === 'delAccountTemplate'){
-								scope.account4delete = scope.actowners[0].idMeter + '_' +
-										scope.actowners[0].ownerAccount;
-								scope.account4delete2 = Object.create(null);
-								scope.account4delete2.name = scope.actowners[0].name;
-								scope.account4delete2.sn = scope.actowners[0].sn;
-								scope.account4delete2.ownerAccount = 
-										scope.actowners[0].ownerAccount;
-							}
+							scope.account4delete = scope.actowners[0].idMeter + '_' +
+									scope.actowners[0].ownerAccount;
+							scope.account4delete = Object.create(null);
+							scope.account4delete.name = scope.actowners[0].name;
+							scope.account4delete.idMeter = scope.actowners[0].idMeter;
+							scope.account4delete.sn = scope.actowners[0].sn;
+							scope.account4delete.ownerAccount = 
+									scope.actowners[0].ownerAccount;
+
 							scope.$apply();
 							heatSupply.translator.translateAll();
 						});

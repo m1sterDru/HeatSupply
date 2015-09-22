@@ -1,22 +1,23 @@
 <nav class="navbar" style="min-height:0;margin-bottom:0;height:34px;">
 	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menuNavbar" style="margin: 0">
+		<button class="navbar-toggle" data-toggle="collapse" data-target="#menuNavbar" style="margin: 0">
 			<span class="icon-bar" style="background-color: white;"></span>
 			<span class="icon-bar" style="background-color: white;"></span>
 			<span class="icon-bar" style="background-color: white;"></span>
 		</button>
+		<div profile-directive class="pull-right lang"></div>
 		<div>
-			<a href="#/" class="fa fa-home"></a>
+			<a href="#/" class="btn fa fa-home"></a>
 		</div>
 	</div>
 	<div class="collapse navbar-collapse" id="menuNavbar" style="padding: 0;">
 		<div class="btn-group">
-			<button type="button" class="btn">
+			<button class="btn">
 				<span id="${khmAbon}"></span>
 			</button>
 
-			<div class="btn-group" role="group">
-				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="btn-group btnLeftBorder" role="group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<span id="${khmTovar}"></span>
 					<span class="caret"></span>
 				</button>
@@ -39,8 +40,8 @@
 				</ul>
 			</div>
 
-			<div class="btn-group" role="group">
-				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="btn-group btnLeftBorder" role="group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<span id="${khmKoshtu}"></span>
 					<span class="caret"></span>
 				</button>
@@ -53,8 +54,8 @@
 				</ul>
 			</div>
 
-			<div class="btn-group" role="group">
-				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="btn-group btnLeftBorder" role="group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<span id="${khmDocuvents}"></span>
 					<span class="caret"></span>
 				</button>
@@ -66,8 +67,8 @@
 				</ul>
 			</div>
 
-			<div class="btn-group" role="group">
-				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="btn-group btnLeftBorder" role="group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<span id="${khmDesc}"></span>
 					<span class="caret"></span>
 				</button>
@@ -85,5 +86,7 @@
 				<a href="" ng-click="saveAs($event);" id="sPDF" class="fa fa-file-pdf-o"></a>
 			</button> -->
 		</div>
+		<div profile-directive class="pull-right langInv"></div>
 	</div>
 </nav>
+<div class="pathClass"><a>Path</a></div>

@@ -4,7 +4,7 @@ body {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	min-width: 450px;
+	min-width: 640px;
 	font-size: 14px;
 }
 .panel{margin-bottom: 0}
@@ -14,14 +14,19 @@ body {
 	box-shadow: inset 0 12px 6px rgba(255,255,255,.1),inset 0 -12px 6px rgba(0,0,0,.1);
 	color: white;
 	border-radius: 0;
+	border: none;
 }
-.panel-body{max-height: calc(100% - 40px);overflow-y: auto; padding: 0;}
-.lang{display: none; padding-top: 10px !important;}
+.panel-body{max-height: calc(100% - 70px);overflow-y: auto; padding: 0;}
+.lang{display: none;}
+.header .lang{padding-top: 10px;}
 
 .langInv{display: block;}
-@media(max-width: 1205px){
+@media(max-width: 1200px){
 	.lang{display: block;}
 	.langInv{display: none;}
+	.pathClass > a {margin-left: 0 !important;}
+	.header{height: 40px !important;}
+
 	.header .navbar-header{float: none;}
 	.header .navbar-toggle{display: block;}
 	.header .navbar-collapse{border-top: 1px solid transparent;box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);}
@@ -30,10 +35,26 @@ body {
 	.header .navbar-nav>li{float: none;}
 	.header .navbar-nav>li>a{padding-top: 10px;padding-bottom: 10px;}
 	.header .navbar-text{float: none;margin: 15px 0;}
-	/* since 3.1.0 */
 	.header .navbar-collapse.collapse.in{display: block!important;}
 	.header .collapsing{overflow: hidden!important;}
 }
+@media(max-width: 1200px){
+	.lang{display: block;}
+	.langInv{display: none;}
+	.header{height: 40px !important;}
+
+	#mainContent .navbar-header{float: none;}
+	#mainContent .navbar-toggle{display: block;}
+	#mainContent .navbar-collapse{border-top: 1px solid transparent;box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);}
+	#mainContent .navbar-collapse.collapse{display: none!important;}
+	#mainContent .navbar-nav{float: none!important;margin: 7.5px -15px;}
+	#mainContent .navbar-nav>li{float: none;}
+	#mainContent .navbar-nav>li>a{padding-top: 10px;padding-bottom: 10px;}
+	#mainContent .navbar-text{float: none;margin: 15px 0;}
+	#mainContent .navbar-collapse.collapse.in{display: block!important;}
+	#mainContent .collapsing{overflow: hidden!important;}
+}
+
 ::selection {background-color: transparent;}
 .canSelect::selection {
 	background-color: rgb(123, 180, 199);
@@ -41,9 +62,9 @@ body {
 .horizHR{margin:0; border-top: 1px solid #b1c6d8;}
 button[disabled],
 input[disabled]{color: gray;}
-.glyphicon, .fa {color: rgb(25, 50, 117);}
+.glyphicon, .fa {color: rgb(25, 50, 117); margin-right: 5px;}
 .fa-home{
-	color: white;
+	color: white !important;
 	font-size: 20px;
 	height: 24px;
 	padding: 0 5px;
@@ -129,11 +150,19 @@ tr.spaceUnder > td {padding-left: 5px;}
 	touch-action: manipulation;
 	border: 1px solid transparent;
 	color: black;
-	background-color: #ddd;
+	background-color: transparent;
 }
 .menubutton:hover {
 	background: rgba(0,0,0,.1);
 	cursor: pointer;
+}
+
+li.menubutton{color: black !important;}
+
+div[data-template='profileDirective']{margin-right: 5px;}
+div[data-template='profileDirective'] .fa,
+div[data-template='profileDirective'] .menubutton{
+	color: white;
 }
 
 .spanmenu:hover{
@@ -142,17 +171,32 @@ tr.spaceUnder > td {padding-left: 5px;}
 }
 
 .header{
-	background-color: #ddd;
+	background: #ddd;
 	height: 40px;
+	min-width: 580px;
+	margin-top: 5px;
 }
+
+.pathClass{
+	color: black;
+	background-color: #ddd;
+	padding: 5px 15px;
+}
+.pathClass > a{margin-left: -30px;}
+.pathClass > a:hover{cursor: pointer;}
+
 .navbar-collapse{padding: 8px;}
 #menuNavbar .btn-group button{
 	border: 1px solid #04b;
 	font-size: 0.9em;
 }
+#menuNavbar .btn:focus,
+#menuNavbar .btn.focus,
+#menuNavbar .btn:hover{color: white;}
 #myNavbar.navbar-collapse[aria-expanded='true']{
 	background-color: #ddd;
 }
+#myNavbar .btn-group > button{border: 1px solid #eee;}
 #menuNavbar.navbar-collapse[aria-expanded='true']{
 	background-color: #0073b2;
 	overflow: visible;
@@ -163,14 +207,24 @@ tr.spaceUnder > td {padding-left: 5px;}
 	background-color: #eee;
 	color: #0073b2;
 }
+#menuNavbar .btnLeftBorder{border-left: 1px solid white;}
 .navbar-toggle{margin-right: 0;}
-.navbar-header > div:last-child{padding: 5px 10px;}
+.navbar-header > div:last-child{padding: 0 10px 10px 0;}
+.navbar-header > div:last-child > a{
+	line-height: 32px;
+	height: 32px;
+	margin: 0;
+	padding: 0 5px;
+}
+.navbar-header > div:last-child > a:hover{
+	color: #0073b2 !important;
+}
 .header .navbar-header img[alt='Logo']{height: 35px;}
 .right_header {
 	display: inline;
 	font-size: 20px;
 	padding-bottom: 8px;
-	border-right: 1px dotted #143273;
+	border-right: 1px dotted white;
 	line-height: 0;
 	margin-right: 10px;
 }
@@ -186,9 +240,13 @@ tr.spaceUnder > td {padding-left: 5px;}
 	background: transparent;
 	border-color: transparent;
 }
-.btn-group button:hover{border-color: blue;}
 
-button[data-btn='curLangButton']{padding-right: 0;background-color: #ddd;}
+#myNavbar .btn-group button:hover{
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+}
+
+button[data-btn='curLangButton']{padding-right: 0;}
 button[data-btn='curLangButton'] img{margin: -3px 5px 0 0;}
 span .caret{float: right; margin: 7px;}
 
@@ -242,21 +300,24 @@ table input {
 .loginDiv .comment{display: inline-block; margin-bottom: 0; width: 100%;}
 a.button {text-decoration: none; color: inherit;}
 
+.subDiv{
+	background-color: #eee;
+	border: 1px solid silver;
+}
 #profileInfo .subDiv{
 	padding: 5px;
 	margin: 10px 0;
-	background-color: #eee;
-	border: 1px solid silver;
 }
 #profileInfo table{width: 100%;}
 #profileInfo table{padding: 5px;}
 #profileInfo .subDiv table tr td:first-child{text-align: right;width: 50%;}
 #profileInfo table hr{margin: 5px 0}
-#profileInfo .leftBorder .fa,
+.leftBorder .btn .fa{color: white;}
+.leftBorder .fa-info-circle,
 #profileInfo .leftBorder .glyphicon,
-#profileInfo .leftBorder div > a{color: #0090D8;}
+.leftBorder div > a{color: #0090D8;text-decoration: none;}
 #profileInfo .leftBorder div > a{text-decoration: underline;}
-#profileInfo .leftBorder p{padding-left: 40px;}
+.leftBorder p{padding: 0 5px 0 48px;}
 #profileInfo .imageStyle{
 	background-image: url(../info.png);
 	background-size: 24px 24px;
@@ -264,9 +325,6 @@ a.button {text-decoration: none; color: inherit;}
 	display: inline-block;
 	padding: 0 15px;
 	height: 24px;
-}
-@media (max-width: 768px){
-	#profileInfo > div:last-child{height: auto;}
 }
 
 .tHeader{
@@ -276,7 +334,7 @@ a.button {text-decoration: none; color: inherit;}
 }
 
 .leftBorder{
-	border-left: 1px solid #b1c6d8;
+	border-left: 2px solid #337ab7;
 	height: calc(100% - 120px);
 	margin: 5px 0;
 	padding: 0;
@@ -296,15 +354,8 @@ a.button {text-decoration: none; color: inherit;}
 
 a > .fa{padding-top: 4px;}
 
-#addAccountTemplate > div:nth-child(2){margin-top: 100px;}
-#delAccountTemplate .caret{margin-top: 20px;}
-
 .regDiv form table,
 .regDiv form table input{width: 100%;}
-
-.regDiv,
-#profileInfo .styleContent,
-#delAccountTemplate .styleContent{box-shadow: 0 0 10px rgba(0,0,0,0.3);}
 .regDiv form tr > td:first-child {text-align: right;width:50%;}
 .regDiv div:last-child{width: 50%;float: right!important;}
 .regDiv div:last-child button{
@@ -333,11 +384,15 @@ a > .fa{padding-top: 4px;}
 	background-image: linear-gradient(to bottom, #eee, #ddd);
 }
 .ownerButton:focus{outline-width: 0;}
+.fa-lightbulb-o{
+	padding: 3px 5px 5px;
+	border-radius: 3px;
+	color: white;
+	background: linear-gradient(yellow, #fc2, orange, #fc2, yellow);
+}
 .ownerButton .fa-lightbulb-o{
 	font-size: 35px;
 	padding: 13px 20px 10px;
-	color: white;
-	background: linear-gradient(yellow, #fc2, orange, #fc2, yellow);
 	border: 1px solid #942;
 	border-radius: 10px;
 	display: inline-block;
@@ -348,12 +403,15 @@ a > .fa{padding-top: 4px;}
 	height: 30px;
 	margin: 17px 5px;
 }
+div[profile-directive] ul.dropdown-menu{margin: 10px 0 0 25px; width: 200px;}
 ul.dropdown-menu{
-	padding: 0;
+	padding: 0 5px;
 	min-width: 0;
 	background-color: #eee;
 }
-div[data-template='langDirective'] ul.dropdown-menu{width: 155px !important;}
+/*div[data-template='langDirective'] {width: calc(100% - 200px);}*/
+div[data-template='langDirective'] .fa-lightbulb-o{font-weight: bold;}
+div[data-template='langDirective'] ul.dropdown-menu{width: 135px;}
 
 #delAccountTemplate ul.dropdown-menu{width: 100%;}
 li.form-control, .dropdown-toggle{
@@ -402,3 +460,32 @@ li .glyphicon-scale{
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+/*Add or Delete owner account*/
+#addAccountTemplate .tHeader{padding: 0;}
+#addAccountTemplate .subDiv{
+	padding: 5px;
+	margin: 10px;
+}
+#addAccountTemplate .panel{
+	padding: 0;
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+#addAccountTemplate .panel:hover{
+	cursor: pointer;
+	box-shadow: 0 0 5px silver;
+	background-color: #ddd;
+}
+#addAccountTemplate .fa-list-alt{font-size: 25px;}
+#addAccountTemplate .panel-heading,
+#addAccountTemplate .panel-body{padding: 5px;}
+#addAccountTemplate .leftBorder p{padding-top: 10px;}
+#addAccountTemplate .regDiv div:last-child button{margin: 10px 0;}
+#addAccountTemplate h4[ng-click]{
+	cursor: pointer;
+	color: #0090D8;
+	text-decoration: underline;
+}
+
+#delAccountTemplate .caret{margin-top: 20px;}

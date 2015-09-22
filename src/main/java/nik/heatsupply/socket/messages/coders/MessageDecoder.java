@@ -12,10 +12,15 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nik.heatsupply.socket.messages.CommandMessage;
 import nik.heatsupply.socket.messages.Message;
 
 public class MessageDecoder implements Decoder.Text<Message> {
+	private static final Logger LOG = LoggerFactory.getLogger(MessageDecoder.class);
 
 	@Override
 	public void destroy() {
@@ -48,7 +53,12 @@ public class MessageDecoder implements Decoder.Text<Message> {
 						String key = iterator.next();
 						String value = param.get(key).toString();
 
-						parameters.put(key, value.substring(1, value.length() - 1));
+						try {
+							parameters.put(key, value.substring(1, value.length() - 1));
+						} catch (Exception e) {
+							LOG.error(ExceptionUtils.getFullStackTrace(e));
+							LOG.error("Message's parameters must be a STRING format!");
+						}
 					}
 				}
 				cm.setParameters(parameters);

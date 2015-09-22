@@ -1,14 +1,11 @@
 <div data-template="langDirective">
 	<span class="{{login_userSpanClass}}">
 		<a href="#/" class="fa fa-user {{login_userIconClass}}"> </a>
-		<a href="{{login_userLink}}" class="fa titleCenter">{{login_user}}</a>
-		<div class="right_header"></div>
-		<a href="{{login_href}}" class="{{longin_class}}">
-			<span id="{{login_spanID}}" class="loginSpanSelectot"></span>
-		</a>
+		<a href="{{login_userLink}}" class="room fa">{{login_user}}</a>
 	</span>
+
 	<span class="dropdown">
-		<button data-btn="curLangButton" type="button" class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false" lang="{{langId}}">
+		<button data-btn="curLangButton" class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false" lang="{{langId}}">
 			<img ng-src="{{langImg}}" width="20">
 			<span>{{langDesc}}</span>
 			<span class="caret"></span>

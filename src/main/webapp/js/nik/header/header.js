@@ -2,10 +2,10 @@ heatSupply.headerControllers
 	.directive('langDirective', function (){
 		return {
 			templateUrl: './html/directives/langDirective.html',
-			controller: 'translateController',
+			controller: 'langController',
 			link: function(scope, elm, attrs, ctrl){
 				if(location.href.indexOf('/main.') < 0){
-					var room = elm.find('span').find('a').eq(1);
+					var room = $(elm).find('.room');
 					room.append('<span id="${keyRoom}"></span>');
 				}
 			}
@@ -23,13 +23,13 @@ heatSupply.headerControllers
 		}
 	});
 
-heatSupply.headerControllers.controller('translateController', 
-	function ($scope, translate, hsFactory){
+heatSupply.headerControllers.controller('langController', 
+	function ($scope, $element, translate, hsFactory){
 		$scope.changeLanguage = function($event){
-			var btn = $('button[data-btn="curLangButton"]:first')[0],
-					el = $event.target;
+			var el = $event.target;
 
 			if(el.tagName.toLowerCase() !== 'li') el = el.parentNode;
 			$scope.changeLocale(el.id);
 		}
+		$scope.login_userLink = 'main.html';
 	});

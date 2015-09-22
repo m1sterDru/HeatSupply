@@ -1,0 +1,26 @@
+<div data-template="profileDirective">
+	<span class="dropdown">
+		<button class="btn-sm menubutton dropdown-toggle {{longin_visClass}}" data-toggle="dropdown" aria-expanded="false">
+			<span class="fa fa-lightbulb-o"></span>
+			<span id="${keyOwnerNumberTrim}"></span>
+			<span>: {{account4delete.ownerAccount}}</span>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li id="{{locale.id}}" ng-repeat="own in actowners | orderBy:['name']" class="menubutton">
+				<span class="fa fa-lightbulb-o"></span>
+				<span id="${keyOwnerNumberTrim}"></span>
+				<span>: {{own.ownerAccount}}</span>
+			</li>
+		</ul>
+	</span>
+	<div class="right_header {{longin_visClass}}"></div>
+	<span class="{{login_userSpanClass}}">
+		<a href="#/" class="fa fa-user {{login_userIconClass}}"> </a>
+		<a href="{{login_userLink}}" class="fa">{{login_user}}</a>
+		<div class="right_header"></div>
+		<a href="{{login_href}}" class="{{longin_class}}">
+			<span id="{{login_spanID}}" class="loginSpanSelectot"></span>
+		</a>
+	</span>
+</div>

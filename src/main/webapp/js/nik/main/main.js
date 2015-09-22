@@ -106,4 +106,12 @@ heatSupply.mainModule
 				translate.run(function(t){t.translateAll();});
 			}
 		}
+	})
+	.directive('profileDirective', function (translate){
+		return {
+			templateUrl:'./html/directives/profileDirective.html',
+			link: function(scope, elm, attrs, ctrl){
+				translate.run(function(t){t.translateAll();});
+			}
+		}
 	});
