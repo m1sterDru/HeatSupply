@@ -146,20 +146,6 @@ heatSupply.mainControllers
 	$scope.logoClass = 'isHide';
 	setTimeout(function(){$scope.logoClass = '';}, 500);
 
-	function disable(isOn){
-		var ico = $('.btn-danger span:first-child');
-		$('#delAccountTemplate select').disabled = isOn;
-		$('#delAccountTemplate button').disabled = isOn;
-		$('#delAccountTemplate').css('opacity', isOn ? '0.5' : '1');
-		if(isOn){
-			ico.removeClass('fa-remove');
-			ico.addClass('fa-refresh fa-spin');
-		} else {
-			ico.removeClass('fa-refresh fa-spin');
-			ico.addClass('fa-remove');
-		}
-	}
-
 	$scope.change4delete = function($event){
 		var li = $event.target;
 		while(li.tagName != 'LI') li = li.parentNode;
@@ -183,7 +169,6 @@ heatSupply.mainControllers
 				{'idMeter': idMeter}
 			];
 			heatSupply.socket.send(JSON.stringify(message));
-			disable(false);
 		});
 	}
 })

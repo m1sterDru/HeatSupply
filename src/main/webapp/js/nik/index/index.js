@@ -22,7 +22,7 @@ heatSupply.indexModule.config(function ($routeProvider){
 });
 
 heatSupply.indexModule
-	.directive('loginForm', function (translate){
+	.directive('loginForm', function (translate, hsFactory){
 		return {
 			templateUrl:'./html/directives/loginTemplate.html',
 			link: function(scope, elm, attrs, ctrl){
@@ -30,6 +30,8 @@ heatSupply.indexModule
 
 				span = ngElement.children('span').eq(0);
 				span.addClass('isHide');
+				$('input[name="user"]').val(hsFactory.login);
+				$('input[name="pwd"]')[0].focus();
 
 				translate.run(function(t){
 					t.translateAll();

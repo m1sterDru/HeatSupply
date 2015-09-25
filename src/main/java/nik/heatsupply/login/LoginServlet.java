@@ -77,7 +77,6 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("lock", "true");
 			}
 			ServletMessage.send(response, ServletMessage.LOGIN_BAD);
-//			response.sendRedirect("#/login");
 		}
 	}
 	

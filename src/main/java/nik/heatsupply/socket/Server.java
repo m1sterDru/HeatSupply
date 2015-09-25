@@ -20,12 +20,14 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.socket.messages.CommandMessage;
 import nik.heatsupply.socket.messages.Message;
 import nik.heatsupply.socket.messages.ProfileMessages;
 import nik.heatsupply.socket.messages.ReportMessages;
 import nik.heatsupply.socket.messages.coders.MessageDecoder;
 import nik.heatsupply.socket.messages.coders.MessageEncoder;
+import nik.heatsupply.socket.model.UserWeb;
 
 @ServerEndpoint(value = "/socketServer", configurator = GetHttpSessionConfigurator.class,
 encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class})
@@ -61,7 +63,16 @@ public class Server {
 			CommandMessage cm = (CommandMessage) message;
 			switch (cm.getCommand().toLowerCase()) {
 			case "user":
-				cm.setParameters("value", httpSession.getAttribute("user").toString());
+				cm.setParameters("login", httpSession.getAttribute("user").toString());
+				int idUser = Integer.parseInt(httpSession.getAttribute("userId").toString());
+				UserWeb user = ConnectDB.getUser(idUser);
+				String lang = "en";
+				switch(user.getLanguageid()){
+					case 1: lang = "en"; break;
+					case 2: lang = "ru"; break;
+					case 3: lang = "uk"; break;
+				}
+				cm.setParameters("lang", lang);
 				session.getBasicRemote().sendObject(cm);
 				break;
 			case "getreport":
@@ -123,24 +134,28 @@ public class Server {
 			this.setName("AutoClose_Session");
 			this.session = session;
 			this.httpSession = httpSession;
-			sessions.keySet().forEach(s -> {
-				try {
-					if(s.getMaxInactiveInterval() - (System.currentTimeMillis() - s.getLastAccessedTime())/1000 < 3) {
+			try {
+				sessions.keySet().forEach(s -> {
+					try {
+						if(s.getMaxInactiveInterval() - (System.currentTimeMillis() - s.getLastAccessedTime())/1000 < 3) {
+							sessions.remove(s);
+							LOG.info("Session removed - " + s.getId());
+						}
+					} catch (Exception e) {
 						sessions.remove(s);
 						LOG.info("Session removed - " + s.getId());
 					}
-				} catch (Exception e) {
-					sessions.remove(s);
-					LOG.info("Session removed - " + s.getId());
-				}
-			});
+				});
+			} catch (Exception e) {
+				LOG.error("Error in AutoCloseSession");
+			}
 		}
 
 		@Override
 		public void run() {
 			try {
 				boolean isWait = true;
-				while(isWait && httpSession != null && session.isOpen() && !httpSession.isNew()) {
+				while(isWait && httpSession != null && !httpSession.isNew() && session.isOpen()) {
 					long sessionTime = System.currentTimeMillis() - httpSession.getLastAccessedTime();
 					isWait = sessionTime < (httpSession.getMaxInactiveInterval() - 1) * 1000;
 					Thread.sleep(1000);

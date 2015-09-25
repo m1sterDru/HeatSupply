@@ -126,6 +126,7 @@ angular.module('headerFactory', [])
 
 			hs.url = url.slice(0, url.indexOf('HeatSupply') + 11);
 			hs.language = cache ? JSON.parse(cache).language : 'uk';
+			hs.login = cache ? JSON.parse(cache).login : '';
 			hs.getUserProfile = getUserProfile;
 
 			translate.run(function(t){
@@ -166,6 +167,7 @@ angular.module('headerFactory', [])
 		return function (scope, element, attrs){
 			element.bind("keydown keypress", function (event){
 				if(event.which === 13){
+					// console.log('enter ')
 					scope.$apply(function (){
 						scope.$eval(attrs.ngEnter);
 					});

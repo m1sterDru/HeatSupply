@@ -38,30 +38,17 @@
 				<ul class="dropdown-menu" role="menu">
 					<li idMeter="{{owner.idMeter}}" snMeter="{{owner.sn}}" ownerAccount="{{owner.ownerAccount}}" ownerName="{{owner.name}}" ng-repeat="owner in actowners" class="ownerButton form-control" ng-click="change4delete($event);">
 						<div>
-							<!-- <span class="fa fa-lightbulb-o pull-left"></span>
-							<span class="pull-left">
-								<div>
-									<span> {{owner.name}}</span>
-								</div>
-								<div class="comment">
-									<span id="${keyOwnerNumber}"></span>: {{owner.ownerAccount}} (
-									<span id="${kMeterNumber}"></span>: {{owner.sn}})
-								</div>
-							</span>
-							<div class="pull-right hidden-xs hidden-sm">
-								<img src="images/logo_nik.png" alt="Logo">
-							</div> -->
 							<span class="fa fa-lightbulb-o pull-left"></span>
 							<div class="pull-left" owner-content>
 								<div class="subTitle">
-									<span id="${keyOwnerNumber}"></span>: №{{account4delete.ownerAccount}}
+									<span id="${keyOwnerNumber}"></span>: №{{owner.ownerAccount}}
 								</div>
 								<hr class="horizHR">
 								<div>
-									<b><span id="${kMeterNumber}"></span>:</b> {{account4delete.sn}}
+									<b><span id="${kMeterNumber}"></span>:</b> {{owner.sn}}
 								</div>
 								<div>
-									<b><span id="${keyFIO}"></span>:</b> {{account4delete.name}}
+									<b><span id="${keyFIO}"></span>:</b> {{owner.name}}
 								</div>
 							</div>
 							<div class="pull-right">

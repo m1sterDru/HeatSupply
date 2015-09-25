@@ -31,20 +31,13 @@ heatSupply.indexControllers
 		}
 	})
 	.controller('loginController', function ($scope, $http, hsFactory){
-		var error = $('.comment:first');
-
 		$scope.sendLogin = function(isButton){
 			var isValid = true;
-			error.parent().addClass('isHide');
+
 			$('.loginDiv form input').each(function(){
 				if(!this.checkValidity()){
 					isValid = false;
-					hsFactory.translator.translateValueByKey(
-						hsFactory.language, 'keyBadAuthentication', function(value){
-							error.html(value);
-							error.attr('id', '${keyBadAuthentication}');
-							error.parent().removeClass('isHide');
-						});
+					hsFactory.updateError('keyBadAuthentication');
 					if(isButton){
 						setTimeout(function(){
 							$('#btnHide').click();
@@ -65,18 +58,7 @@ heatSupply.indexControllers
 				})
 				.success(function(data){
 					if(data.messageId != 0){
-						if(data.messageId != 5){
-							hsFactory.translator.translateValueByKey(
-								hsFactory.language, data.message, function(value){
-									error.html(value);
-									error.attr('id', '${' + data.message + '}');
-									error.parent().removeClass('isHide');
-								});
-						} else {
-							error.html(data.message);
-							error.attr('id', '');
-							error.parent().removeClass('isHide');
-						}
+						hsFactory.updateError(data.message);
 					} else location.href = hsFactory.url + 'main.html';
 				})
 				.error(function(data, status, headers, config){

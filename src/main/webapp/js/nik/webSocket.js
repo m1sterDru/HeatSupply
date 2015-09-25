@@ -1,15 +1,14 @@
 heatSupply.initWebSocket = function(hs, callback){
 	var ws = new WebSocket('ws' + hs.url.slice(4) + 'socketServer');
 
-	function updateError2(text, error){
-		error.html(text);
-		// error[0].id = '${' + key + '}';
-		error.parent().removeClass('isHide');
+	function findParam(params, name){
+		for(key in params){
+			if(params[key][name] != undefined)
+				return params[key][name];
+		}
 	}
 
 	ws.onmessage = function (message){
-		var error = $('div[error-directive] .comment');
-
 		if(message.data instanceof Blob){
 			saveTextAsFile(message.data,
 				heatSupply.currentReport, heatSupply.currentReportExt);
@@ -57,7 +56,16 @@ heatSupply.initWebSocket = function(hs, callback){
 
 					waitScope('div[menu-directive]',scope, 0,
 						function(scope){
-							scope.login_user = params[0].value;
+							hs.language = findParam(params, 'lang');
+							hs.login = findParam(params, 'login');
+
+							$('button[data-btn="curLangButton"]:first')
+								.parent().children('ul')
+								.find('li[id="' + hs.language + '"]').click();
+
+							localStorage.setItem('heatSupply', JSON.stringify(hs));
+
+							scope.login_user = hs.login;
 							scope.login_userIconClass = '';
 							scope.login_href = 'LogoutServlet';
 							hs.translator.translateValueByKey(
@@ -91,34 +99,12 @@ heatSupply.initWebSocket = function(hs, callback){
 					}
 					break;
 				case 'deleteOwner':
-					var idUser, success, message;
-
-					for(key in params){
-						if(params[key].idUser != undefined)
-							idUser = params[key].idUser;
-						else if(params[key].success != undefined)
-							success = params[key].success;
-						else if(params[key].message != undefined)
-							message = params[key].message;
-					}
-
-					if(success === 'true'){
-						updateOwners(idUser);
-					} else {
-						hs.updateError(message);
-					}
-					break;
 				case 'addOwner':
 					var idUser, success, message;
 
-					for(key in params){
-						if(params[key].idUser != undefined)
-							idUser = params[key].idUser;
-						else if(params[key].success != undefined)
-							success = params[key].success;
-						else if(params[key].message != undefined)
-							message = params[key].message;
-					}
+					success = findParam(params, 'success');
+					idUser = findParam(params, 'idUser');
+					message = findParam(params, 'message');
 
 					if(success === 'true'){
 						updateOwners(idUser);
@@ -189,14 +175,8 @@ heatSupply.initWebSocket = function(hs, callback){
 					}
 					break;
 				case 'removeProfile':
-					var success, message;
-
-					for(key in params){
-						if(params[key].success != undefined)
-							success = params[key].success;
-						else if(params[key].message != undefined)
-							message = params[key].message;
-					}
+					var success = findParam(params, 'success'),
+							message = findParam(params, 'message');
 
 					if(success === 'true'){
 						location.href = hs.url;
