@@ -482,7 +482,12 @@ li .glyphicon-scale{
 #deactivation ul > li{width: 265px !important;}
 #deactivation .btn-danger{margin: 15px;}
 #deactivation .caret{float: right; margin-top: 9px;}
-#deactivation li:hover{background-color: #0090D8; color: white !important;}
+
+#deactivation li:hover,
+div[menu-directive] ul > li > a:hover{
+	background-color: #0090D8;
+	color: white !important;
+}
 #deactivation ul{margin: 0; top: 30px; left: 15px;}
 #deactivation textarea{margin: 10px 0; max-width: 100%;}
 #deactivation td span{margin: 0 5px;}
