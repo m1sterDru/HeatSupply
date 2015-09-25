@@ -160,8 +160,6 @@ heatSupply.initWebSocket = function(hs, callback){
 							});
 							scope.visibleClass = '';
 							scope.isDisabled = false;
-							scope.account4delete = scope.actowners[0].idMeter + '_' +
-									scope.actowners[0].ownerAccount;
 							scope.account4delete = Object.create(null);
 							scope.account4delete.name = scope.actowners[0].name;
 							scope.account4delete.idMeter = scope.actowners[0].idMeter;
@@ -169,6 +167,9 @@ heatSupply.initWebSocket = function(hs, callback){
 							scope.account4delete.ownerAccount = 
 									scope.actowners[0].ownerAccount;
 
+							if(scope.actowners.length == 1){
+								scope.isDisabled = true;
+							}
 							scope.$apply();
 							heatSupply.translator.translateAll();
 						});

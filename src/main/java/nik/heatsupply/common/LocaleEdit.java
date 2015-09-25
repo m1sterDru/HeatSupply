@@ -30,6 +30,14 @@ public class LocaleEdit {
 		append2File(en, key + "=" + valueEN);
 		append2File(ru, key + "=" + valueRU);
 		append2File(ua, key + "=" + valueUA);
+		
+//		String[] forRemove = {"kRegNumberComment", "kMeterNumberComment"};
+//		for(String k : forRemove) {
+//			remove(en, k);
+//			remove(ru, k);
+//			remove(ua, k);
+//		}
+		
 		System.out.println("COMPLETE");
 	}
 	
@@ -43,7 +51,8 @@ public class LocaleEdit {
 			String currentLine;
 			while((currentLine = reader.readLine()) != null) {
 				if(currentLine.indexOf(text) == -1) {
-					writer.write(currentLine + "\n");
+					if(currentLine.length() > 2)
+						writer.write(currentLine + "\n");
 				} else {
 					isExist = true;
 				}
