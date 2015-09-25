@@ -12,6 +12,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nik.heatsupply.common.Encryptor;
 import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.socket.model.Meter;
 import nik.heatsupply.socket.model.MeterUser;
@@ -19,10 +20,12 @@ import nik.heatsupply.socket.model.UserWeb;
 
 public class ProfileMessages {
 	private static final Logger LOG = LoggerFactory.getLogger(ProfileMessages.class);
-	protected static final int SUCCESS = 0;
-	protected static final int OWNER_NOT_EXIST = 1;
-	protected static final int METER_NOT_EXIST = 2;
-	protected static final int TRY_AGAIN = 3;
+	public static final int SUCCESS = 0;
+	public static final int OWNER_NOT_EXIST = 1;
+	public static final int METER_NOT_EXIST = 2;
+	public static final int TRY_AGAIN = 3;
+	public static final int BAD_PASSWOORD = 4;
+	public static final int USER_EXIST = 5;
 
 	public static void deleteOwner(CommandMessage cm, Session session) {
 		CommandMessage retMessage = new CommandMessage("deleteOwner");
@@ -30,27 +33,30 @@ public class ProfileMessages {
 		try {
 			int idMeter = Integer.parseInt(cm.getParameters().get("idMeter"));
 			int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-			ConnectDB.removeUserMeter(idUser, idMeter);
-
-			retMessage.setParameters("success", "true");
-			retMessage.setParameters("idUser", idUser + "");
+			if(ConnectDB.removeUserMeter(idUser, idMeter))
+				sendMessage(session, SUCCESS, "deleteOwner", "idUser_" + idUser);
+			else
+				sendMessage(session, TRY_AGAIN, "deleteOwner");
 		} catch (Exception e) {
-			LOG.error(ExceptionUtils.getStackTrace(e));
-		}
-		try {
-			session.getBasicRemote().sendObject(retMessage);
-		} catch (IOException | EncodeException e) {
 			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
 	public static void removeProfile(CommandMessage cm, Session session, HttpSession httpSession) {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-		if(ConnectDB.deleteUser(idUser)) {
-			sendMessage(session, SUCCESS, "removeProfile");
-			httpSession.invalidate();
+		String password = cm.getParameters().get("password");
+		
+		UserWeb curUser = ConnectDB.getUser(idUser);
+		Encryptor enc = new Encryptor();
+		if(enc.decrypt(curUser.getPassword()).trim().equals(password)) {
+			if(ConnectDB.deleteUser(idUser)) {
+				sendMessage(session, SUCCESS, "removeProfile");
+				httpSession.invalidate();
+			} else {
+				sendMessage(session, TRY_AGAIN, "removeProfile");
+			}
 		} else {
-			sendMessage(session, TRY_AGAIN, "removeProfile");
+			sendMessage(session, BAD_PASSWOORD, cm.getCommand());
 		}
 	}
 	
@@ -142,18 +148,20 @@ public class ProfileMessages {
 		}).run();
 	}
 	
-	private static void sendMessage(Session session, int messageID, String command) {
+	public static void sendMessage(Session session, int messageID, String command) {
 		sendMessage(session, messageID, command, null);
 	}
 
-	private static void sendMessage(Session session, int messageID, String command, String par) {
+	public static void sendMessage(Session session, int messageID, String command, String par) {
 		String text = "";
 		String success = "false";
 		switch(messageID) {
 			case OWNER_NOT_EXIST: text = "keyOwnerAccountError"; break;
 			case METER_NOT_EXIST: text = "keyMeterNotExist"; break;
-			case TRY_AGAIN: text = "Something wrong. Try again."; break;
+			case TRY_AGAIN: text = "keyTryAgain"; break;
 			case SUCCESS: success = "true"; break;
+			case BAD_PASSWOORD: text = "keyWrongPassword"; break;
+			case USER_EXIST: text = "kUserExist"; break;
 		}
 		CommandMessage retMessage = new CommandMessage(command);
 		retMessage.setParameters("success", success);

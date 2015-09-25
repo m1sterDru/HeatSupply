@@ -64,18 +64,26 @@ heatSupply.mainControllers
 			hsFactory.translator.translateAll();
 		});
 
-		$scope.submitProfile = function(isButton){
-			var error = $('.comment:first'), isValid = true;
+		$scope.valid = function($event){
+			if($event.target.value.length == 0){
+				$event.target.value = '+';
+				setTimeout(function(){
+					$('#btnHide').click();
+					$event.target.value = '';
+				}, 10);
+			}
+		}
 
-			error.parent().addClass('isHide');
+		$scope.submitProfile = function(isButton){
+			var isValid = true;
+
 			$('#profileInfo form input').each(function(){
 				if(!this.checkValidity()){
 					isValid = false;
-					// updateError('keyWrongPassword', error);
 					if($(this)[0].name === 'email'){
-						updateError('keyWrongEmail', error);
+						hsFactory.updateError('keyWrongEmail');
 					} else if($(this)[0].name === 'pwd'){
-						updateError('keyWrongPassword', error);
+						hsFactory.updateError('keyWrongPassword');
 					}
 					if(isButton){
 						setTimeout(function(){
@@ -91,57 +99,20 @@ heatSupply.mainControllers
 						pwd2 = $('#profileInfo input[name="pwd2"]').val();
 
 				if(pwd1 != pwd2){
-					updateError('keyNewPasswordsWrong', error);
+					hsFactory.updateError('keyNewPasswordsWrong');
 				} else {
 					if(pwd1.length > 0 && pwd1.length < 6){
-						updateError('keyNewPasswordNotValid', error);
+						hsFactory.updateError('keyNewPasswordNotValid');
 					} else {
 						updateProfile(function(data){
 							if(data.messageId != 0)
-								updateError(data.message, error);
+								hsFactory.updateError(data.message);
 							else
 								window.location.href = hsFactory.url + 'main.html';
 						});
 					}
 				}
 			}
-		}
-
-		function updateError(key, error){
-			hsFactory.translator.translateValueByKey(
-				hsFactory.language, key, function(value){
-					error.html(value);
-					error[0].id = '${' + key + '}';
-					error.parent().removeClass('isHide');
-				});
-		}
-
-		$scope.removeProfile = function(){
-			hsFactory.translator.translateValueByKey(hsFactory.language, 'keySure',
-			function(value){
-				BootstrapDialog.confirm({
-					title: 'WARNING',
-					message: value,
-					type: BootstrapDialog.TYPE_DANGER,
-					closable: false,
-					draggable: false,
-					btnCancelLabel: 'Cancel',
-					btnOKLabel: 'OK',
-					btnOKClass: 'btn-danger',
-					callback: function(result){
-						if(result) {
-							hsFactory.getUserProfile(function (data){
-								var message = Object.create(null);
-
-								message.type = 'CommandMessage';
-								message.command = 'removeProfile';
-								message.parameters = [{'userId': data.userId}];
-								heatSupply.socket.send(JSON.stringify(message));
-							});
-						}
-					}
-				});
-			});
 		}
 
 		function updateProfile(callback){
@@ -166,113 +137,112 @@ heatSupply.mainControllers
 			});
 		}
 	})
-	.controller('accountController', function ($scope,hsFactory){
-		setTimeout(function(){
-			hsFactory.translator.translateAll();
-		}, 1000);
-	})
-	.controller('ownerAccountController', function ($scope, hsFactory){
-		var error = $('div[error-directive] .comment');
+.controller('accountController', function ($scope,hsFactory){
+	setTimeout(function(){
+		hsFactory.translator.translateAll();
+	}, 1000);
+})
+.controller('ownerAccountDeleteController', function ($scope, hsFactory){
+	$scope.logoClass = 'isHide';
+	setTimeout(function(){$scope.logoClass = '';}, 500);
 
-		if(!$('#delAccountTemplate').length){
-			$scope.isDisabled = true;
-			$scope.afterProducer = 'isHide';
-			$('form').parent().parent().css('opacity','0.5');
+	function disable(isOn){
+		var ico = $('.btn-danger span:first-child');
+		$('#delAccountTemplate select').disabled = isOn;
+		$('#delAccountTemplate button').disabled = isOn;
+		$('#delAccountTemplate').css('opacity', isOn ? '0.5' : '1');
+		if(isOn){
+			ico.removeClass('fa-remove');
+			ico.addClass('fa-refresh fa-spin');
+		} else {
+			ico.removeClass('fa-refresh fa-spin');
+			ico.addClass('fa-remove');
 		}
+	}
 
-		$scope.selectProvider = function(type){
-			$scope.producerType = type;
-			$scope.isDisabled = type == 0 ? true : false;
-			$('form').parent().parent().css(
-				'opacity', type == 0 ? '0.5' : '1'
-			);
-			$scope.afterProducer = type == 0 ? 'isHide' : '';
-			$scope.beforProducer = type == 0 ? '' : 'isHide';
-			if(type != 0){
-				$scope.provider1 = type == 1 ? '' : 'isHide';
-				$scope.provider2 = type == 2 ? '' : 'isHide';
-			} else {
-				$scope.provider1 = '';
-				$scope.provider2 = '';
-			}
-		}
+	$scope.change4delete = function($event){
+		var li = $event.target;
+		while(li.tagName != 'LI') li = li.parentNode;
+		$scope.account4delete.name = li.getAttribute('ownerName');
+		$scope.account4delete.idMeter = li.getAttribute('idMeter');
+		$scope.account4delete.sn = li.getAttribute('snMeter');
+		$scope.account4delete.ownerAccount = li.getAttribute('ownerAccount');
+	}
 
-		function disable(isOn){
-			var ico = $('.btn-danger span:first-child');
-			$('#delAccountTemplate select').disabled = isOn;
-			$('#delAccountTemplate button').disabled = isOn;
-			$('#delAccountTemplate').css('opacity', isOn ? '0.5' : '1');
-			if(isOn){
-				ico.removeClass('fa-remove');
-				ico.addClass('fa-refresh fa-spin');
-			} else {
-				ico.removeClass('fa-refresh fa-spin');
-				ico.addClass('fa-remove');
-			}
-		}
+	$scope.deleteOwnerAccount = function(){
+		hsFactory.bootstrapConfirm(function(data){
+			var owneraccount = $scope.account4delete.ownerAccount,
+					idMeter = $scope.account4delete.idMeter,
+					message = Object.create(null);
 
-		$scope.change4delete = function($event){
-			var li = $event.target;
-			while(li.tagName != 'LI') li = li.parentNode;
-			$scope.account4delete.name = li.getAttribute('ownerName');
-			$scope.account4delete.idMeter = li.getAttribute('idMeter');
-			$scope.account4delete.sn = li.getAttribute('snMeter');
-			$scope.account4delete.ownerAccount = li.getAttribute('ownerAccount');
-		}
+			$scope.actowners = [];
+			message.type = 'CommandMessage';
+			message.command = 'deleteOwner';
+			message.parameters = [
+				{'userId': data.userId},
+				{'idMeter': idMeter}
+			];
+			heatSupply.socket.send(JSON.stringify(message));
+			disable(false);
+		});
+	}
+})
+.controller('deactivationController', function ($scope, hsFactory, translate){
+	var index = 0;
 
-		$scope.deleteOwnerAccount = function(){
-			hsFactory.translator.translateValueByKey(hsFactory.language, 'keySure',
-				function(value){
-					if(confirm(value)){
-						disable(true);
-						hsFactory.getUserProfile(function(data){
-							var owneraccount = $scope.account4delete.ownerAccount,
-									idMeter = $scope.account4delete.idMeter,
-									message = Object.create(null);
-
-							message.type = 'CommandMessage';
-							message.command = 'deleteOwner';
-							message.parameters = [
-								{'userId': data.userId},
-								{'idMeter': idMeter}
-							];
-							heatSupply.socket.send(JSON.stringify(message));
-							disable(false);
-						});
-					}
-				});
-		}
-
-		$scope.submitAddOwner = function(isButton){
-			hsFactory.getUserProfile(function(data){
-				var isValid = true;
-				error.html('');
-				$('.regDiv input').each(function(){
-					if(!this.checkValidity()){
-						isValid = false;
-						$('.comment').html('Set correct form\'s data');
-						if(isButton){
-							setTimeout(function(){
-								$('#btnHide').click();
-							},100);
-						}
-						return;
-					}
-				});
-
-				if(isValid){
-					var message = Object.create(null);
-console.log($scope.producerType)
-					message.type = 'CommandMessage';
-					message.command = 'addOwner';
-					message.parameters = [
-						{'account': $('.regDiv input[name="owneraccount"').val()},
-						{'number': $('.regDiv input[name="meterNumber"').val()},
-						{'userId': data.userId},
-						{'typeAccount': $scope.producerType + ''}
-					];
-					heatSupply.socket.send(JSON.stringify(message));
+	$scope.deactives = [];
+	translate.run(function(t){
+		t.translateValueByKey(hsFactory.language,
+			['kProfileDeleteLi1','kProfileDeleteLi2','kProfileDeleteLi3',
+			 'kProfileDeleteLi4','kProfileDeleteLi5'],
+			function(value, key){
+				$scope.deactives.push({id: index++,
+															 text: value,
+															 key: '${' + key + '}'});
+				if(index == 5){
+					$scope.deactActive = Object.create(null);
+					$scope.deactActive.id = $scope.deactives[0].id;
+					$scope.deactActive.text = $scope.deactives[0].text;
+					$scope.deactActive.key = $scope.deactives[0].key;
+					setTimeout(function(){$scope.$apply();},50);
 				}
 			});
+		});
+
+	$scope.changeDeactive = function($event){
+		var li = $event.target, span;
+		while(li.tagName !== 'LI') li = li.parentNode;
+		span = li.getElementsByTagName('span')[0];
+		$scope.deactActive.id = li.id;
+		$scope.deactActive.key = span.id;
+		$scope.deactActive.text = span.innerHTML;
+	}
+
+	$scope.removeProfile = function(isButton){
+		var isValid = true;
+		$('#deactivation form input').each(function(){
+			if(!this.checkValidity()){
+				isValid = false;
+				hsFactory.updateError('keyWrongPassword');
+				if(isButton){
+					setTimeout(function(){
+						$('#btnHide').click();
+					},100);
+				}
+				return false;
+			}
+		});
+		if(isValid){
+			hsFactory.getUserProfile(function(data){
+				var message = Object.create(null);
+
+				message.type = 'CommandMessage';
+				message.command = 'removeProfile';
+				message.parameters = [
+					{'userId': data.userId},
+					{'password': $('#deactivation form input[type="password"]').val()}];
+				heatSupply.socket.send(JSON.stringify(message));
+			});
 		}
-	});
+	}
+});

@@ -7,7 +7,7 @@
 		<hr class="horizHR">
 	</div>
 	<div class="col-md-8 col-sm-7">
-		<form method="post" ng-style="formStyle">
+		<form method="post" ng-style="formStyle" autocomplete="off">
 			<div class="row subDiv">
 				<h4 class="tHeader">
 					<b><span id="${keyChangeEmailPhone}"></span></b>
@@ -16,11 +16,12 @@
 					<table>
 						<tr class="spaceUnder">
 							<td class="bold"><span id="${kEmail}"></span> *</td>
-							<td><input type="email" name="email", class="form-control canSelect" required ng-disabled="isDisabled"></td>
+							<td><input type="email" name="email", class="form-control canSelect" required ng-disabled="isDisabled" autocomplete="off" ng-click="valid($event);"></td>
 						</tr>
 						<tr class="spaceUnder">
 							<td class="bold"><span id="${keyPhone}"></span></td>
-							<td><input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="form-control canSelect" ng-disabled="isDisabled"></td>
+							<td><input type="text" name="phone" pattern="\+?[3][8][(][0-9]{3}[)][0-9]{7}" placeholder="+38(050)1122334" class="form-control canSelect" ng-disabled="isDisabled" autocomplete="off" ng-click="valid($event);"></td>
+						</tr>
 					</table>
 				</div>
 			</div>
@@ -54,11 +55,9 @@
 			<button id="btnHide" ng-click="submitProfile();" class="isHide"></button>
 		</form>
 
-		<div class="col-sm-12">
-			<button ng-click="submitProfile(true);" ng-disabled="isDisabled" class="fa fa-check btn btn-primary pull-right">
-				<span id="${keyChange}"></span>
-			</button>
-		</div>
+		<button ng-click="submitProfile(true);" ng-disabled="isDisabled" class="fa fa-check btn btn-primary pull-right">
+			<span id="${keyChange}"></span>
+		</button>
 	</div>
 
 	<div class="listContent col-md-4 col-sm-5 pull-right leftBorder">
@@ -78,7 +77,7 @@
 		<div>
 			<div>
 				<span class="fa fa-info-circle title"></span>
-				<a href="">
+				<a href="#/deactivation">
 					<span class="subTitle" id="${keyProfDelAccount}"></span>
 				</a>
 			</div>

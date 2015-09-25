@@ -13,6 +13,7 @@ public class UserWeb implements Serializable {
 	private String phone;
 	private String email;
 	private int languageid;
+	private boolean active;
 
 	public UserWeb() {
 		
@@ -88,5 +89,13 @@ public class UserWeb implements Serializable {
 
 	public void setLanguageid(int languageid) {
 		this.languageid = languageid;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

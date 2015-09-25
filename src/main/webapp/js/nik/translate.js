@@ -40,7 +40,7 @@ return {
 						callback(messageResource.get(key, locale));
 					else {
 						key.forEach(function(k){
-							callback(messageResource.get(k, locale));
+							callback(messageResource.get(k, locale), k);
 						});
 					}
 				});

@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
 	
 	private boolean isChecked(String login, String password, HttpSession session) {
 		UserWeb u = ConnectDB.getUser(login);
-		if(u == null) return false;
+		if(u == null || !u.isActive()) return false;
 		Encryptor encr = new Encryptor();
 		if(encr.decrypt(u.getPassword()).trim().equals(password)) {
 			session.setAttribute("user", login);

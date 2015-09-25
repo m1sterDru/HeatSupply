@@ -41,15 +41,19 @@ public interface IMapper {
 	Meter getMeterById(@Param("id")int idMeter);
 	
 	@Insert("insert into users_web " +
-			"(id, login, password, name, middlename, surname, phone, email, languageid) values " +
+			"(id, login, password, name, middlename, surname, phone, email, languageid, active) values " +
 			"(#{id}, #{login}, #{password}, #{name}, #{middlename},"
-			+ "#{surname}, #{phone}, #{email}, #{languageid})")
+			+ "#{surname}, #{phone}, #{email}, #{languageid}), true")
 	Integer addUser(@Param("id")int id, @Param("login")String login, @Param("password")String password, 
 			@Param("name")String name, @Param("middlename")String middlename, @Param("surname")String surname,
 			@Param("phone")String phone, @Param("email")String email, @Param("languageid")int languageid);
 	
-	@Delete("delete from users_web where id = #{id}")
+//	@Delete("delete from users_web where id = #{id}")
+	@Update("update users_web set active = false where id = #{id}")
 	Integer deleteUser(@Param("id")int id);
+	
+	@Update("update users_web set active = true where login = #{login}")
+	Integer activateUser(@Param("login")String login);
 	
 	@Insert("insert into meter_user (iduser, idmeter, lastcash, type_device_id, idaccount) values " +
 			"(#{iduser}, #{idmeter}, #{lastcash}, #{type_device_id}, #{idaccount})")

@@ -1,15 +1,6 @@
 heatSupply.initWebSocket = function(hs, callback){
 	var ws = new WebSocket('ws' + hs.url.slice(4) + 'socketServer');
 
-	function updateError(key, error){
-		hs.translator.translateValueByKey(
-			hs.language, key, function(value){
-				error.html(value);
-				error[0].id = '${' + key + '}';
-				error.parent().removeClass('isHide');
-			});
-	}
-
 	function updateError2(text, error){
 		error.html(text);
 		// error[0].id = '${' + key + '}';
@@ -114,7 +105,7 @@ heatSupply.initWebSocket = function(hs, callback){
 					if(success === 'true'){
 						updateOwners(idUser);
 					} else {
-						$('.error').html('Error. Try again.');
+						hs.updateError(message);
 					}
 					break;
 				case 'addOwner':
@@ -132,9 +123,7 @@ heatSupply.initWebSocket = function(hs, callback){
 					if(success === 'true'){
 						updateOwners(idUser);
 					} else {
-						updateError(message, error);
-						// updateError2(params[1].message, error);
-						// error.html(params[1].message);
+						hs.updateError(message);
 					}
 					break;
 				case 'profileInfo':
@@ -200,7 +189,20 @@ heatSupply.initWebSocket = function(hs, callback){
 					}
 					break;
 				case 'removeProfile':
-					window.location.href = hs.url;
+					var success, message;
+
+					for(key in params){
+						if(params[key].success != undefined)
+							success = params[key].success;
+						else if(params[key].message != undefined)
+							message = params[key].message;
+					}
+
+					if(success === 'true'){
+						location.href = hs.url;
+					} else {
+						hs.updateError(message);
+					}
 					break;
 			}
 		}

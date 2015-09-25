@@ -76,6 +76,49 @@ angular.module('headerFactory', [])
 			});
 		};
 
+		function bootstrapConfirm(callback){
+			main.translator.translateValueByKey(main.language, 'keySure',
+			function(value){
+				BootstrapDialog.confirm({
+					title: 'WARNING',
+					message: value,
+					type: BootstrapDialog.TYPE_DANGER,
+					closable: false,
+					draggable: false,
+					btnCancelLabel: 'Cancel',
+					btnOKLabel: 'OK',
+					btnOKClass: 'btn-danger',
+					callback: function(result){
+						if(result){
+							getUserProfile(function (data){
+								if(callback != undefined) callback(data);
+							});
+						}
+					}
+				});
+			});
+		}
+
+		function updateError(key){
+			var error = $('div[error-directive] .comment');
+			main.translator.translateValueByKey(
+				main.language, key, function(value){
+					error.html(value);
+					error[0].id = '${' + key + '}';
+					error.parent().removeClass('isHide');
+				});
+		}
+
+		function updateErrorWithText(key, text){
+			var error = $('div[error-directive] .comment');
+			main.translator.translateValueByKey(
+				main.language, key, function(value){
+					error.html(value + ' ' + text);
+					error[0].id = '${' + key + '}';
+					error.parent().removeClass('isHide');
+				});
+		}
+
 		function HeatSupply(){
 			var hs = Object.create(null),
 					url = document.URL,
@@ -88,6 +131,9 @@ angular.module('headerFactory', [])
 			translate.run(function(t){
 				hs.translator = t;
 				heatSupply.translator = t;
+				hs.bootstrapConfirm = bootstrapConfirm;
+				hs.updateError = updateError;
+
 				if(location.href.indexOf('/main.') > 0){
 					heatSupply.initWebSocket(hs, function(){
 						hs.complete = true;

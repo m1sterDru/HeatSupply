@@ -4,6 +4,15 @@ heatSupply.headerControllers = angular.module('headerControllers', [
 	'headerFactory']);
 
 heatSupply.headerControllers.config(function ($routeProvider){
+	$routeProvider
+		.when('/registration', {
+			templateUrl: 'html/templates/addOwnerAccountTemplate.html',
+			controller: 'ownerAccountController'
+		})
+		.when('/registration2', {
+			templateUrl: 'html/login/loginRegistration.html',
+			controller:'ownerAccountController'
+		})
 })
 .run(function ($rootScope, $location, hsFactory){
 	$rootScope.$on("$routeChangeStart", function (event, next, current){
@@ -89,4 +98,130 @@ heatSupply.headerControllers.controller('headerController',
 				});
 			}
 		}
-	});
+	})
+.controller('ownerAccountController', function ($scope, $http, hsFactory){
+	if(location.href.indexOf('registration2') > 0 &&
+		 hsFactory.regAccount == undefined){
+		location.href = '#/registration';
+	} else if(location.href.indexOf('registration') > 0){
+		$('span[id="${kApply}"]').attr('id', '${kNext}');
+	}
+
+	$scope.isDisabled = true;
+	$scope.afterProducer = 'isHide';
+	$('form').parent().parent().css('opacity', '0.5');
+
+	$scope.selectProvider = function(type){
+		$scope.producerType = type;
+		$scope.isDisabled = type == 0 ? true : false;
+		$('form').parent().parent().css(
+			'opacity', type == 0 ? '0.5' : '1'
+		);
+		$scope.afterProducer = type == 0 ? 'isHide' : '';
+		$scope.beforProducer = type == 0 ? '' : 'isHide';
+		if(type != 0){
+			$scope.provider1 = type == 1 ? '' : 'isHide';
+			$scope.provider2 = type == 2 ? 'col-sm-offset-1' : 'isHide';
+		} else {
+			$scope.provider1 = '';
+			$scope.provider2 = '';
+		}
+	}
+
+	$scope.submitRegistrationLast = function(isButton){
+		var isValid = true,
+				password = $('#regDiv2 input[name="password"]').val(),
+				password2 = $('#regDiv2 input[name="password2"]').val();
+
+		if(password != password2){
+			hsFactory.updateError('keyNewPasswordsWrong');
+		} else {
+			$('#regDiv2 input').each(function(){
+				if(!this.checkValidity()){
+					isValid = false;
+					hsFactory.updateError('keyNewPasswordsWrong');
+					if(isButton){
+						setTimeout(function(){
+							$('#btnHide').click();
+						},100);
+					}
+					return;
+				}
+			});
+			if(isValid){
+				registration(function(data){
+					if(data.messageId != 0){
+						console.log(data.array[0])
+						hsFactory.updateErrorWithText(data.message, data.array[0]);
+					}
+					else
+						location.href = hsFactory.url + 'main.html';
+				});
+			}
+		}
+	}
+
+	function registration(callback){
+		$http({
+			method: 'POST',
+			url: '/HeatSupply/RegisterServlet',
+			params: {
+				owneraccount: hsFactory.regAccount,
+				meterNumber: hsFactory.regMeter,
+				password: $('#regDiv2 input[name="password"]').val(),
+				login: $('#regDiv2 input[name="login"]').val(),
+				phone: $('#regDiv2 input[name="phone"]').val(),
+				email: $('#regDiv2 input[name="email"]').val(),
+				languageId: hsFactory.language
+			},
+			cache: false
+		})
+		.success(function(data){
+			if(callback != null) callback(data);
+		})
+		.error(function(data, status, headers, config){
+			console.log(status)
+		});
+	}
+
+	$scope.submitAddOwner = function(isButton){
+		if(location.href.indexOf('registration') > 0){
+			hsFactory.regAccount = $('.regDiv input[name="owneraccount"').val();
+			hsFactory.regMeter = $('.regDiv input[name="meterNumber"').val();
+
+			location.href = '#/registration2';
+		} else {
+			hsFactory.getUserProfile(function(data){
+				var isValid = true;
+
+				$('.regDiv input').each(function(){
+					if(!this.checkValidity()){
+						isValid = false;
+						hsFactory.updateError('keyOwnerAccountError');
+						if(isButton){
+							setTimeout(function(){
+								$('#btnHide').click();
+							},100);
+						}
+						return;
+					}
+				});
+
+				if(isValid){
+					var message = Object.create(null);
+
+					$scope.actowners = [];
+					message.type = 'CommandMessage';
+					message.command = 'addOwner';
+					message.parameters = [
+						{'account': $('.regDiv input[name="owneraccount"').val()},
+						{'number': $('.regDiv input[name="meterNumber"').val()},
+						{'userId': data.userId},
+						{'typeAccount': $scope.producerType + ''}
+					];
+					heatSupply.socket.send(JSON.stringify(message));
+				}
+			});
+		}
+	}
+});

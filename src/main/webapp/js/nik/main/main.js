@@ -19,22 +19,20 @@ heatSupply.mainModule.config(function ($routeProvider){
 			controller:'profileController'
 		}).
 		when('/account', {
-			templateUrl: function(){
-				return 'html/templates/accountTemplate.html';
-			},
+			templateUrl: 'html/templates/accountTemplate.html',
 			controller: 'accountController'
 		}).
 		when('/addOwner', {
-			templateUrl: function(){
-				return 'html/templates/addOwnerAccountTemplate.html';
-			},
+			templateUrl: 'html/templates/addOwnerAccountTemplate.html',
 			controller: 'ownerAccountController'
 		}).
 		when('/delOwner', {
-			templateUrl: function(){
-				return 'html/templates/delOwnerAccountTemplate.html';
-			},
-			controller: 'ownerAccountController'
+			templateUrl: 'html/templates/delOwnerAccountTemplate.html',
+			controller: 'ownerAccountDeleteController'
+		}).
+		when('/deactivation', {
+			templateUrl: 'html/templates/deactivationTemplate.html',
+			controller: 'deactivationController'
 		})
 		.otherwise({
 			redirectTo: '/'
@@ -77,17 +75,22 @@ heatSupply.mainModule
 									$(this).parent().removeClass('open selectedMenu');
 									$(this).parent().children('button')
 										.attr('aria-expanded',false);
+									$(this).parent().children('button')
+										.removeClass('selectedMenu');
 								});
 
 							$(btn).hover(
 								function(){
 									$(this).parent().addClass('open selectedMenu');
+									$(this).addClass('selectedMenu');
 								},
 								function(){
 									var aBtn = $(this);
 									setTimeout(function(){
-										if(aBtn.attr('aria-expanded') !== 'true')
+										if(aBtn.attr('aria-expanded') !== 'true'){
 											aBtn.parent().removeClass('open selectedMenu');
+											aBtn.removeClass('selectedMenu');
+										}
 									}, 100);
 								});
 						}

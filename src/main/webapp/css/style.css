@@ -16,7 +16,12 @@ body {
 	border-radius: 0;
 	border: none;
 }
-.panel-body{max-height: calc(100% - 70px);overflow-y: auto; padding: 0;}
+.panel-body{
+	max-height: calc(100% - 70px);
+	height: calc(100% - 70px);
+	overflow-y: auto;
+	padding: 0;
+}
 .lang{display: none;}
 .header .lang{padding-top: 10px;}
 
@@ -157,7 +162,7 @@ tr.spaceUnder > td {padding-left: 5px;}
 	cursor: pointer;
 }
 
-li.menubutton{color: black !important;}
+li.menubutton{color: black !important; width: 100%;}
 
 div[data-template='profileDirective']{margin-right: 5px;}
 div[data-template='profileDirective'] .fa,
@@ -193,6 +198,9 @@ div[data-template='profileDirective'] .menubutton{
 #menuNavbar .btn:focus,
 #menuNavbar .btn.focus,
 #menuNavbar .btn:hover{color: white;}
+#menuNavbar .selectedMenu.btn:focus,
+#menuNavbar .selectedMenu.btn.focus,
+#menuNavbar .selectedMenu.btn:hover{color: #0073b2;}
 #myNavbar.navbar-collapse[aria-expanded='true']{
 	background-color: #ddd;
 }
@@ -303,6 +311,7 @@ a.button {text-decoration: none; color: inherit;}
 .subDiv{
 	background-color: #eee;
 	border: 1px solid silver;
+	margin: 10px 0;
 }
 #profileInfo .subDiv{
 	padding: 5px;
@@ -326,6 +335,7 @@ a.button {text-decoration: none; color: inherit;}
 	padding: 0 15px;
 	height: 24px;
 }
+#profileInfo button.btn-primary{margin-right: 0;}
 
 .tHeader{
 	border-bottom: 1px solid silver;
@@ -341,8 +351,8 @@ a.button {text-decoration: none; color: inherit;}
 }
 
 #accountTemplate .ownerButton{margin-right: 20px;}
-#accountTemplate .ownerButton .subTitle{color: rgb(25, 50, 117)}
-#accountTemplate .ownerButton hr{margin: 5px 0;}
+.ownerButton .subTitle{color: rgb(25, 50, 117)}
+.ownerButton hr{margin: 5px 0;}
 #accountTemplate > div:last-child a{
 	width: 100%;
 }
@@ -357,13 +367,10 @@ a > .fa{padding-top: 4px;}
 .regDiv form table,
 .regDiv form table input{width: 100%;}
 .regDiv form tr > td:first-child {text-align: right;width:50%;}
-.regDiv div:last-child{width: 50%;float: right!important;}
-.regDiv div:last-child button{
-	margin-left: 5px;
-	margin-bottom: 5px;
-}
 .regDiv form input{width: 100px; padding-left: 5px;}
-.regDiv button{float: right;}
+.regDiv button{float: right;margin: 10px 0;}
+#regDiv2 form{margin: 0 5px;}
+#regDiv2 > button{margin-right: 5px;}
 
 .ownerButton{
 	border-radius: 10px;
@@ -474,18 +481,55 @@ li .glyphicon-scale{
 }
 #addAccountTemplate .panel:hover{
 	cursor: pointer;
-	box-shadow: 0 0 5px silver;
+	box-shadow: 0 0 5px black;
 	background-color: #ddd;
 }
 #addAccountTemplate .fa-list-alt{font-size: 25px;}
 #addAccountTemplate .panel-heading,
 #addAccountTemplate .panel-body{padding: 5px;}
 #addAccountTemplate .leftBorder p{padding-top: 10px;}
-#addAccountTemplate .regDiv div:last-child button{margin: 10px 0;}
 #addAccountTemplate h4[ng-click]{
 	cursor: pointer;
 	color: #0090D8;
 	text-decoration: underline;
 }
 
-#delAccountTemplate .caret{margin-top: 20px;}
+/*deactivation*/
+#deactivation .menubutton,
+#deactivation ul{width: 270px; background-color: white;font-size: 1em;}
+#deactivation ul > li{width: 265px !important;}
+#deactivation .btn-danger{margin: 15px;}
+#deactivation .caret{float: right; margin-top: 9px;}
+#deactivation li:hover{background-color: #0090D8; color: white !important;}
+#deactivation ul{margin: 0; top: 30px; left: 15px;}
+#deactivation textarea{margin: 10px 0; max-width: 100%;}
+#deactivation td span{margin: 0 5px;}
+#deactivation .attention{
+	border: 1px solid #0090D8;
+	margin: 15px;
+	width: calc(100% - 30px);
+}
+#deactivation .attention,
+#deactivation .attention .fa{color: #0090D8;}
+#deactivation .attention p{margin: -20px 50px 10px;}
+
+/*delAccountTemplate*/
+#delAccountTemplate .subDiv{margin: 10px;}
+#delAccountTemplate .menubutton{
+	background-color: white;
+	margin: 10px 0;
+	border: 1px solid silver;
+}
+#delAccountTemplate li.menubutton{margin: 0;}
+#delAccountTemplate li.menubutton:hover{background-color: #ddd;}
+#delAccountTemplate .caret{margin-top: 20px; zoom: 1.5;}
+#delAccountTemplate .leftBorder p{padding: 15px 10px 0 50px;}
+#delAccountTemplate .ownerButton > div{width: calc(100% - 30px);}
+#delAccountTemplate div[owner-content]{width: calc(100% - 150px);}
+#delAccountTemplate li.ownerButton{
+	border: none;
+	background-color: transparent;
+	height: 80px;
+}
+#delAccountTemplate .leftBorder{min-height: 200px;}
+#delAccountTemplate button.ownerButton{margin-bottom: 75px;}

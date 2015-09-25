@@ -1,0 +1,79 @@
+<div id="deactivation">
+	<div class="title">
+		<span id="${kProfileDeleteTitle}"></span>
+	</div>
+	<div style="padding: 0 15px;">
+		<div error-directive></div>
+		<hr class="horizHR">
+	</div>
+	<div class="col-sm-12 attention">
+		<span class="fa fa-info-circle title"></span>
+		<b><span id="${kAttention}"></span></b>
+		<p>
+			<br>
+			<span id="${kProfileDeleteInfoText2}"></span>
+		</p>
+	</div>
+	<div class="col-sm-8">
+		<div class="row subDiv">
+			<h4 class="tHeader">
+				<b><span id="${kProfileDeleteReason}"></span></b>
+			</h4>
+			<div class="col-sm-12">
+				<div>
+					<button class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						<span id="{{deactActive.key}}" data-ind="{{deactActive.id}}">
+							{{deactActive.text}}</span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li id="{{deact.id}}" ng-repeat="deact in deactives" class="menubutton" ng-click="changeDeactive($event);">
+							<span id="{{deact.key}}">{{deact.text}}</span>
+						</li>
+					</ul>
+				</div>
+				<textarea class="form-control canSelect"></textarea>
+			</div>
+		</div>
+		<div class="row subDiv">
+			<h4 class="tHeader">
+				<b><span id="${kProfileDeleteConfirmTitle}"></span></b>
+			</h4>
+			<div class="col-sm-11 col-sm-offset-1">
+				<form method="post">
+					<table>
+						<tr>
+							<td>
+								<b><span id="${keyCurrentPassword}"></span></b>
+							</td>
+							<td>
+								<input type="password" class="form-control canSelect" required>
+							</td>
+						</tr>
+					</table>
+					<button id="btnHide" ng-click="removeProfile();" class="isHide"></button>
+				</form>
+			</div>
+			<button ng-click="removeProfile(true);" class="fa fa-trash btn btn-danger pull-right">
+				<span id="${keyProfDelAccount}"></span>
+			</button>
+		</div>
+	</div>
+	<div class="listContent col-sm-4 pull-right leftBorder">
+		<div>
+			<div>
+				<span class="fa fa-info-circle title"></span>
+				<a>
+					<span class="subTitle" id="${kProfileDeleteInfo}"></span>
+				</a>
+			</div>
+			<div class="content">
+				<p>
+					<span id="${kProfileDeleteInfoText}"></span>
+					<br><br>
+					<b><span id="${kProfileDeleteInfoText2}"></span></b>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

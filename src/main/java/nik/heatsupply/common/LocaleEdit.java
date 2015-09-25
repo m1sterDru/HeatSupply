@@ -16,10 +16,10 @@ public class LocaleEdit {
 	private static final String ua = "Language_uk.properties";
 	
 	public static void main(String[] args) {
-		String key = "keyMeterNotExist";
-		String valueEN = "This counter is not found. Perhaps different recording format of the serial number. Verify that the specified number or contact your municipal services";
-		String valueRU = "Данный счетчик НЕ НАЙДЕН. Возможно, отличается формат записи серийного номера. Проверьте правильность указанного Вами номера или обратитесь к поставщику коммунальной услуги";
-		String valueUA = "Даний лічильник не знайдемо. Можливо, відрізняється формат запису серійного номера. Перевірте правильність введеного Вами номера або зверніться до постачальника комунальної послуги";
+		String key = "keyDelOwnerInfo";
+		String valueEN = "Select the client account that you want to delete and click \"Delete account\"";
+		String valueRU = "Выберите лицевой счет, который Вы хотите удалить и нажмите кнопку \"Удалить лицевой счет\"";
+		String valueUA = "Виберіть особовий рахунок, який Ви хочете видалити і натисніть кнопку \"Видалити особовий рахунок\"";
 
 		boolean isExist = remove(en, key);
 		remove(ru, key);

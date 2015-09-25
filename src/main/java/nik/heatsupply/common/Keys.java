@@ -10,7 +10,7 @@ public class Keys {
 	private static final String ru = "Language_ru.properties";
 
 	public static void main(String[] args) {
-		String filter = "assword";
+		String filter = "";
 		File file = new File(PATH + ru);
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String line;

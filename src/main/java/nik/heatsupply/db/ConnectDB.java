@@ -60,6 +60,10 @@ public class ConnectDB {
 		return (UserWeb) new BatisJDBC(s -> s.getMapper(IMapper.class).getUser(idUser)).get();
 	}
 	
+	public static UserWeb getUserByLogin(String login) {
+		return (UserWeb) new BatisJDBC(s -> s.getMapper(IMapper.class).getUserByLogin(login)).get();
+	}
+	
 	public static UserWeb getUser(String login) {
 		return (UserWeb) new BatisJDBC(s -> s.getMapper(IMapper.class).getUserByLogin(login)).get();
 	}
@@ -80,26 +84,49 @@ public class ConnectDB {
 		return (List<MeterUser>) new BatisJDBC(s -> s.getMapper(IMapper.class).getMetersList(idUser)).get();
 	}
 	
-	public static boolean addUser(int id, String login, String password, String name, String middlename,
-			String surname, String phone, String email, int languageid, String owneraccount, String meterId, String lastcash) {
-		Encryptor encr = new Encryptor();
-		while(password.length() < 12) password += " ";
-		String passwordE = encr.encrypt(password);
+	public static String addUser(String login, String password, String phone, String email, 
+			int languageid, String owneraccount, String meterId, String lastcash) {
 
-		IBatisJDBC[] iCollection = new IBatisJDBC[2];
-		iCollection[0] =  s -> s.getMapper(IMapper.class)
-						.addUser(id, login, passwordE, name, middlename, surname, phone, email, languageid);
+		String name = "";
+		String middlename = "";
+		String surname = "";
 
-		int idMeter = Integer.parseInt(meterId);
-		double lastCashSum = lastcash.length() == 0 ? 0.0 : Double.parseDouble(lastcash);
-		iCollection[1] = s -> s.getMapper(IMapper.class)
-				.addMeterUser(id, idMeter, lastCashSum, 0, owneraccount);
-
-		return new BatisJDBC(iCollection).runCollection();
+		UserWeb user = ConnectDB.getUserByLogin(login);
+		if(user != null) {
+			if(user.isActive()) {
+				System.out.println("====mail " + user.getLogin() + " = " + user.isActive());
+				return user.getEmail();
+			} else {
+				System.out.println("====2222");
+				return "2";
+			}
+		} else {
+			System.out.println("====3333");
+			return "3";
+		}
+//		Encryptor encr = new Encryptor();
+//		while(password.length() < 12) password += " ";
+//		String passwordE = encr.encrypt(password);
+//
+//		int id = ConnectDB.getMaxUserId();
+//		IBatisJDBC[] iCollection = new IBatisJDBC[2];
+//		iCollection[0] =  s -> s.getMapper(IMapper.class)
+//						.addUser(id, login, passwordE, name, middlename, surname, phone, email, languageid);
+//
+//		int idMeter = Integer.parseInt(meterId);
+//		double lastCashSum = lastcash.length() == 0 ? 0.0 : Double.parseDouble(lastcash);
+//		iCollection[1] = s -> s.getMapper(IMapper.class)
+//				.addMeterUser(id, idMeter, lastCashSum, 0, owneraccount);
+//
+//		return new BatisJDBC(iCollection).runCollection() ? "1" : "0";
 	}
 	
 	public static boolean deleteUser(int idUser) {
 		return new BatisJDBC(s -> s.getMapper(IMapper.class).deleteUser(idUser)).run();
+	}
+	
+	public static boolean activateUser(String login) {
+		return new BatisJDBC(s -> s.getMapper(IMapper.class).activateUser(login)).run();
 	}
 	
 	public static boolean addMeterUser(int iduser, int idmeter, double lastcash, int type_device_id, String idaccount) {
