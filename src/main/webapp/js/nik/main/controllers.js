@@ -143,6 +143,9 @@ heatSupply.mainControllers
 	}, 1000);
 })
 .controller('ownerAccountDeleteController', function ($scope, hsFactory){
+	setTimeout(function(){
+		hsFactory.translator.translateAll();
+	}, 500);
 	$scope.logoClass = 'isHide';
 	setTimeout(function(){$scope.logoClass = '';}, 500);
 

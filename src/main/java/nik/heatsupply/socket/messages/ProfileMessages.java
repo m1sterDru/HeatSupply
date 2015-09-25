@@ -33,10 +33,12 @@ public class ProfileMessages {
 		try {
 			int idMeter = Integer.parseInt(cm.getParameters().get("idMeter"));
 			int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-			if(ConnectDB.removeUserMeter(idUser, idMeter))
-				sendMessage(session, SUCCESS, "deleteOwner", "idUser_" + idUser);
-			else
-				sendMessage(session, TRY_AGAIN, "deleteOwner");
+			if(ConnectDB.getMetersList(idUser).size() > 1) {
+				if(ConnectDB.removeUserMeter(idUser, idMeter))
+					sendMessage(session, SUCCESS, "deleteOwner", "idUser_" + idUser);
+				else
+					sendMessage(session, TRY_AGAIN, "deleteOwner");
+			}
 		} catch (Exception e) {
 			LOG.error(ExceptionUtils.getStackTrace(e));
 		}
