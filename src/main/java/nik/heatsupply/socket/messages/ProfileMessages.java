@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nik.heatsupply.common.Encryptor;
-import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.socket.Server;
 import nik.heatsupply.socket.model.Meter;
 import nik.heatsupply.socket.model.MeterUser;
 import nik.heatsupply.socket.model.UserWeb;
@@ -33,8 +33,8 @@ public class ProfileMessages {
 		try {
 			int idMeter = Integer.parseInt(cm.getParameters().get("idMeter"));
 			int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-			if(ConnectDB.getMetersList(idUser).size() > 1) {
-				if(ConnectDB.removeUserMeter(idUser, idMeter))
+			if(Server.dbImpl.getMetersList(idUser).size() > 1) {
+				if(Server.dbImpl.removeUserMeter(idUser, idMeter))
 					sendMessage(session, SUCCESS, "deleteOwner", "idUser_" + idUser);
 				else
 					sendMessage(session, TRY_AGAIN, "deleteOwner");
@@ -48,10 +48,10 @@ public class ProfileMessages {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
 		String password = cm.getParameters().get("password");
 		
-		UserWeb curUser = ConnectDB.getUser(idUser);
+		UserWeb curUser = Server.dbImpl.getUser(idUser);
 		Encryptor enc = new Encryptor();
 		if(enc.decrypt(curUser.getPassword()).trim().equals(password)) {
-			if(ConnectDB.deleteUser(idUser)) {
+			if(Server.dbImpl.deleteUser(idUser)) {
 				sendMessage(session, SUCCESS, "removeProfile");
 				httpSession.invalidate();
 			} else {
@@ -64,7 +64,7 @@ public class ProfileMessages {
 	
 	public static void updateProfile(CommandMessage cm, Session session, HttpSession httpSession) {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-		if(ConnectDB.deleteUser(idUser)) {
+		if(Server.dbImpl.deleteUser(idUser)) {
 			sendMessage(session, SUCCESS, "updateProfile");
 			httpSession.invalidate();
 		} else {
@@ -74,7 +74,7 @@ public class ProfileMessages {
 	
 	public static void getProfileInfo(CommandMessage cm, Session session) {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
-		UserWeb u = ConnectDB.getUser(idUser);
+		UserWeb u = Server.dbImpl.getUser(idUser);
 		if(u != null) {
 			CommandMessage message = new CommandMessage("profileInfo");
 //			message.setParameters("name", notNull(u.getName()));
@@ -94,14 +94,14 @@ public class ProfileMessages {
 	public static void getOwnerList(CommandMessage cm, Session session) {
 		int idUser = Integer.parseInt(cm.getParameters().get("userId"));
 		String selector = cm.getParameters().get("selector");
-		UserWeb u = ConnectDB.getUser(idUser);
+		UserWeb u = Server.dbImpl.getUser(idUser);
 		if(u != null) {
 			CommandMessage message = new CommandMessage("ownerList");
 			message.setParameters("selector", selector);
-			List<MeterUser> actOwners = ConnectDB.getMetersList(u.getId());
+			List<MeterUser> actOwners = Server.dbImpl.getMetersList(u.getId());
 			actOwners.forEach(m -> {
 				try {
-					Meter met = ConnectDB.getMeterById(m.getIdmeter());
+					Meter met = Server.dbImpl.getMeterById(m.getIdmeter());
 					message.setParameters(m.getIdmeter() + "", notNull(met.getSerialnumber()) + ";" + 
 							met.getOwneraccount() + ";" + met.getOwnername().replace(";", ""));
 				} catch (Exception e) {
@@ -131,7 +131,7 @@ public class ProfileMessages {
 			@Override
 			public void onSuccess(Meter meter) {
 				int idUser = Integer.parseInt(userId);
-				if(ConnectDB.addMeterUser(idUser, meter.getId(), 0, type_account, owneraccount)) {
+				if(Server.dbImpl.addMeterUser(idUser, meter.getId(), 0, type_account, owneraccount)) {
 					sendMessage(session, SUCCESS, "addOwner", "idUser_" + userId);
 				} else {
 					sendMessage(session, TRY_AGAIN, "addOwner");
@@ -194,7 +194,7 @@ public class ProfileMessages {
 		}
 		
 		public void run() {
-			List<Meter> owners = ConnectDB.getOwnerList(owneraccount);
+			List<Meter> owners = Server.dbImpl.getOwnerList(owneraccount);
 
 			if(owners.size() == 0) {
 				owner.onOwnerNotExist();

@@ -1,4 +1,4 @@
-package nik.heatsupply.db.jdbc.mappers;
+package nik.heatsupply.dao.mappers;
 
 import java.util.List;
 
