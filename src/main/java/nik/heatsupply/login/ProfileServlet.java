@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import nik.heatsupply.common.Encryptor;
-import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.socket.Server;
 import nik.heatsupply.socket.model.UserWeb;
 
 @WebServlet("/ProfileServlet")
@@ -43,7 +43,7 @@ public class ProfileServlet extends HttpServlet {
 		int idUser = Integer.parseInt(idUserS);
 
 		Encryptor encr = new Encryptor();
-		UserWeb u = ConnectDB.getUser(idUser);
+		UserWeb u = Server.dbImpl.getUser(idUser);
 		int idLang = 3;
 		switch(languageId){
 			case "en": idLang = 1; break;
@@ -51,7 +51,7 @@ public class ProfileServlet extends HttpServlet {
 			case "uk": idLang = 3; break;
 		}
 		if(encr.decrypt(u.getPassword()).trim().equals(password)) {
-			if(ConnectDB.updateUser(idUser, password1.length() == 0 ? password : password1, 
+			if(Server.dbImpl.updateUser(idUser, password1.length() == 0 ? password : password1, 
 					phone, email, idLang)) {
 				ServletMessage.send(response, ServletMessage.SUCCESS);
 			} else {

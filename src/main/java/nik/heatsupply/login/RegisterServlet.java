@@ -17,7 +17,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.socket.Server;
 import nik.heatsupply.socket.messages.ProfileMessages;
 import nik.heatsupply.socket.messages.ProfileMessages.AddOwner;
 import nik.heatsupply.socket.messages.ProfileMessages.IAddOwner;
@@ -60,19 +60,11 @@ public class RegisterServlet extends HttpServlet {
 						case "uk": idLang = 3; break;
 					}
 					
-					String result = ConnectDB.addUser(login, password, phone, email, idLang, 
+					String result = Server.dbImpl.addUser(login, password, phone, email, idLang, 
 							owneraccount, meter.getId() + "", "");
 					switch(result) {
-						case "1": sendMessage(response, ProfileMessages.SUCCESS); break;
-						case "0": sendMessage(response, ProfileMessages.TRY_AGAIN); break;
-						case "2":
-							if(ConnectDB.activateUser(login)){
-								sendMessage(response, ProfileMessages.SUCCESS);
-							} else {
-								sendMessage(response, ProfileMessages.TRY_AGAIN); break;
-							}
-							break;
-						case "3": sendMessage(response, ProfileMessages.TRY_AGAIN); break;
+						case "0": sendMessage(response, ProfileMessages.SUCCESS); break;
+						case "1": sendMessage(response, ProfileMessages.TRY_AGAIN); break;
 						default:
 							JsonArrayBuilder jArray = Json.createArrayBuilder();
 							String emailEnd = result.substring(result.indexOf("@"));

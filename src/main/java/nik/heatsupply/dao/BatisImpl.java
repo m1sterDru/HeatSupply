@@ -1,26 +1,26 @@
-package nik.heatsupply.db.jdbc;
+package nik.heatsupply.dao;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.socket.Server;
 
-public class BatisJDBC {
-	private static final Logger LOG = LoggerFactory.getLogger(BatisJDBC.class);
+public class BatisImpl {
+	private static final Logger LOG = LoggerFactory.getLogger(BatisImpl.class);
 	private static final int MAX_REPET = 5;
-	private IBatisJDBC iBatis;
-	private IBatisJDBC[] iCollection;
+	private IBatis iBatis;
+	private IBatis[] iCollection;
 	private int count;
 	private boolean isCommit = true;
 	private SqlSession session;
 	
-	public BatisJDBC(IBatisJDBC iBatis) {
+	public BatisImpl(IBatis iBatis) {
 		this.iBatis = iBatis;
 	}
 	
-	public BatisJDBC(IBatisJDBC[] iCollection) {
+	public BatisImpl(IBatis[] iCollection) {
 		this.iCollection = iCollection;
 	}
 
@@ -32,19 +32,18 @@ public class BatisJDBC {
 		while (count < MAX_REPET) {
 			session = null;
 			try {
-				if(ConnectDB.getPostgressDB() != null) {
-					session = ConnectDB.getPostgressDB().getSqlSessionFactory().openSession(isCommit);
+				if(Server.dbImpl.getDataSource() != null) {
+					session = Server.dbImpl.getSqlSessionFactory().openSession(isCommit);
 					try {
 						return iBatis.getResult(session);
 					} catch (Exception e) {
-						LOG.error(ExceptionUtils.getStackTrace(e));
-						ConnectDB.setPostgressDB(null);
-						if(count == MAX_REPET - 1) e.printStackTrace();
+						if(count == MAX_REPET - 1) LOG.error(ExceptionUtils.getStackTrace(e));
 					} finally {
 						if (session != null) session.close();
 					}
 				} else {
 					Thread.sleep(1000);
+					Server.dbImpl = new DataBaseImpl();
 				}
 			} catch (Exception e) {
 				LOG.error(ExceptionUtils.getStackTrace(e));
@@ -58,8 +57,8 @@ public class BatisJDBC {
 		while (count < MAX_REPET) {
 			session = null;
 			try {
-				if(ConnectDB.getPostgressDB() != null) {
-					session = ConnectDB.getPostgressDB().getSqlSessionFactory().openSession(isCommit);
+				if(Server.dbImpl.getDataSource() != null) {
+					session = Server.dbImpl.getSqlSessionFactory().openSession(isCommit);
 					iBatis.getResult(session);
 					return true;
 				} else {
@@ -67,7 +66,6 @@ public class BatisJDBC {
 				}
 			} catch (Exception e) {
 				if(count == MAX_REPET - 1) LOG.error(ExceptionUtils.getStackTrace(e));
-				ConnectDB.setPostgressDB(null);
 			} finally {
 				if (session != null) session.close();
 			}
@@ -80,8 +78,8 @@ public class BatisJDBC {
 		while (count < MAX_REPET) {
 			session = null;
 			try {
-				if(ConnectDB.getPostgressDB() != null) {
-					session = ConnectDB.getPostgressDB().getSqlSessionFactory().openSession(false);
+				if(Server.dbImpl.getDataSource() != null) {
+					session = Server.dbImpl.getSqlSessionFactory().openSession(false);
 					for(int i = 0; i < iCollection.length; i++) {
 						iBatis = iCollection[i];
 						if(iBatis != null) iBatis.getResult(session);
@@ -94,7 +92,6 @@ public class BatisJDBC {
 			} catch (Exception e) {
 				if(session != null) session.rollback();
 				if(count == MAX_REPET - 1) LOG.error(ExceptionUtils.getStackTrace(e));
-				ConnectDB.setPostgressDB(null);
 			} finally {
 				if (session != null) session.close();
 			}

@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nik.heatsupply.common.Encryptor;
-import nik.heatsupply.db.ConnectDB;
 import nik.heatsupply.socket.Server;
 import nik.heatsupply.socket.model.UserWeb;
 
@@ -81,7 +80,7 @@ public class LoginServlet extends HttpServlet {
 	}
 	
 	private boolean isChecked(String login, String password, HttpSession session) {
-		UserWeb u = ConnectDB.getUser(login);
+		UserWeb u = Server.dbImpl.getUserByLogin(login);
 		if(u == null || !u.isActive()) return false;
 		Encryptor encr = new Encryptor();
 		if(encr.decrypt(u.getPassword()).trim().equals(password)) {

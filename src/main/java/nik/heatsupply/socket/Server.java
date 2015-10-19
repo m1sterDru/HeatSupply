@@ -20,7 +20,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nik.heatsupply.db.ConnectDB;
+import nik.heatsupply.dao.DataBaseImpl;
 import nik.heatsupply.socket.messages.CommandMessage;
 import nik.heatsupply.socket.messages.Message;
 import nik.heatsupply.socket.messages.ProfileMessages;
@@ -35,6 +35,7 @@ public class Server {
 	private static final Logger LOG = LoggerFactory.getLogger(Server.class);
 	private static final Map<HttpSession, Boolean> sessions = Collections.synchronizedMap(new HashMap<>());
 	private static EndpointConfig endpointConfig;
+	public static DataBaseImpl dbImpl = new DataBaseImpl();
 
 	@OnOpen
 	public void handlerOpen(Session session, EndpointConfig config) throws IOException, EncodeException {
@@ -65,7 +66,7 @@ public class Server {
 			case "user":
 				cm.setParameters("login", httpSession.getAttribute("user").toString());
 				int idUser = Integer.parseInt(httpSession.getAttribute("userId").toString());
-				UserWeb user = ConnectDB.getUser(idUser);
+				UserWeb user = dbImpl.getUser(idUser);
 				String lang = "en";
 				switch(user.getLanguageid()){
 					case 1: lang = "en"; break;
