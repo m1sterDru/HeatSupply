@@ -12,6 +12,7 @@ public interface IDataBase {
 			int languageid, String owneraccount, String meterId, String lastcash);
 	boolean updateUser(int idUser, String password, String phone, String email, int languageid);
 	boolean deleteUser(int idUser);
+	boolean deleteUserFromDB(int idUser);
 	boolean activateUser(String login);
 	UserWeb getUser(int idUser);
 	UserWeb getUserByLogin(String login);
