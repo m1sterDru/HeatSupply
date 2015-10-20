@@ -2,12 +2,13 @@ package nik.heatsupply.dao;
 
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nik.heatsupply.common.Encryptor;
 import nik.heatsupply.dao.mappers.IMapper;
-import nik.heatsupply.socket.Server;
 import nik.heatsupply.socket.model.Meter;
 import nik.heatsupply.socket.model.MeterUser;
 import nik.heatsupply.socket.model.UserWeb;
@@ -18,6 +19,11 @@ public class DataBaseImpl extends DataBaseSuper implements IDataBase {
 	
 	public DataBaseImpl() {
 		super();
+		LOG.info("Create DataBaseImpl " + this.toString());
+	}
+	
+	public DataBaseImpl(DataSource dataSource) {
+		super(dataSource);
 		LOG.info("Create DataBaseImpl " + this.toString());
 	}
 
@@ -39,7 +45,7 @@ public class DataBaseImpl extends DataBaseSuper implements IDataBase {
 			if(user.isActive()) {
 				return user.getEmail();
 			} else {
-				if(Server.dbImpl.activateUser(login)) {
+				if(activateUser(login)) {
 					return ADD_USER_SUCCESS;
 				} else {
 					return ADD_USER_TRY_AGAIN;
@@ -50,7 +56,7 @@ public class DataBaseImpl extends DataBaseSuper implements IDataBase {
 			while(password.length() < 12) password += " ";
 			String passwordE = encr.encrypt(password);
 	
-			int id = Server.dbImpl.getMaxUserId();
+			int id = getMaxUserId();
 			IBatis[] iCollection = new IBatis[2];
 			iCollection[0] =  s -> s.getMapper(IMapper.class)
 							.addUser(id, login, passwordE, name, middlename, surname, phone, email, languageid);
@@ -67,6 +73,11 @@ public class DataBaseImpl extends DataBaseSuper implements IDataBase {
 	@Override
 	public boolean deleteUser(int idUser) {
 		return new BatisImpl(s -> s.getMapper(IMapper.class).deleteUser(idUser)).run();
+	}
+	
+	@Override
+	public boolean deleteUserFromDB(int idUser) {
+		return new BatisImpl(s -> s.getMapper(IMapper.class).deleteUserFromDB(idUser)).run();
 	}
 	
 	@Override

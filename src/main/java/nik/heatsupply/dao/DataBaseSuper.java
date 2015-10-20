@@ -22,19 +22,31 @@ public class DataBaseSuper {
 	private SqlSessionFactory sqlSessionFactory;
 	private static DataSource dsLocal;
 	private static Context context = null;
+	
+	public static int LANGUAGE_EN = 1;
+	public static int LANGUAGE_RU = 2;
+	public static int LANGUAGE_UA = 3;
 	public static String ADD_USER_SUCCESS = "0";
 	public static String ADD_USER_TRY_AGAIN = "1";
 	
 	public DataBaseSuper() {
 		setMappers(getDataSource());
 	}
+	
+	public DataBaseSuper(DataSource dataSource) {
+		dsLocal = dataSource;
+		setMappers(getDataSource());
+	}
+	
 	private void setMappers(DataSource dataSource) {
-		TransactionFactory transactionFactory = new JdbcTransactionFactory();
-		Environment environment = new Environment("development", transactionFactory, dataSource);
-		Configuration configuration = new Configuration(environment);
-		configuration.addMapper(IMapper.class);
-		//configuration.addMappers("jdbc.mappers");
-		sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+		if(dataSource != null) {
+			TransactionFactory transactionFactory = new JdbcTransactionFactory();
+			Environment environment = new Environment("development", transactionFactory, dataSource);
+			Configuration configuration = new Configuration(environment);
+			configuration.addMapper(IMapper.class);
+			//configuration.addMappers("jdbc.mappers");
+			sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+		}
 	}
 	
 	public DataSource getDataSource() {
