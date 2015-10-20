@@ -76,6 +76,11 @@ public class DataBaseImpl extends DataBaseSuper implements IDataBase {
 	}
 	
 	@Override
+	public boolean deleteUserFromDB(int idUser) {
+		return new BatisImpl(s -> s.getMapper(IMapper.class).deleteUserFromDB(idUser)).run();
+	}
+	
+	@Override
 	public boolean activateUser(String login) {
 		return new BatisImpl(s -> s.getMapper(IMapper.class).activateUser(login)).run();
 	}

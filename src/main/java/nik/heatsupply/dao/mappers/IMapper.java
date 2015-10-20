@@ -43,14 +43,16 @@ public interface IMapper {
 	@Insert("insert into users_web " +
 			"(id, login, password, name, middlename, surname, phone, email, languageid, active) values " +
 			"(#{id}, #{login}, #{password}, #{name}, #{middlename},"
-			+ "#{surname}, #{phone}, #{email}, #{languageid}), true")
+			+ "#{surname}, #{phone}, #{email}, #{languageid}, true)")
 	Integer addUser(@Param("id")int id, @Param("login")String login, @Param("password")String password, 
 			@Param("name")String name, @Param("middlename")String middlename, @Param("surname")String surname,
 			@Param("phone")String phone, @Param("email")String email, @Param("languageid")int languageid);
-	
-//	@Delete("delete from users_web where id = #{id}")
+		
 	@Update("update users_web set active = false where id = #{id}")
 	Integer deleteUser(@Param("id")int id);
+	
+	@Delete("delete from users_web where id = #{id}")
+	Integer deleteUserFromDB(@Param("id")int id);
 	
 	@Update("update users_web set active = true where login = #{login}")
 	Integer activateUser(@Param("login")String login);
