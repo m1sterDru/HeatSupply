@@ -78,4 +78,41 @@ heatSupply.indexControllers
 				$('#' + ref).addClass('active');
 			}
 		}
+	})
+	.controller('recoverController', function ($scope, $http, hsFactory){
+		$scope.sendMail = function(){
+			var email = $('#recover input[name="email"]');
+
+			if(email[0].checkValidity()){
+				$http({
+					method: 'GET',
+					url: '/HeatSupply/dataServer/db/recover?params=' + 
+								email.val(),
+					cache: false
+				})
+				.success(function(data){
+					var isSuccess = data.mail === email.val();
+					BootstrapDialog.confirm({
+						title: isSuccess ? 'SUCCESS' : 'WARNING',
+						message: isSuccess ? 'Check your email' : 
+									'Something wrong',
+						type: isSuccess ? BootstrapDialog.TYPE_SUCCESS : 
+									BootstrapDialog.TYPE_DANGER,
+						closable: false,
+						draggable: false,
+						btnCancelLabel: 'Cancel',
+						btnOKLabel: 'OK',
+						btnOKClass: isSuccess ? 'btn-prymary' : 'btn-danger',
+						callback: function(result){
+							if(result && isSuccess){
+								location.href = hsFactory.url + '#/login';
+							}
+						}
+					});
+				})
+				.error(function(data, status, headers, config){
+					console.log(status)
+				});
+			}
+		}
 	});

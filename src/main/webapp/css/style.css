@@ -520,3 +520,9 @@ div[menu-directive] ul > li > a:hover{
 }
 #delAccountTemplate .leftBorder{min-height: 200px;}
 #delAccountTemplate button.ownerButton{margin-bottom: 75px;}
+
+/*recover*/
+#recover input[name='email']{
+	display: inline-block;
+	width: 200px;
+}
