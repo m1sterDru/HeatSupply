@@ -12,10 +12,10 @@ heatSupply.indexModule.config(function ($routeProvider){
 		when('/login', {
 			templateUrl: 'html/login/loginForm.html'
 		}).
-		// when('/registration', {
-		// 	templateUrl: 'html/login/loginRegistration.html',
-		// 	controller:'registrationController'
-		// }).
+		when('/recover', {
+			templateUrl: 'html/login/recover.html',
+			controller:'recoverController'
+		}).
 		otherwise({
 			redirectTo: '/'
 		})
