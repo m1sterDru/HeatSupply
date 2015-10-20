@@ -77,14 +77,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ua.pr</groupId>
-			<artifactId>fonts</artifactId>
-			<version>0.2015</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/fonts.jar</systemPath>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-dbcp</artifactId>
 			<scope>${tomcat-dbcp.scope}</scope>
