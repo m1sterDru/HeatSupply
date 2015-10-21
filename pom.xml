@@ -4,13 +4,12 @@
 	<groupId>nik.heatsupply</groupId>
 	<artifactId>HeatSupply</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<name>HeatSupply Maven Webapp</name>
+	<version>v.0.1</version>
+	<name>nik.heatsupply.HeatSupply</name>
 	<url>http://maven.apache.org</url>
 
 <!--mvn clean package war:inplace-->
 	<properties>
-		<!--glassfish.scope>compile</glassfish.scope-->
 		<scopeTomcat>compile</scopeTomcat>
 		<scopeGlassFish>test</scopeGlassFish>
 		<postgresql.scope>provided</postgresql.scope>
@@ -34,6 +33,16 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+			<version>LATEST</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>LATEST</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
 			<version>LATEST</version>
 		</dependency>
 
