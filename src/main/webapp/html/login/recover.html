@@ -9,11 +9,23 @@
 
 	<div class="content">
 		<form class="content">
-			Input your email address
-			<input type="email" name="email" placeholder="login@domain.com" class="form-control canSelect" autocomplete="off" required>
-			<button class="btn btn-primary" ng-click="sendMail();">
-				<span id="${kApply}"></span>
-			</button>
+			<table class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
+				<tr class="spaceUnder">
+					<td class="bold"><span id="${keyLoginOrEmail}"></span></td>
+					<td>
+						<input type="text" name="userOrEmail" class="form-control canSelect" required ng-model="userData">
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button class="btn btn-primary pull-right" ng-click="sendMail();">
+							<span class="glyphicon glyphicon-send"></span>
+							<span id="${kApply}"></span>
+						</button>
+					</td>
+				</tr>
+			</table>
 		</form>
 	</div>
 </div>

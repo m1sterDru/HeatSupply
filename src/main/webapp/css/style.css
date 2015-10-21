@@ -70,8 +70,7 @@ input[disabled]{color: gray;}
 	background-color: #eee;
 	padding: 2px;
 }
-tr.spaceUnder > td {padding: 5px 0;}
-tr.spaceUnder > td {padding-left: 5px;}
+tr.spaceUnder > td {padding: 5px;}
 .bold{font-weight: bold;}
 .comment{
 	font-weight: bold;
@@ -522,7 +521,11 @@ div[menu-directive] ul > li > a:hover{
 #delAccountTemplate button.ownerButton{margin-bottom: 75px;}
 
 /*delAccountTemplate*/
-#recover input[name='email']{
-	display: inline-block;
-	width: 200px;
+#recover tr.spaceUnder > td {padding: 15px;}
+#recover button{margin: 0 15px 15px 0;}
+#recover .glyphicon-send,
+#recover .fa-spin{color: white;}
+#recover table{
+	background-color: #eee;
+	border: 1px solid silver;
 }

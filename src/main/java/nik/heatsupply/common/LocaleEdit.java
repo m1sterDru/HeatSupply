@@ -16,10 +16,10 @@ public class LocaleEdit {
 	private static final String ua = "Language_uk.properties";
 	
 	public static void main(String[] args) {
-		String key = "keyDelOwnerInfo";
-		String valueEN = "Select the client account that you want to delete and click \"Delete account\"";
-		String valueRU = "Выберите лицевой счет, который Вы хотите удалить и нажмите кнопку \"Удалить лицевой счет\"";
-		String valueUA = "Виберіть особовий рахунок, який Ви хочете видалити і натисніть кнопку \"Видалити особовий рахунок\"";
+		String key = "keyLoginOrEmail";
+		String valueEN = "Login or e-mail";
+		String valueRU = "Логин или e-mail";
+		String valueUA = "Логін або e-mail";
 
 		boolean isExist = remove(en, key);
 		remove(ru, key);

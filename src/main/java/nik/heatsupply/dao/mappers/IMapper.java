@@ -28,6 +28,9 @@ public interface IMapper {
 	@Select("select * from users_web where login = #{login}")
 	UserWeb getUserByLogin(@Param("login")String login);
 	
+	@Select("select * from users_web where email = #{email}")
+	UserWeb getUserByEmail(@Param("email")String email);
+	
 	@Select("select coalesce(max(id), 0) + 1 from users_web")
 	Integer getMaxUserId();
 	

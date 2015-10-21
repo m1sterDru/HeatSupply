@@ -7,6 +7,7 @@ import org.apache.tomcat.dbcp.dbcp2.datasources.SharedPoolDataSource;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import nik.heatsupply.socket.model.MeterUser;
 import nik.heatsupply.socket.model.UserWeb;
 
 public class DataBaseImplTest {
@@ -42,37 +43,32 @@ public class DataBaseImplTest {
 	@Test
 	public void test() {
 		if (dbImpl != null) assertTrue(dbImpl.getDataSource() != null);
-		
-		int iduser = dbImpl.getMaxUserId();
-		
-		
-		
+		int idUser = dbImpl.getMaxUserId();
+
 		String result = dbImpl.addUser("TestUser", "123", "+380951389592", "123@yandex.ru", DataBaseSuper.LANGUAGE_EN, "064248", "70320", "");
 		assertEquals(result, DataBaseSuper.ADD_USER_SUCCESS);
-		assertTrue(dbImpl.deleteUser(iduser));
+		assertTrue(dbImpl.deleteUser(idUser));
 		result = dbImpl.addUser("TestUser", "123", "+380951389592", "123@yandex.ru", DataBaseSuper.LANGUAGE_EN, "064248", "70320", "");
 		assertEquals(result, DataBaseSuper.ADD_USER_SUCCESS);
 		result = dbImpl.addUser("TestUser", "123", "+380951389592", "123@yandex.ru", DataBaseSuper.LANGUAGE_EN, "064248", "70320", "");
 		assertEquals(result, "123@yandex.ru");
 		
-		boolean boolResult = dbImpl.updateUser( iduser, "123", "+380951389592", "dima@yandex.ru", DataBaseSuper.LANGUAGE_EN);
+		boolean boolResult = dbImpl.updateUser(idUser, "123", "+380951389592", "dima@yandex.ru", DataBaseSuper.LANGUAGE_EN);
 		assertTrue(boolResult);
 		
-		UserWeb user = dbImpl.getUser(iduser);
+		UserWeb user = dbImpl.getUser(idUser);
 		assertEquals("dima@yandex.ru", user.getEmail());
-				
-		boolResult = dbImpl.addUserMeter(iduser, 56308);
+		
+		MeterUser meterUser = dbImpl.getMetersList(idUser).get(0);
+		boolResult = dbImpl.addMeterUser(idUser, 56308, meterUser.getLastcash(), meterUser.getIdTypeDevice(), meterUser.getIdAccount());
 		assertTrue(boolResult);
 		
-		assertTrue(dbImpl.getMetersList(iduser).size() == 2);
-		assertTrue(dbImpl.removeUserMeter(iduser, 56308));
+		assertTrue(dbImpl.getMetersList(idUser).size() == 2);
+		assertTrue(dbImpl.removeUserMeter(idUser, 56308));
 		assertTrue(dbImpl.getMeterById(70320).getOwneraccount().equals("064248"));
 		assertTrue(dbImpl.getOwnerList("064248").size() == 1);
-		
-		
-		
-		
-		assertTrue(dbImpl.deleteUserFromDB(iduser));
+
+		assertTrue(dbImpl.deleteUserFromDB(idUser));
 		
 		System.out.println("\n\n\n-------------------------------------------------------");
 		System.out.println("||\t1. DataBase connection is SUCCESS");

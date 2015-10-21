@@ -33,7 +33,7 @@ public class MailSender {
 			String title, String emailBody, String filename) throws AddressException, MessagingException {
 
 		mailServerProperties = getPropValues("mail.properties");
-		String user = mailServerProperties.getProperty("mail.address");
+		String user = mailServerProperties.getProperty("mail.login");
 		user = user.indexOf("@") > 0 ? user : user + "@gmail.com";
 		String password = mailServerProperties.getProperty("mail.password");
 		getMailSession = Session.getDefaultInstance(mailServerProperties, null);
