@@ -18,6 +18,11 @@ import javax.ws.rs.core.MediaType;
 
 import nik.heatsupply.mail.MailSender;
 
+/**
+ * @author pavel.naduda
+ * 1. filesindir - Return all files in lang directory - http://localhost:8080/HeatSupply/dataServer/db/filesInDir
+ * 2. recover - Send leter to email - http://localhost:8080/HeatSupply/dataServer/db/recover?params=yourEmailAddress
+ */
 @Path("/db")
 public class DataBase {
 	@Produces(MediaType.APPLICATION_JSON)
@@ -37,13 +42,6 @@ public class DataBase {
 				jsn.add(Json.createObjectBuilder().add("name", file.getName()));
 			}
 			ret = jsn.build().toString();
-			break;
-		case "currentuser":
-			String idUser = params;
-			j.add("user", "admin_" + idUser)
-			 .add("password", "password")
-			 .add("email", "qqq@gmail.com");
-			ret = j.build().toString();
 			break;
 		case "recover":
 			String mailAddress = params;
