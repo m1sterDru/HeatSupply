@@ -68,6 +68,8 @@ public class DataBaseImplTest {
 		
 		UserWeb user = dbImpl.getUser(idUser);
 		assertEquals("dima@yandex.ru", user.getEmail());
+		user = dbImpl.getUserByEmail(user.getEmail());
+		assertEquals("dima@yandex.ru", user.getEmail());
 		
 		MeterUser meterUser = dbImpl.getMetersList(idUser).get(0);
 		boolResult = dbImpl.addMeterUser(idUser, 56308, meterUser.getLastcash(), meterUser.getIdTypeDevice(), meterUser.getIdAccount());
@@ -85,7 +87,7 @@ public class DataBaseImplTest {
 		System.out.println("||\t2. Method addUser is SUCCESS ");
 		System.out.println("||\t3. Method deleteUser is SUCCESS ");
 		System.out.println("||\t4. Method updateUser is SUCCESS ");
-		System.out.println("||\t5. Method getUser is SUCCESS ");
+		System.out.println("||\t5. Method getUser & getUserByEmail is SUCCESS ");
 		System.out.println("||\t6. Method getUserMeter is SUCCESS ");
 		System.out.println("||\t7. Method getMeterList is SUCCESS ");
 		System.out.println("||\t8. Method removeUserMeter is SUCCESS ");
