@@ -6,11 +6,12 @@ return {
 
 		function translateARMByLocale(locale){
 			var translateAll = function(){
-				var all = document.querySelectorAll('span[id*="${"],[pr-lang]');
+				var all = document.querySelectorAll('[pr-lang]');
 				Array.prototype.forEach.call(all, function(el){
 					var key = el.hasAttribute("id") ? el.id :
 										el.getAttribute("pr-lang");
-					key = key.substring(2, key.length - 1);
+					if(el.hasAttribute('id'))
+						key = key.substring(2, key.length - 1);
 					if (el.hasAttribute("title")) {
 						el.title = messageResource.get(key, locale);
 					} else {

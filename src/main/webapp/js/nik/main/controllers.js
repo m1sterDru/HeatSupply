@@ -184,9 +184,7 @@ heatSupply.mainControllers
 			['kProfileDeleteLi1','kProfileDeleteLi2','kProfileDeleteLi3',
 			 'kProfileDeleteLi4','kProfileDeleteLi5'],
 			function(value, key){
-				$scope.deactives.push({id: index++,
-															 text: value,
-															 key: '${' + key + '}'});
+				$scope.deactives.push({id: index++, text: value, key: key});
 				if(index == 5){
 					$scope.deactActive = Object.create(null);
 					$scope.deactActive.id = $scope.deactives[0].id;
@@ -202,7 +200,7 @@ heatSupply.mainControllers
 		while(li.tagName !== 'LI') li = li.parentNode;
 		span = li.getElementsByTagName('span')[0];
 		$scope.deactActive.id = li.id;
-		$scope.deactActive.key = span.id;
+		$scope.deactActive.key = span.getAttribute('pr-lang');
 		$scope.deactActive.text = span.innerHTML;
 	}
 

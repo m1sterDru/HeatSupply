@@ -1,7 +1,5 @@
 <div id="addAccountTemplate">
-	<div class="content">
-		<span id="${keyOwnerTitle}" class="title"></span>
-	</div>
+	<div class="content title" pr-lang="keyOwnerTitle"></div>
 	<div style="padding: 0 15px;">
 		<div error-directive></div>
 		<hr class="horizHR">
@@ -9,47 +7,43 @@
 	<div class="row content subDiv">
 		<div class="tHeader">
 			<h4 class="{{beforProducer}}">
-				<b><span id="${keyOwnerProviderTitle}"></span></b>
+				<b pr-lang="keyOwnerProviderTitle"></b>
 			</h4>
 			<h4 class="{{afterProducer}}" ng-click="selectProvider(0);">
-				<b><span id="${keyAnotherProducer}"></span></b>
+				<b pr-lang="keyAnotherProducer"></b>
 			</h4>
 		</div>
 		<div class="col-sm-4 col-sm-offset-1 panel panel-primary {{provider1}}" ng-click="selectProvider(1);">
 			<div class="panel-body">
 				<span class="fa fa-list-alt pull-left"></span>
-				<span id="${keyOwnerProvider1}"></span>
+				<span pr-lang="keyOwnerProvider1"></span>
 			</div>
-			<div class="panel-heading">
-				<span id="${keyOwnerProvider1}"></span>
-			</div>
+			<div class="panel-heading" pr-lang="keyOwnerProvider1"></div>
 		</div>
 		<div class="col-sm-4 col-sm-offset-2 panel panel-primary {{provider2}}" ng-click="selectProvider(2);">
 			<div class="panel-body">
 				<span class="fa fa-list-alt pull-left"></span>
-				<span id="${keyOwnerProvider2}"></span>
+				<span pr-lang="keyOwnerProvider2"></span>
 			</div>
-			<div class="panel-heading">
-				<span id="${keyOwnerProvider2}"></span>
-			</div>
+			<div class="panel-heading" pr-lang="keyOwnerProvider2"></div>
 		</div>
 	</div>
 	<div class="row content subDiv">
 		<div class="tHeader">
-			<h4><b><span id="${kInputData}"></span></b></h4>
+			<h4><b pr-lang="kInputData"></b></h4>
 		</div>
 		<div class="col-sm-6 regDiv">
-			<form method="post">
+			<form method="post"><br>
 				<table>
 					<tr class="spaceUnder">
-						<td class="bold"><span id="${keyOwnerNumber}"></span></td>
+						<td class="bold" pr-lang="keyOwnerNumber"/>
 						<td>
 							<input type="text" pattern="[0-9]*" name="owneraccount" placeholder="1234567890" class="canSelect" autocomplete="off" required value="3570" ng-disabled="isDisabled">
 						</td>
 					</tr>
 
 					<tr class="spaceUnder">
-						<td class="bold"><span id="${kMeterNumber}"></span></td>
+						<td class="bold" pr-lang="kMeterNumber"/>
 						<td>
 							<input type="text" pattern="[0-9]*" name="meterNumber" placeholder="123456789" class="canSelect" autocomplete="off" required value="0117864" ng-disabled="isDisabled">
 						</td>
@@ -58,19 +52,18 @@
 				<button id="btnHide" ng-click="submitAddOwner();" class="isHide"></button>
 			</form>
 			<div>
-				<button ng-click="submitAddOwner(true);" class="fa fa-plus btn btn-primary pull-right" ng-disabled="isDisabled">
-					<span id="${kApply}"></span>
+				<button ng-click="submitAddOwner(true);" class="fa fa-plus btn btn-primary pull-right" ng-disabled="isDisabled" pr-lang="kApply">
 				</button>
 			</div>
 		</div>
 		<div class="col-sm-4 leftBorder pull-right">
 			<div>
 				<a class="fa fa-info-circle title pull-left"></a>
-				<p><span id="${keyOwnerAccountInfo}"></span></p>
+				<p pr-lang="keyOwnerAccountInfo"/>
 			</div>
 			<div>
 				<a class="fa fa-info-circle title pull-left"></a>
-				<p><span id="${keyMeterInfo}"></span></p>
+				<p pr-lang="keyMeterInfo"/>
 			</div>
 		</div>
 	</div>

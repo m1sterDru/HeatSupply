@@ -1,7 +1,5 @@
 <div id="recover">
-	<div class="title">
-		<span id="${kRecover}"></span>
-	</div>
+	<div class="title" pr-lang="kRecover"></div>
 	<div style="padding: 0 15px;">
 		<div error-directive></div>
 		<hr class="horizHR">
@@ -12,7 +10,7 @@
 		<form class="content">
 			<table class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
 				<tr class="spaceUnder">
-					<td class="bold"><span id="${keyLoginOrEmail}"></span></td>
+					<td class="bold" pr-lang="keyLoginOrEmail"/>
 					<td>
 						<input type="text" name="userOrEmail" class="form-control canSelect" required ng-model="userData">
 					</td>
@@ -22,7 +20,7 @@
 					<td>
 						<button class="btn btn-primary pull-right" ng-click="sendMail();">
 							<span class="glyphicon glyphicon-send"></span>
-							<span id="${kApply}"></span>
+							<span pr-lang="kApply"></span>
 						</button>
 					</td>
 				</tr>

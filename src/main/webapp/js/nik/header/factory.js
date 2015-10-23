@@ -104,7 +104,7 @@ angular.module('headerFactory', [])
 			main.translator.translateValueByKey(
 				main.language, key, function(value){
 					error.html(value);
-					error[0].id = '${' + key + '}';
+					error.attr('pr-lang', key);
 					error.parent().removeClass('isHide');
 				});
 		}
@@ -114,7 +114,7 @@ angular.module('headerFactory', [])
 			main.translator.translateValueByKey(
 				main.language, key, function(value){
 					error.html(value + ' ' + text);
-					error[0].id = '${' + key + '}';
+					error.attr('pr-lang', key);
 					error.parent().removeClass('isHide');
 				});
 		}

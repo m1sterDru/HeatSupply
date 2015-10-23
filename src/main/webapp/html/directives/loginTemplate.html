@@ -1,13 +1,13 @@
 <form method="post">
 	<table >
 		<tr class="spaceUnder">
-			<td class="bold"><span id="${keyLogin}"></span></td>
+			<td class="bold" pr-lang="keyLogin"/>
 			<td>
 				<input type="text" name="user" class="form-control canSelect" required>
 			</td>
 		</tr>
 		<tr class="spaceUnder">
-			<td class="bold"><span id="${kPassword}"></span></td>
+			<td class="bold" pr-lang="kPassword"/>
 			<td>
 				<input type="password" name="pwd", class="form-control canSelect" required>
 			</td>
@@ -19,13 +19,12 @@
 <div>
 	<button class="btn btn-primary" ng-click="sendLogin();">
 		<span ng-class="progressIconClass"></span>
-		<span id="${kLogin}"></span>
+		<span pr-lang="kLogin"></span>
 	</button>
 	<a href="#registration" class="button pull-right">
-		<button class="btn btn-success">
-			<span id="${kRegisterButton}"></span>
+		<button class="btn btn-success" pr-lang="kRegisterButton">
 		</button>
 	</a>
 	<br>
-	<a href="#recover" pr-lang="${kRecover}"></span></a>
+	<a href="#recover" pr-lang="kRecover"></span></a>
 </div>
