@@ -19,7 +19,7 @@
 		<glassfish.scope>provided</glassfish.scope>
 		<tomcatDirectory>C:\apache-tomcat\webapps</tomcatDirectory>
 	</properties>
-
+		
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -107,9 +107,45 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+					<execution>
+						<id>fonts</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install</goal>
+						</goals>
+						<configuration>
+							<file>${project.basedir}/src/main/resources/fonts.jar</file>
+							<groupId>${project.groupId}.fonts</groupId>
+							<artifactId>fonts</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+					<execution>
+						<id>customizer</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install</goal>
+						</goals>
+						<configuration>
+							<file>${project.basedir}/src/main/resources/customizer.jar</file>
+							<groupId>${project.groupId}.customizers</groupId>
+							<artifactId>customizer</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
