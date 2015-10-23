@@ -523,8 +523,7 @@ div[menu-directive] ul > li > a:hover{
 /*delAccountTemplate*/
 #recover tr.spaceUnder > td {padding: 15px;}
 #recover button{margin: 0 15px 15px 0;}
-#recover .glyphicon-send,
-#recover .fa-spin{color: white;}
+.glyphicon-send, .fa-refresh{color: white;}
 #recover table{
 	background-color: #eee;
 	border: 1px solid silver;

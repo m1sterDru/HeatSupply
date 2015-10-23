@@ -26,16 +26,14 @@ heatSupply.indexModule
 		return {
 			templateUrl:'./html/directives/loginTemplate.html',
 			link: function(scope, elm, attrs, ctrl){
-				var ngElement = $('div[data-template="langDirective"]'), span;
+				var ngElement = $('div[data-template="langDirective"]'),
+						span = ngElement.children('span').eq(0);
 
-				span = ngElement.children('span').eq(0);
 				span.addClass('isHide');
 				$('input[name="user"]').val(hsFactory.login);
 				$('input[name="pwd"]')[0].focus();
 
-				translate.run(function(t){
-					t.translateAll();
-				});
+				translate.run(function(t){t.translateAll();});
 			},
 			controller: 'loginController'
 		}

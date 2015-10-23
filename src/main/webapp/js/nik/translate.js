@@ -6,20 +6,17 @@ return {
 
 		function translateARMByLocale(locale){
 			var translateAll = function(){
-				var all = document.body.getElementsByTagName("span");
-				for (var i = 0; i < all.length; i++){
-					var el = all[i],
-							begInd = el.id.indexOf("${");
-					if (begInd > -1) {
-						var key = el.id.substring(begInd + 2);
-						key = key.substring(0, key.indexOf('}'));
-						if (el.hasAttribute("title")) {
-							el.title = messageResource.get(key, locale);
-						} else {
-							el.innerHTML = messageResource.get(key, locale);
-						}
+				var all = document.querySelectorAll('span[id*="${"],[pr-lang]');
+				Array.prototype.forEach.call(all, function(el){
+					var key = el.hasAttribute("id") ? el.id :
+										el.getAttribute("pr-lang");
+					key = key.substring(2, key.length - 1);
+					if (el.hasAttribute("title")) {
+						el.title = messageResource.get(key, locale);
+					} else {
+						el.innerHTML = messageResource.get(key, locale);
 					}
-				}
+				});
 			}
 
 			if(filesLocale.indexOf(locale) < 0){

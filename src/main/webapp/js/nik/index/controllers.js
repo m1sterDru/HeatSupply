@@ -31,6 +31,7 @@ heatSupply.indexControllers
 		}
 	})
 	.controller('loginController', function ($scope, $http, hsFactory){
+		$scope.progressIconClass = '';
 		$scope.sendLogin = function(isButton){
 			var isValid = true;
 
@@ -47,6 +48,7 @@ heatSupply.indexControllers
 				}
 			});
 			if(isValid){
+				$scope.progressIconClass = 'fa fa-refresh fa-spin';
 				$http({
 					method: 'POST',
 					url: '/HeatSupply/LoginServlet',
@@ -58,10 +60,12 @@ heatSupply.indexControllers
 				})
 				.success(function(data){
 					if(data.messageId != 0){
+						$scope.progressIconClass = '';
 						hsFactory.updateError(data.message);
 					} else location.href = hsFactory.url + 'main.html';
 				})
 				.error(function(data, status, headers, config){
+					$scope.progressIconClass = '';
 					console.log(status)
 				});
 			}
