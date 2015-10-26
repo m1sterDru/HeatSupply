@@ -1,7 +1,5 @@
 <div id="delAccountTemplate">
-	<div class="content">
-		<span id="${keyProfDelOwner}" class="title"></span>
-	</div>
+	<div class="content title" pr-lang="keyProfDelOwner"></div>
 	<div style="padding: 0 15px;">
 		<div error-directive></div>
 		<hr class="horizHR">
@@ -9,7 +7,7 @@
 	<div class="row content subDiv">
 		<div class="tHeader">
 			<h4 class="{{beforProducer}}">
-				<b><span id="${keySelectOwner4delete}"></span></b>
+				<b pr-lang="keySelectOwner4delete"></b>
 			</h4>
 		</div>
 		<div class="col-sm-8">
@@ -19,14 +17,14 @@
 						<span class="fa fa-lightbulb-o pull-left"></span>
 						<div class="pull-left" owner-content>
 							<div class="subTitle">
-								<span id="${keyOwnerNumber}"></span>: №{{account4delete.ownerAccount}}
+								<span pr-lang="keyOwnerNumber"></span>: №{{account4delete.ownerAccount}}
 							</div>
 							<hr class="horizHR">
 							<div>
-								<b><span id="${kMeterNumber}"></span>:</b> {{account4delete.sn}}
+								<b><span pr-lang="kMeterNumber"></span>:</b> {{account4delete.sn}}
 							</div>
 							<div>
-								<b><span id="${keyFIO}"></span>:</b> {{account4delete.name}}
+								<b><span pr-lang="keyFIO"></span>:</b> {{account4delete.name}}
 							</div>
 						</div>
 						<div class="pull-right">
@@ -41,14 +39,14 @@
 							<span class="fa fa-lightbulb-o pull-left"></span>
 							<div class="pull-left" owner-content>
 								<div class="subTitle">
-									<span id="${keyOwnerNumber}"></span>: №{{owner.ownerAccount}}
+									<span pr-lang="keyOwnerNumber"></span>: №{{owner.ownerAccount}}
 								</div>
 								<hr class="horizHR">
 								<div>
-									<b><span id="${kMeterNumber}"></span>:</b> {{owner.sn}}
+									<b><span pr-lang="kMeterNumber"></span>:</b> {{owner.sn}}
 								</div>
 								<div>
-									<b><span id="${keyFIO}"></span>:</b> {{owner.name}}
+									<b><span pr-lang="keyFIO"></span>:</b> {{owner.name}}
 								</div>
 							</div>
 							<div class="pull-right">
@@ -62,7 +60,7 @@
 			<div class="pull-right">
 				<button ng-click="deleteOwnerAccount();" class="btn btn-danger" ng-disabled="isDisabled">
 					<span class="fa fa-trash"> </span>
-					<span id="${keyProfDelOwner2}"></span>
+					<span pr-lang="keyProfDelOwner2"></span>
 				</button>
 			</div>
 		</div>
@@ -70,7 +68,7 @@
 		<div class="col-sm-4 col-xs-12 leftBorder pull-right">
 			<div>
 				<a class="fa fa-info-circle title pull-left"></a>
-				<p><span id="${keyDelOwnerInfo}"></span></p>
+				<p pr-lang="keyDelOwnerInfo"/>
 			</div>
 		</div>
 	</div>

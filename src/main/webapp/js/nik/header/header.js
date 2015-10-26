@@ -5,8 +5,7 @@ heatSupply.headerControllers
 			controller: 'langController',
 			link: function(scope, elm, attrs, ctrl){
 				if(location.href.indexOf('/main.') < 0){
-					var room = $(elm).find('.room');
-					room.append('<span id="${keyRoom}"></span>');
+					$(elm).find('.room').attr('pr-lang','keyRoom');
 				}
 			}
 		}

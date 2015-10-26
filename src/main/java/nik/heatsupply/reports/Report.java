@@ -24,6 +24,7 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
+import nik.heatsupply.socket.Server;
 
 public class Report {
 	private static final Logger LOG = LoggerFactory.getLogger(Report.class);
@@ -47,7 +48,7 @@ public class Report {
 
 			JasperDesign design = JRXmlLoader.load(fis);
 			JasperReport rep = JasperCompileManager.compileReport(design);
-			JasperPrint jp = JasperFillManager.fillReport(rep, params);
+			JasperPrint jp = JasperFillManager.fillReport(rep, params, Server.dbImpl.getDataSource().getConnection());
 
 			switch (format.toLowerCase()) {
 			case "html":

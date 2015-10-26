@@ -80,8 +80,7 @@ public class DataBaseImpl extends DataBaseSuper implements IDataBase {
 		return new BatisImpl(s -> s.getMapper(IMapper.class).deleteUserFromDB(idUser)).run();
 	}
 	
-	@Override
-	public boolean activateUser(String login) {
+	private boolean activateUser(String login) {
 		return new BatisImpl(s -> s.getMapper(IMapper.class).activateUser(login)).run();
 	}
 	
@@ -102,25 +101,17 @@ public class DataBaseImpl extends DataBaseSuper implements IDataBase {
 		return (UserWeb) new BatisImpl(s -> s.getMapper(IMapper.class).getUser(idUser)).get();
 	}
 	
-	@Override
 	public UserWeb getUserByLogin(String login) {
 		return (UserWeb) new BatisImpl(s -> s.getMapper(IMapper.class).getUserByLogin(login)).get();
 	}
 	
-	@Override
+	public UserWeb getUserByEmail(String email) {
+		return (UserWeb) new BatisImpl(s -> s.getMapper(IMapper.class).getUserByEmail(email)).get();
+	}
+	
 	public boolean addMeterUser(int iduser, int idmeter, double lastcash, int type_device_id, String idaccount) {
 		return new BatisImpl(s -> s.getMapper(IMapper.class)
 				.addMeterUser(iduser, idmeter, lastcash, type_device_id, idaccount)).run();
-	}
-	
-	@Override
-	public boolean addUserMeter(int idUser, int idMeter) {
-		List<MeterUser> oldOwners = getMetersList(idUser);
-		String owneraccount = oldOwners.get(0).getIdAccount();
-		int type_device_id = oldOwners.get(0).getIdTypeDevice();
-		
-		IBatis addUser = s -> s.getMapper(IMapper.class).addMeterUser(idUser, idMeter, 0, type_device_id, owneraccount);
-		return new BatisImpl(addUser).run();
 	}
 	
 	@Override

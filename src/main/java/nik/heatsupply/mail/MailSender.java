@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 public class MailSender {
 	private static final Logger LOG = LoggerFactory.getLogger(MailSender.class);
+	public static final String MAIL_PROPERTIES = "mail.properties";
 	private static Properties mailServerProperties;
 	private static Session getMailSession;
 	private static MimeMessage generateMailMessage;
@@ -32,8 +33,8 @@ public class MailSender {
 	public void generateAndSendEmail(String recipient, 
 			String title, String emailBody, String filename) throws AddressException, MessagingException {
 
-		mailServerProperties = getPropValues("mail.properties");
-		String user = mailServerProperties.getProperty("mail.address");
+		mailServerProperties = getPropValues(MAIL_PROPERTIES);
+		String user = mailServerProperties.getProperty("mail.login");
 		user = user.indexOf("@") > 0 ? user : user + "@gmail.com";
 		String password = mailServerProperties.getProperty("mail.password");
 		getMailSession = Session.getDefaultInstance(mailServerProperties, null);

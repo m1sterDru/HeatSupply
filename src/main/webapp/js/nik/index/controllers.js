@@ -31,6 +31,7 @@ heatSupply.indexControllers
 		}
 	})
 	.controller('loginController', function ($scope, $http, hsFactory){
+		$scope.progressIconClass = '';
 		$scope.sendLogin = function(isButton){
 			var isValid = true;
 
@@ -47,6 +48,7 @@ heatSupply.indexControllers
 				}
 			});
 			if(isValid){
+				$scope.progressIconClass = 'fa fa-refresh fa-spin';
 				$http({
 					method: 'POST',
 					url: '/HeatSupply/LoginServlet',
@@ -58,10 +60,12 @@ heatSupply.indexControllers
 				})
 				.success(function(data){
 					if(data.messageId != 0){
+						$scope.progressIconClass = '';
 						hsFactory.updateError(data.message);
 					} else location.href = hsFactory.url + 'main.html';
 				})
 				.error(function(data, status, headers, config){
+					$scope.progressIconClass = '';
 					console.log(status)
 				});
 			}
@@ -80,17 +84,26 @@ heatSupply.indexControllers
 		}
 	})
 	.controller('recoverController', function ($scope, $http, hsFactory){
+		$scope.userData = hsFactory.login;
+		$('#recover input[name="userOrEmail"]')[0].focus();
+
 		$scope.sendMail = function($event){
-			var email = $('#recover input[name="email"]');
+			var email = $('#recover input[name="userOrEmail"]'),
+					spanIcon = $('#recover button span:first');
 
 			if(email[0].checkValidity()){
+				spanIcon.removeClass('glyphicon glyphicon-send');
+				spanIcon.addClass('fa fa-refresh fa-spin');
 				$http({
 					method: 'GET',
-					url: '/HeatSupply/dataServer/db/recover?params=' + email.val(),
+					url: '/HeatSupply/dataServer/db/recover?params=' +
+								$scope.userData,
 					cache: false
 				})
 				.success(function(data){
-					var isOK = data.mail === email.val();
+					var isOK = data.result === 'success';
+					console.log(data)
+					console.log(data.result)
 					BootstrapDialog.confirm({
 						title: isOK ? 'SUCCESS' : 'WARNING',
 						message: isOK ? 'Check your email' : 'Something wrong',
@@ -104,6 +117,9 @@ heatSupply.indexControllers
 						callback: function(result){
 							if(result && isOK){
 								location.href = hsFactory.url + '#login'
+							} else {
+								spanIcon.addClass('glyphicon glyphicon-send');
+								spanIcon.removeClass('fa fa-refresh fa-spin');
 							}
 						}
 					})

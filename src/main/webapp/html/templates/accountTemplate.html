@@ -1,7 +1,5 @@
 <div id="accountTemplate">
-	<div class="title">
-		<span id="${keySelectAccount}"></span>
-	</div>
+	<div class="title" pr-lang="keySelectAccount"></div>
 	<div style="padding: 0 15px;">
 		<div error-directive></div>
 		<hr class="horizHR">
@@ -15,13 +13,13 @@
 							<span class="fa fa-lightbulb-o pull-left"></span>
 							<div>
 								<div class="subTitle">
-									<span id="${keyOwnerNumber}"></span>: №{{own.ownerAccount}}
+									<span pr-lang="keyOwnerNumber"></span>: №{{own.ownerAccount}}
 								</div>
 								<hr class="horizHR">
 								<div>
-									<b><span id="${kMeterNumber}"></span>:</b> {{own.sn}}
+									<b><span pr-lang="kMeterNumber"></span>:</b> {{own.sn}}
 								</div>
-								<div><b><span id="${keyFIO}"></span>:</b> {{own.name}}</div>
+								<div><b><span pr-lang="keyFIO"></span>:</b> {{own.name}}</div>
 							</div>
 							<div><img src="images/logo_nik.png" alt="Logo"></div>
 						</div>
@@ -33,7 +31,7 @@
 	<div class="col-sm-4 leftBorder">
 		<div class="content subTitle {{visibleClass}}">
 			<span class="fa fa-user"> </span>
-			<span id="${keyAccount}"></span>
+			<span pr-lang="keyAccount"></span>
 			<span>: "{{login}}"</span>
 		</div>
 		<div class="content {{visibleClass}}">
@@ -41,24 +39,24 @@
 				<li>
 					<a href="#/profile" class="btn btn-primary">
 						<span class="fa fa-wrench pull-left"></span>
-						<span id="${kSettings}"></span>
+						<span pr-lang="kSettings"></span>
 					</a>
 
-					<p><span id="${kSettingsText}"></span></p>
+					<p pr-lang="kSettingsText"/>
 				</li>
 				<li>
 					<a href="#/addOwner" class="btn btn-success">
 						<span class="fa fa-plus pull-left"></span>
-						<span id="${keyAddOwnerAccount}"></span>
+						<span pr-lang="keyAddOwnerAccount"></span>
 					</a>
-					<p><span id="${keyAddOwnerAccountText}"></span></p>
+					<p pr-lang="keyAddOwnerAccountText"/>
 				</li>
 				<li>
 					<a href="#/delOwner" class="btn btn-danger">
 						<span class="fa fa-minus pull-left"></span>
-						<span id="${keyProfDelOwner2}"></span>
+						<span pr-lang="keyProfDelOwner2"></span>
 					</a>
-					<p><span id="${keyProfDelOwnerText}"></span></p>
+					<p pr-lang="keyProfDelOwnerText"/>
 				</li>
 			</ul>
 		</div>

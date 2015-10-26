@@ -16,7 +16,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import nik.heatsupply.common.Encryptor;
+import nik.heatsupply.dao.DataBaseImpl;
 import nik.heatsupply.mail.MailSender;
+import nik.heatsupply.socket.model.UserWeb;
 
 /**
  * @author pavel.naduda
@@ -44,24 +47,30 @@ public class DataBase {
 			ret = jsn.build().toString();
 			break;
 		case "recover":
-			String mailAddress = params;
-			
-			MailSender ms = new MailSender();
-			String emailBody = "<strong>mail.properties</strong><hr>" +
-					"mail.smtp.port=587<br>" +
-					"mail.smtp.auth=true<br>" +
-					"mail.smtp.starttls.enable=true<br>" +
-					"mail.address=n*****r@gmail.com<br>" +
-					"mail.password=b********k<br>" +
-					"<br><br><hr><font size=\"0.8em\"><strong>Regards, Pavlo Naduda<br></strong>" +
-					"phone: 050 66 22 55 6<br>" +
-					"e-mail: naduda.pr@gmail.com (pr@ukreni.com.ua)</font>";
-
 			try {
-				ms.generateAndSendEmail(mailAddress, "Properties", emailBody, null);
-				j.add("mail", mailAddress);
+				String userData = params;
+				String login = userData.contains("@") ? null : userData;
+				String mailAddress = userData.contains("@") ? userData : "";
+				
+				DataBaseImpl dbImpl = new DataBaseImpl();
+				UserWeb user = login != null ? dbImpl.getUserByLogin(login) : dbImpl.getUserByEmail(mailAddress);
+				if(user != null) {
+					mailAddress = user.getEmail();
+					MailSender ms = new MailSender();
+					Encryptor encr = new Encryptor();
+					String emailBody = "<strong>HeatSupply Authentication</strong><hr>" +
+							"Your " + (login != null ? "password is <strong>\"" + encr.decrypt(user.getPassword()).trim() : 
+														"login is <strong>\"" + user.getLogin()) + "\"</strong><br>" +
+
+							"<br><br><hr><font size=\"0.8em\"><strong>Regards, Pavlo Naduda<br></strong>" +
+							"phone: 050 66 22 55 6<br>" +
+							"e-mail: naduda.pr@gmail.com (pr@ukreni.com.ua)</font>";
+	
+					ms.generateAndSendEmail(mailAddress, "HeatSupply Authentication", emailBody, null);
+					j.add("result", "success");
+				} else j.add("result", "");
 			} catch (MessagingException e) {
-				j.add("mail", "");
+				j.add("result", "");
 			}
 			ret = j.build().toString();
 			break;

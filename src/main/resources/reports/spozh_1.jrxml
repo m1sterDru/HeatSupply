@@ -64,12 +64,11 @@
 		</box>
 	</style>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[select 1 as month, 4 as value, 1 as average]]>
 	</queryString>
-	<field name="name" class="java.lang.String"/>
+	<field name="month" class="java.lang.Integer"/>
 	<field name="value" class="java.lang.Integer"/>
 	<field name="average" class="java.lang.Integer"/>
-	<field name="month" class="java.lang.Integer"/>
 	<variable name="hhh" class="java.lang.String">
 		<variableExpression><![CDATA["http://google.com.ua"]]></variableExpression>
 	</variable>

@@ -1,19 +1,30 @@
 <div id="recover">
-	<div class="title">
-		<span id="${kRecover}"></span>
-	</div>
+	<div class="title" pr-lang="kRecover"></div>
 	<div style="padding: 0 15px;">
 		<div error-directive></div>
 		<hr class="horizHR">
 	</div>
 
 	<div class="content">
+		<br>
 		<form class="content">
-			Input your email address
-			<input type="email" name="email" placeholder="login@domain.com" class="form-control canSelect" autocomplete="off" required>
-			<button class="btn btn-primary" ng-click="sendMail();">
-				<span id="${kApply}"></span>
-			</button>
+			<table class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
+				<tr class="spaceUnder">
+					<td class="bold" pr-lang="keyLoginOrEmail"/>
+					<td>
+						<input type="text" name="userOrEmail" class="form-control canSelect" required ng-model="userData">
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button class="btn btn-primary pull-right" ng-click="sendMail();">
+							<span class="glyphicon glyphicon-send"></span>
+							<span pr-lang="kApply"></span>
+						</button>
+					</td>
+				</tr>
+			</table>
 		</form>
 	</div>
 </div>

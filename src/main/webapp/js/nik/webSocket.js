@@ -70,8 +70,8 @@ heatSupply.initWebSocket = function(hs, callback){
 							scope.login_href = 'LogoutServlet';
 							hs.translator.translateValueByKey(
 								hs.language, 'kLogout', function(value){
-									scope.login_spanID = '${kLogout}';
-									$('.loginSpanSelectot').html(value);
+									scope.login_spanID = 'kLogout';
+									$('a[pr-lang]').html(value);
 									scope.login_href = 'LogoutServlet';
 								});
 							scope.longin_class = 'fa fa-sign-out';

@@ -104,7 +104,7 @@ heatSupply.headerControllers.controller('headerController',
 		 hsFactory.regAccount == undefined){
 		location.href = '#/registration';
 	} else if(location.href.indexOf('registration') > 0){
-		$('span[id="${kApply}"]').attr('id', '${kNext}');
+		$('[pr-lang="kApply"]').attr('pr-lang', 'kNext');
 	}
 
 	$scope.isDisabled = true;

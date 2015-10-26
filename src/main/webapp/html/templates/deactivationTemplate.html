@@ -1,34 +1,31 @@
 <div id="deactivation">
-	<div class="title">
-		<span id="${kProfileDeleteTitle}"></span>
-	</div>
+	<div class="title" pr-lang="kProfileDeleteTitle"></div>
 	<div style="padding: 0 15px;">
 		<div error-directive></div>
 		<hr class="horizHR">
 	</div>
 	<div class="col-sm-12 attention">
 		<span class="fa fa-info-circle title"></span>
-		<b><span id="${kAttention}"></span></b>
+		<b pr-lang="kAttention"></b>
 		<p>
 			<br>
-			<span id="${kProfileDeleteInfoText2}"></span>
+			<span pr-lang="kProfileDeleteInfoText2"></span>
 		</p>
 	</div>
 	<div class="col-sm-8">
 		<div class="row subDiv">
 			<h4 class="tHeader">
-				<b><span id="${kProfileDeleteReason}"></span></b>
+				<b pr-lang="kProfileDeleteReason"></b>
 			</h4>
 			<div class="col-sm-12">
 				<div>
 					<button class="btn-sm menubutton dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<span id="{{deactActive.key}}" data-ind="{{deactActive.id}}">
-							{{deactActive.text}}</span>
+						<span pr-lang="{{deactActive.key}}" data-ind="{{deactActive.id}}">{{deactActive.text}}</span>
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
 						<li id="{{deact.id}}" ng-repeat="deact in deactives" class="menubutton" ng-click="changeDeactive($event);">
-							<span id="{{deact.key}}">{{deact.text}}</span>
+							<span pr-lang="{{deact.key}}">{{deact.text}}</span>
 						</li>
 					</ul>
 				</div>
@@ -37,14 +34,14 @@
 		</div>
 		<div class="row subDiv">
 			<h4 class="tHeader">
-				<b><span id="${kProfileDeleteConfirmTitle}"></span></b>
+				<b pr-lang="kProfileDeleteConfirmTitle"></b>
 			</h4>
 			<div class="col-sm-11 col-sm-offset-1">
 				<form method="post">
 					<table>
 						<tr>
 							<td>
-								<b><span id="${keyCurrentPassword}"></span></b>
+								<b pr-lang="keyCurrentPassword"></b>
 							</td>
 							<td>
 								<input type="password" class="form-control canSelect" required>
@@ -54,8 +51,7 @@
 					<button id="btnHide" ng-click="removeProfile();" class="isHide"></button>
 				</form>
 			</div>
-			<button ng-click="removeProfile(true);" class="fa fa-trash btn btn-danger pull-right">
-				<span id="${keyProfDelAccount}"></span>
+			<button ng-click="removeProfile(true);" class="fa fa-trash btn btn-danger pull-right" pr-lang="keyProfDelAccount">
 			</button>
 		</div>
 	</div>
@@ -63,15 +59,13 @@
 		<div>
 			<div>
 				<span class="fa fa-info-circle title"></span>
-				<a>
-					<span class="subTitle" id="${kProfileDeleteInfo}"></span>
-				</a>
+				<a pr-lang="kProfileDeleteInfo" class="subTitle"></a>
 			</div>
 			<div class="content">
 				<p>
-					<span id="${kProfileDeleteInfoText}"></span>
+					<span pr-lang="kProfileDeleteInfoText"></span>
 					<br><br>
-					<b><span id="${kProfileDeleteInfoText2}"></span></b>
+					<b pr-lang="kProfileDeleteInfoText2"></b>
 				</p>
 			</div>
 		</div>
